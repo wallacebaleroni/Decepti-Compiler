@@ -9,16 +9,17 @@
 
 \hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue}
 
-\title[Compiladores 2017.2]{Template para a 1$^{a.}$ apresentação}
-\author[Abrev.]{Autores} 
+\title{Compiladores 2018.1}
+\subtitle{Análise da linguagem Ruby e seu suporte a PEG}
 
+\author[Abrev.]{Júlia Falcão, Raffael Paranhos, Wallace Baleroni}
 \institute[UFF]{Universidade Federal Fluminense}
 
-\date{Data} 
+\date{21 de Março de 2018} 
 
 \begin{document}
 
-% ---
+% TITLE PAGE
 
 \begin{frame}[plain]
 
@@ -26,16 +27,131 @@
 
 \end{frame}
 
-% ---
+% RUBY (1)
 
-\begin{frame}{Linguagem escolhida}
+\begin{frame}[fragile]{Ruby}
+% [fragile]: necessário pro uso de \verbatim
+
+Suporta tanto programação \textbf{imperativa}, que diz como algo será feito, tanto quanto \textbf{declarativa}, que diz o que será feito, sem descrever como.
+    
+Exemplo: imprimir todos os elementos de um vetor
+
+\begin{itemize}
+\item \textbf{Imperativa:} usar índice para acessar elementos
+	\begin{verbatim}
+    i = 0
+    while i < array.length do
+        puts array[i]
+    end
+	\end{verbatim}
+    
+\item \textbf{Declarativa:} usar \textit{each}
+	\begin{verbatim}
+    array.each do |element|
+        puts element
+    end
+\end{verbatim}
+
+\end{itemize}
 
 \end{frame}
 
-% ---
+% RUBY (2)
+
+\begin{frame}{Ruby}
+
+Ruby é uma linguagem interpretada, e o processo acontece em 4 fases:
+
+\begin{enumerate}
+
+\item \textbf{Tokenizing:} O programa é quebrado em pequenos pedaços chamados \textit{tokens}.
+
+\item \textbf{Lexing:} Dados adicionais são acrescentados aos \textit{tokens}.
+
+\item \textbf{Parsing:} O texto é transformado em uma árvore sintática abstrata (AST), uma estrutura de dados que representa o programa em memória.
+\\*Até a versão 1.9, o código podia ser executado diretamente pela análise da AST, mas atualmente há um passo a mais.
+
+\item \textbf{Compilação:} Finalmente, a AST é compilada para bytecode, que é então executado pela máquina virtual de Ruby.
+
+\end{enumerate}
+
+\end{frame}
+
+
+% JRUBY
+
+\begin{frame}{JRuby}
+É uma implementação de Ruby que roda sobre a Java Virtual Machine (JVM). Isso permite o uso da linguagem Ruby normalmente mas com todas as vantagens da JVM, incluindo:
+
+\begin{itemize}
+
+\item \textbf{Portabilidade:} a JVM pode ser emulada em qualquer sistema  que suporte C++, trazendo muito mais portabilidade para Ruby do que a Ruby VM.
+
+\item \textbf{Performance:} JRuby tem maior \textit{overhead} na inicialização, mas em retorno o \textit{throughput} é bem maior, o que faz valer a pena usá-la para aplicações maiores como Rails apps.
+
+\item \textbf{Concorrência:} Ao contrário da implementação original, JRuby roda \textit{threads} simultaneamente, o que torna o programa mais rápido se ele tiver sido escrito corretamente para isso.
+
+\end{itemize} 
+
+
+\end{frame}
+
 
 \begin{frame}{Suporte à construção de compiladores}
 
+\end{frame}
+
+
+\begin{frame}{Parsing Expression Grammars (PEGs)}
+\begin{itemize}
+\item Criado por Bryan Ford, é um formalismo que descreve um conjunto de regras para reconhecer \textit{strings} em uma linguagem.
+\item É semelhante a Gramatica Livre de Contexto, porém o operador de escolha na PEG seleciona a primeira correspondência enquanto na GLC é ambiguo.
+\item A biblioteca Parslet permite a construção de \textit{parsers} da forma PEG no Ruby.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Parslet}
+O processo de criação de um compilador ou interpretador para uma linguagem pode ser dividido em quatro estágios:
+
+\begin{enumerate}
+\item \textit{Parsing}
+\item Construção da Árvore Sintatica Abstrata
+\item Otimização da Árvore
+\item Geração do codigo ou execução
+\end{enumerate}
+
+O Parslet nos auxiliará nos dois primeiros passos atraves das classes: 
+\begin{verbatim}
+   Parslet::Parser
+   Parslet::Transform
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Instalação e Exemplos Parslet}
+A biblioteca Parslet está disponivel na forma de Pacote \textit{Gem} e pode ser instalado com o comando
+\begin{verbatim}
+   gem install parslet
+\end{verbatim}
+Criar um \textit{parser} que reconhece numeros é bem simples:
+\begin{verbatim}
+  class Mini < Parslet::Parser
+    rule(:integer) { match('[0-9]').repeat(1) }
+    root(:integer)
+  end
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Mais Exemplos}
+O \textit{parser} tem como saída uma estrutura dificil de ser trabalhada, as \textit{deep nested hashes}. Por isso, o Parslet possui uma classe que transforma essa saida. 
+
+Um transformador que coloca "b" no lugar de "a" pode ser escrito da seguinte maneira:
+\begin{verbatim}
+ class MyTransform < Parslet::Transform
+    rule('a') { 'b' }
+  end
+\end{verbatim}
+A regra de transformaçao possui duas partes, um padrão, o qual deverá ser reconhecido e substituido (a) e um bloco que possui o que deverá ser colocado no lugar do padrão (b).
 \end{frame}
 
 % ---
@@ -45,4 +161,3 @@
 \end{frame}
 
 \end{document}
-
