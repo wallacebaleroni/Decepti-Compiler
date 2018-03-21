@@ -1,5 +1,4 @@
 \documentclass{beamer}
-
 \usetheme[
   outer/progressbar=frametitle
 ]{metropolis}
@@ -15,7 +14,7 @@
 \author[Abrev.]{Júlia Falcão, Raffael Paranhos, Wallace Baleroni}
 \institute[UFF]{Universidade Federal Fluminense}
 
-\date{21 de Março de 2018} 
+\date{21 de Março de 2018}
 
 \begin{document}
 
@@ -27,29 +26,77 @@
 
 \end{frame}
 
+% RUBY (1 - INTRO)
+
+\begin{frame}[fragile]{Ruby}
+\textbf{Ruby} é uma linguagem de programação desenvolvida em 1995 no Japão por Yukihiro Matsumoto, e está atualmente entre as 10 linguagens de programação mais populares. Algumas de suas características são:
+
+\begin{itemize}
+
+\item Ruby é multiparadigma: suporta programação orientada a objetos (\textit{class-based}), funcional, imperativa e reflexiva.
+
+\item Tem tipagem dinâmica e forte: todos os "tipos primitivos" são na verdade classes, e toda variável deve ter um, mas ele pode ser alterado dinamicamente.
+
+\item Sua implementação padrão é escrita em C.
+
+\item É interpretada e tem gerenciamento de memória automático.
+
+\item Seu criador queria uma linguagem de \textit{script} mais poderosa que Perl, e mais orientada a objetos do que Python.
+
+\end{itemize}
+
+\end{frame}
+
+
+% RUBY (2 - INSTALAÇÃO)
+\begin{frame}[fragile]{Ruby}
+A instalação de Ruby é bem simples, com várias maneiras diferentes disponíveis no site oficial:
+
+\begin{itemize}
+\item \textbf{Instaladores}: \href{https://github.com/rbenv/ruby-build}{ruby-build} e \href{https://github.com/postmodern/ruby-install}{ruby-install} para sistemas UNIX; \href{https://rubyinstaller.org/}{RubyInstaller} para Windows.
+
+\item \textbf{Gerenciadores de pacotes} (em sistemas UNIX):
+
+\begin{itemize}
+\item Homebrew (macOS): \verb|$ brew install ruby|
+\item apt (Ubuntu, Debian): \verb|$ sudo apt-get install ruby-full|
+\item pacman (Arch Linux): \verb|$ sudo pacman -S ruby|
+\end{itemize}
+
+\item \textbf{Compilando a partir do \href{https://www.ruby-lang.org/en/downloads/}{código fonte}}:
+\begin{verbatim}
+$ ./configure
+$ make
+$ sudo make install
+\end{verbatim}
+
+\end{itemize}
+
+
+\end{frame}
+
 % RUBY (1)
 
 \begin{frame}[fragile]{Ruby}
 % [fragile]: necessário pro uso de \verbatim
 
-Suporta tanto programação \textbf{imperativa}, que diz como algo será feito, tanto quanto \textbf{declarativa}, que diz o que será feito, sem descrever como.
-    
-Exemplo: imprimir todos os elementos de um vetor
+Além da programação \textbf{imperativa}, onde o código diz como algo será feito, Ruby também suporta o paradigma \textbf{declarativo}, onde é dito apenas o que se quer fazer, sem especificar como.
+
+\underline{Exemplo}: retornar subconjunto de elementos ímpares de uma lista
 
 \begin{itemize}
-\item \textbf{Imperativa:} usar índice para acessar elementos
-	\begin{verbatim}
-    i = 0
-    while i < array.length do
-        puts array[i]
-    end
-	\end{verbatim}
-    
-\item \textbf{Declarativa:} usar \textit{each}
-	\begin{verbatim}
-    array.each do |element|
-        puts element
-    end
+\item \textbf{Imperativa:} manualmente adicionar elementos ímpares ao resultado
+
+\begin{verbatim}
+odds = []
+array.each do | element |
+    odds << element if element.odd?
+end
+\end{verbatim}
+
+\item \textbf{Declarativa:} usar \textit{select}
+\begin{verbatim}
+array.select { | element | element.odd? }
 \end{verbatim}
 
 \end{itemize}
@@ -60,7 +107,7 @@ Exemplo: imprimir todos os elementos de um vetor
 
 \begin{frame}{Ruby}
 
-Ruby é uma linguagem interpretada, e o processo acontece em 4 fases:
+Ruby é uma linguagem \textbf{interpretada}, e o processo acontece em 4 fases:
 
 \begin{enumerate}
 
@@ -87,17 +134,94 @@ Ruby é uma linguagem interpretada, e o processo acontece em 4 fases:
 
 \item \textbf{Portabilidade:} a JVM pode ser emulada em qualquer sistema  que suporte C++, trazendo muito mais portabilidade para Ruby do que a Ruby VM.
 
-\item \textbf{Performance:} JRuby tem maior \textit{overhead} na inicialização, mas em retorno o \textit{throughput} é bem maior, o que faz valer a pena usá-la para aplicações maiores como Rails apps.
+\item \textbf{Performance:} JRuby tem maior \textit{overhead} na inicialização, mas em retorno o \textit{throughput} é bem maior, o que faz valer a pena usá-la para aplicações maiores como aplicações Rails.
 
 \item \textbf{Concorrência:} Ao contrário da implementação original, JRuby roda \textit{threads} simultaneamente, o que torna o programa mais rápido se ele tiver sido escrito corretamente para isso.
 
-\end{itemize} 
+\end{itemize}
 
 
 \end{frame}
 
+\begin{frame}[fragile]{Exemplos}
+\begin{itemize}
+\item Hello World:
+\begin{verbatim}
+  puts 'Hello World!'
+\end{verbatim}
+\item Input:
+\begin{verbatim}
+  print 'Please type name >'
+  name = gets.chomp
+  puts "Hello #{name}."
+\end{verbatim}
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Insertion Sort}
+\begingroup
+\fontsize{10pt}{11pt}
+\begin{verbatim}
+def insertion_sort(array)
+    final = [array[0]]
+    array.delete_at(0)
+    for i in array
+        final_index = 0
+        while final_index < final.length
+            if i <= final[final_index]
+                final.insert(final_index,i)
+                break
+            elsif final_index == final.length-1
+                final.insert(final_index+1,i)
+                break
+            end
+            final_index+=1
+        end
+    end
+    final
+end
+\end{verbatim}
+\endgroup
+\end{frame}
+\begin{frame}[fragile]{Definição de Classe}
+\begingroup
+\fontsize{10pt}{11pt}
+\begin{verbatim}
+class Customer
+   @@no_of_customers = 0
+   def initialize(id, name, addr)
+      @cust_id = id
+      @cust_name = name
+      @cust_addr = addr
+   end
+   def display_details()
+      puts "Customer id #@cust_id"
+      puts "Customer name #@cust_name"
+      puts "Customer address #@cust_addr"
+   end
+   def total_no_of_customers()
+      @@no_of_customers += 1
+      puts "Total number of customers: #@@no_of_customers"
+   end
+end
+\end{verbatim}
+\endgroup
+\end{frame}
 
 \begin{frame}{Suporte à construção de compiladores}
+
+Apesar do desempenho relativamente fraco de Ruby torná-la muito mais adequada para aplicações \textit{web} do que a construção de compiladores, o único fator realmente decisivo é se a linguagem possui ou não as estruturas necessárias para construir o \textit{parser}.
+
+Com o uso de bibliotecas externas como Treetop e Parslet, isso é perfeitamente possível, tanto que podemos encontrar na Internet projetos de compiladores escritos em Ruby para linguagens como x86 assembly.
+
+\end{frame}
+
+
+% RUBINIUS
+
+\begin{frame}{Rubinius}
+Rubinius é uma implementação alternativa criada com o objetivo de implementar nativamente o máximo possível da linguagem Ruby usando Ruby.
+No início do projeto, a biblioteca principal era escrita quase inteiramente em Ruby, assim como o compilador de \textit{bytecode} e o \textit{debugger}.
+No entanto, Rubinius acabou sendo a primeira implementação de Ruby baseada em C++, utilizando mais C++ do que Ruby no código. A ideia é interessante e é um projeto ambicioso, mas na prática, Rubinius ainda não cumpre a promessa de alto desempenho.
 
 \end{frame}
 
@@ -105,7 +229,8 @@ Ruby é uma linguagem interpretada, e o processo acontece em 4 fases:
 \begin{frame}{Parsing Expression Grammars (PEGs)}
 \begin{itemize}
 \item Criado por Bryan Ford, é um formalismo que descreve um conjunto de regras para reconhecer \textit{strings} em uma linguagem.
-\item É semelhante a Gramatica Livre de Contexto, porém o operador de escolha na PEG seleciona a primeira correspondência enquanto na GLC é ambiguo.
+\item É semelhante à Gramática Livre de Contexto, porém o operador de escolha na PEG seleciona a primeira correspondência enquanto na GLC é ambíguo.
+\item Não existe ambiguidade, apenas uma árvore de derivação existe para cada \textit{string}
 \item A biblioteca Parslet permite a construção de \textit{parsers} da forma PEG no Ruby.
 \end{itemize}
 \end{frame}
@@ -115,12 +240,12 @@ O processo de criação de um compilador ou interpretador para uma linguagem pod
 
 \begin{enumerate}
 \item \textit{Parsing}
-\item Construção da Árvore Sintatica Abstrata
+\item Construção da Árvore Sintática Abstrata
 \item Otimização da Árvore
-\item Geração do codigo ou execução
+\item Geração do código ou execução
 \end{enumerate}
 
-O Parslet nos auxiliará nos dois primeiros passos atraves das classes: 
+O Parslet nos auxiliará nos dois primeiros passos através das classes:
 \begin{verbatim}
    Parslet::Parser
    Parslet::Transform
@@ -129,21 +254,50 @@ O Parslet nos auxiliará nos dois primeiros passos atraves das classes:
 \end{frame}
 
 \begin{frame}[fragile]{Instalação e Exemplos Parslet}
-A biblioteca Parslet está disponivel na forma de Pacote \textit{Gem} e pode ser instalado com o comando
+A biblioteca Parslet está disponível na forma de Pacote \textit{Gem} e pode ser instalado com o comando:
 \begin{verbatim}
    gem install parslet
 \end{verbatim}
 Criar um \textit{parser} que reconhece numeros é bem simples:
 \begin{verbatim}
-  class Mini < Parslet::Parser
-    rule(:integer) { match('[0-9]').repeat(1) }
-    root(:integer)
-  end
+   class Mini < Parslet::Parser
+      rule(:integer) { match('[0-9]').repeat(1) }
+      root(:integer)
+   end
 \end{verbatim}
 \end{frame}
 
-\begin{frame}[fragile]{Mais Exemplos}
-O \textit{parser} tem como saída uma estrutura dificil de ser trabalhada, as \textit{deep nested hashes}. Por isso, o Parslet possui uma classe que transforma essa saida. 
+\begin{frame}[fragile]{Mais exemplos}
+Extendendo um pouco o \textit{parser} anterior, é possível criar um  que reconhece algumas expressões, por exemplo "2 + 2":
+\begin{verbatim}
+class Mini < Parslet::Parser
+    rule(:integer)    { match('[0-9]').repeat(1)>>space? }
+    rule(:space)      { match('\s').repeat(1) }
+    rule(:space?)     { space.maybe }
+    rule(:operator)   { match('[+]')>>space? }
+    rule(:sum)        { integer>>operator>>expression }
+    rule(:expression) { sum | integer }
+    root :expression
+end
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Erros}
+O Parslet auxilia também proporcionando o melhor relatório de erros possível. A expressão "a + 2" no \textit{parser} anterior gera o seguinte erro:
+\begin{verbatim}
+Expected one of [SUM, INTEGER] at line 1 char 1.
+|- Failed to match sequence (INTEGER OPERATOR EXPRESSION) at line 1 char 1.
+|  `- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 1.
+|     `- Expected at least 1 of [0-9] at line 1 char 1.
+|        `- Failed to match [0-9] at line 1 char 1.
+`- Failed to match sequence ([0-9]{1, } SPACE?) at line 1 char 1.
+   `- Expected at least 1 of [0-9] at line 1 char 1.
+      `- Failed to match [0-9] at line 1 char 1.
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Transform}
+O \textit{parser} tem como saída uma estrutura difícil de ser trabalhada, as \textit{deep nested hashes}. Por isso, o Parslet possui uma classe que transforma essa saída.
 
 Um transformador que coloca "b" no lugar de "a" pode ser escrito da seguinte maneira:
 \begin{verbatim}
@@ -158,6 +312,33 @@ A regra de transformaçao possui duas partes, um padrão, o qual deverá ser rec
 
 \begin{frame}{Prós e contras}
 
+Desvantagem: \textbf{desempenho}
+
+Ruby é considerada uma linguagem lenta em comparação com outras linguagens de alto nível, e mais ainda em comparação com C, a linguagem mais popularmente usada na construção de compiladores. Isso se dá por algumas razões:
+
+\begin{itemize}
+\item É uma linguagem interpretada, e essas tendem a ser mais lentas que linguagens compiladas.
+\item O \textit{garbage collector} de tempos em tempos para a execução do programa para limpar a memória alocada não utilizada.
+\item Chamadas de métodos são lentas pois o código não possui um ponteiro para os métodos e sim o nome para buscá-lo na classe a qual ele pertence, ou nos ancestrais dessa classe.
+\item Não usa \textit{multithreading}; o programa inteiro é executado em uma única \textit{thread}.
+
+\end{itemize}
+
 \end{frame}
+
+
+\begin{frame}{Prós e contras}
+Vantagens:
+
+\begin{itemize}
+\item \textbf{Legibilidade:} Por ser uma linguagem de alto nível, a sintaxe de Ruby é simples e inteligível, e atividades complexas podem ser executadas em poucos comandos, característica a qual muitos se referem como a "mágica" do Ruby.
+
+\item \textbf{Velocidade de escrita:} Ruby é particularmente útil em situações onde a maior produtividade do programador é mais importante que a velocidade da execução. Muitos desenvolvedores \textit{web} consideram justo sacrificar o desempenho pela rapidez na qual escrevem código em Ruby.
+
+\end{itemize}
+
+\end{frame}
+
+
 
 \end{document}
