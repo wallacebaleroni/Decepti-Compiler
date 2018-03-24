@@ -11,7 +11,7 @@ P1 - 25 e 27/04 - Expressões e comandos.
     6-Implementar um compilador de AST PEG para operações aritméticas, Booleanas e comandos para BPLC-mark0.
 =end
 
-class Parceiro < Parslet::Parser
+class Parceiro < Parslet::Parser #Objetivo 5 Expressoes aritiméticas
   rule(:integer)    { match('[0-9]').repeat(1) >> space? }
 
   rule(:space)      { match('\s').repeat(1) }
@@ -40,3 +40,39 @@ Parceiro.new.parse("1 * 3") #é aceita pela linguagem
 Parceiro.new.parse("1 / 3") #é aceita pela linguagem
 Parceiro.new.parse("1 + 3 - 2 * 3 / 4") #é aceita pela linguagem
 =end
+
+class Parceiro2 < Parslet::Parser #Objetivo 5 Expressoes booleanas com inteiros, falta a reconhecer a negação
+  rule(:integer)    { match('[0-9]').repeat(1) >> space? }
+
+  rule(:space)      { match('\s').repeat(1) }
+  rule(:space?)     { space.maybe }
+
+  rule(:oIgual)       { match('[=]').repeat(2,2) >> space? }
+  rule(:oMaior)       { match('[>]') >>  space? }
+  rule(:oMenor)       { match('[<]') >>  space? }
+  rule(:oMaiorI)      { match('[>]') >> match('[=]') >> space? }
+  rule(:oMenorI)      { match('[<]') >> match('[=]') >> space? }
+
+  rule(:igual)      { integer >> oIgual >> integer  >> eOu.maybe}
+  rule(:maior)      { integer >> oMaior >> integer >> eOu.maybe}
+  rule(:menor)      { integer >> oMenor >> integer >> eOu.maybe}
+  rule(:maiorI)     { integer >> oMaiorI >> integer >> eOu.maybe}
+  rule(:menorI)     { integer >> oMenorI >> integer >> eOu.maybe}
+
+  rule(:e)  { match('[A]') >> space? >> expression}
+  rule(:ou) { match('[O]') >> space? >> expression}
+
+  rule(:eOu) { e | ou }
+  rule(:expression) { igual | maior | menor | maiorI | menorI | integer }
+  root(:expression)
+end
+
+=begin
+Parceiro2.new.parse("1 > 2")
+Parceiro2.new.parse("1 >= 2")
+Parceiro2.new.parse("1 < 2")
+Parceiro2.new.parse("1 <= 2")
+Parceiro2.new.parse("1 == 2")
+Parceiro2.new.parse("1 == 2 A 1 > 2 O 1 < 2")
+=end
+
