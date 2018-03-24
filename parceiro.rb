@@ -12,9 +12,31 @@ P1 - 25 e 27/04 - Expressões e comandos.
 =end
 
 class Parceiro < Parslet::Parser
-  rule(:integer) { match('[0-9]').repeat(1) } #logica do parser para reconhecer apenas numeros
-  root(:integer)
+  rule(:integer)    { match('[0-9]').repeat(1) >> space? }
+
+  rule(:space)      { match('\s').repeat(1) }
+  rule(:space?)     { space.maybe }
+
+  rule(:oSum)   { match('[+]') >> space? }
+  rule(:oMul)   { match('[*]') >> space? }
+  rule(:oSub)   { match('[-]') >> space? }
+  rule(:oDiv)   { match('[/]') >> space? }
+
+  rule(:sum)  { integer >> oSum >> expression }
+  rule(:mul)  { integer >> oMul >> expression }
+  rule(:sub)  { integer >> oSub >> expression }
+  rule(:div)  { integer >> oDiv >> expression }
+
+  rule(:expression) { sum | mul | sub | div | integer }
+
+  root(:expression)
 end
 
-Parceiro.new.parse("1234") #é aceita pela linguagem
-#Parceiro.new.parse("Hello World!!"), nao é aceita e gera um erro caso seja executada
+=begin
+TESTES
+Parceiro.new.parse("1 + 3") #é aceita pela linguagem
+Parceiro.new.parse("1 - 3") #é aceita pela linguagem
+Parceiro.new.parse("1 * 3") #é aceita pela linguagem
+Parceiro.new.parse("1 / 3") #é aceita pela linguagem
+Parceiro.new.parse("1 + 3 - 2 * 3 / 4") #é aceita pela linguagem
+=end
