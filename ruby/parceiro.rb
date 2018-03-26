@@ -11,12 +11,15 @@ P1 - 25 e 27/04 - Expressões e comandos.
     6-Implementar um compilador de AST PEG para operações aritméticas, Booleanas e comandos para BPLC-mark0.
 =end
 
-class Parceiro < Parslet::Parser #Objetivo 5 Expressoes aritiméticas
+# Math and boolean expressions
+class Parceiro < Parslet::Parser
+  # Basics
   rule(:space)      { match('\s').repeat(1) }
   rule(:space?)     { space.maybe }
 
   rule(:integer)    { match('[0-9]').repeat(1) >> space? }
 
+  # Math expressions
   rule(:op_sum)     { match('[+]') >> space? }
   rule(:op_mul)     { match('[*]') >> space? }
   rule(:op_sub)     { match('[-]') >> space? }
@@ -27,25 +30,10 @@ class Parceiro < Parslet::Parser #Objetivo 5 Expressoes aritiméticas
   rule(:sub)        { integer >> op_sub >> expression }
   rule(:div)        { integer >> op_div >> expression }
 
-  rule(:expression) { sum | mul | sub | div | integer }
-
-  root(:expression)
-end
-
-Parceiro.new.parse("1 + 3") #é aceita pela linguagem
-Parceiro.new.parse("1 - 3") #é aceita pela linguagem
-Parceiro.new.parse("1 * 3") #é aceita pela linguagem
-Parceiro.new.parse("1 / 3") #é aceita pela linguagem
-Parceiro.new.parse("1 + 3 - 2 * 3 / 4") #é aceita pela linguagem
+  rule(:ex_math)    { sum | mul | sub | div | integer }
 
 
-class Parceiro2 < Parslet::Parser #Objetivo 5 Expressoes booleanas com inteiros, falta só reconhecer a negação
-  rule(:space)      { match('\s').repeat(1) }
-  rule(:space?)     { space.maybe }
-
-  rule(:integer)    { match('[0-9]').repeat(1) >> space? }
-
-
+  # Boolean expressions
   rule(:op_eq)      { match('[=]').repeat(2,2) >> space? }
   rule(:op_gt)      { match('[>]') >> space? }
   rule(:op_lt)      { match('[<]') >> space? }
@@ -57,40 +45,51 @@ class Parceiro2 < Parslet::Parser #Objetivo 5 Expressoes booleanas com inteiros,
   rule(:lt)         { integer >> op_lt >> integer }
   rule(:gteq)       { integer >> op_gteq >> integer }
   rule(:lteq)       { integer >> op_lteq >> integer }
-  
-  rule(:pos_rel)    { eq | gt | lt | gteq | lteq }
-  rule(:neg_rel)    { op_neg >> lp >> pos_rel >> rp }
-  
-  rule(:relational) { pos_rel | neg_rel }
-
 
   rule(:op_neg)     { match('[!]') }
   rule(:lp)         { match('[(]') >> space? }
   rule(:rp)         { match('[)]') >> space? }
 
+  rule(:pos_rel)    { eq | gt | lt | gteq | lteq }
+  rule(:neg_rel)    { op_neg >> lp >> pos_rel >> rp }
+
+  rule(:relational) { pos_rel | neg_rel }
 
   rule(:op_and)     { match('[A]') >> space? }
   rule(:op_or)      { match('[O]') >> space? }
 
-  rule(:ex_and)     { op_and >> expression }
-  rule(:ex_or)      { op_or >> expression }
+  rule(:ex_and)     { op_and >> ex_bool }
+  rule(:ex_or)      { op_or >> ex_bool }
+  
   rule(:logic)      { ex_and | ex_or }
 
+  rule(:ex_bool)    { relational >> logic.maybe }
 
-  rule(:expression) { relational >> logic.maybe }
 
+  # Root
+  rule(:expression) { ex_math | ex_bool }
+  
   root(:expression)
 end
 
-#Parceiro2.new.parse("1 > 2")
-#Parceiro2.new.parse("1 >= 2")
-#Parceiro2.new.parse("1 < 2")
-#Parceiro2.new.parse("1 <= 2")
-#Parceiro2.new.parse("1 == 2")
-Parceiro2.new.parse("!(1 > 2)  A !(1 < 2) A !(1 > 3)")
+
+Parceiro.new.parse("1 + 3")
+Parceiro.new.parse("1 - 3")
+Parceiro.new.parse("1 * 3")
+Parceiro.new.parse("1 / 3")
+Parceiro.new.parse("1 + 3 - 2 * 3 / 4")
+Parceiro.new.parse("1 > 2")
+Parceiro.new.parse("1 >= 2")
+Parceiro.new.parse("1 < 2")
+Parceiro.new.parse("1 <= 2")
+Parceiro.new.parse("1 == 2")
+Parceiro.new.parse("1 > 2 A 1 < 2 O 1 > 3")
+Parceiro.new.parse("!(1 > 2) A 1 < 2 O !(1 > 3)")
 
 
-class Parceiro3 < Parslet::Parser 
+
+
+class Parceiro_exemplo < Parslet::Parser
   rule(:space)      { match('\s').repeat(1) }
   rule(:space?)     { space.maybe }
 
@@ -105,4 +104,4 @@ class Parceiro3 < Parslet::Parser
   root(:expression)
 end
 
-#Parceiro3.new.parse("1 + 1")
+#Parceiro_exemplo.new.parse("1 + 1")
