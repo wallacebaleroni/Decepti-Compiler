@@ -57,7 +57,16 @@ class Parceiro2 < Parslet::Parser #Objetivo 5 Expressoes booleanas com inteiros,
   rule(:lt)         { integer >> op_lt >> integer }
   rule(:gteq)       { integer >> op_gteq >> integer }
   rule(:lteq)       { integer >> op_lteq >> integer }
-  rule(:relational) { eq | gt | lt | gteq | lteq }
+  
+  rule(:pos_rel)    { eq | gt | lt | gteq | lteq }
+  rule(:neg_rel)    { op_neg >> lp >> pos_rel >> rp }
+  
+  rule(:relational) { pos_rel | neg_rel }
+
+
+  rule(:op_neg)     { match('[!]') }
+  rule(:lp)         { match('[(]') >> space? }
+  rule(:rp)         { match('[)]') >> space? }
 
 
   rule(:op_and)     { match('[A]') >> space? }
@@ -70,25 +79,16 @@ class Parceiro2 < Parslet::Parser #Objetivo 5 Expressoes booleanas com inteiros,
 
   rule(:expression) { relational >> logic.maybe }
 
-
-  rule(:op_neg)     { match('[!]') }
-  rule(:lp)         { match('[(]') >> space? }
-  rule(:rp)         { match('[)]') >> space? }
-  
-  rule(:neg)        { op_neg >> lp >> expression >> rp }
-
-  rule(:root)       { expression | neg }
-
-  root(:neg)
+  root(:expression)
 end
-
 
 #Parceiro2.new.parse("1 > 2")
 #Parceiro2.new.parse("1 >= 2")
 #Parceiro2.new.parse("1 < 2")
 #Parceiro2.new.parse("1 <= 2")
 #Parceiro2.new.parse("1 == 2")
-Parceiro2.new.parse("!(1 > 2 A 1 < 2 A 1 > 3)")
+Parceiro2.new.parse("!(1 > 2)  A !(1 < 2) A !(1 > 3)")
+
 
 class Parceiro3 < Parslet::Parser 
   rule(:space)      { match('\s').repeat(1) }
