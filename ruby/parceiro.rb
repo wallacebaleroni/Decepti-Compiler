@@ -122,7 +122,7 @@ Parceiro.new.parse("if (1 > 2) {\n
 Parceiro.new.parse("gg := 1 + 1")
 #Parceiro.new.parse("if (1 > 2) { \n
 #                      gg := 1 + 1 ; 1 + 1\n
-#                    }"           ) # If expression   # NÃO TA FUNCIONANDO = ñ sei pq
+#                    }"           ) # If expression   # NÃO TA FUNCIONANDO = ñ sei pq, era pra funcionar pelo fluxo
 Parceiro.new.parse("if (1 < 2) { \n
                       1 > 2 A 1 < 2 O 1 > 3; 1 + 1\n
                     }"           ) # If expression com seq
