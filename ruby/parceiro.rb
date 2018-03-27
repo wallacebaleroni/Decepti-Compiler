@@ -75,7 +75,7 @@ class Parceiro < Parslet::Parser
 
   rule(:ex_bool)    { relational >> logic.maybe }
 
-  rule(:expression) { ex_math | ex_bool }
+  rule(:expression) { ex_bool | ex_math }
 
 
   # Commands
@@ -84,24 +84,26 @@ class Parceiro < Parslet::Parser
 
   rule(:lcb)        { match('[{]') >> space? }
   rule(:rcb)        { match('[}]') >> space? }
-  rule(:block)      { lcb >> blank? >> seq >> blank? >> rcb }
+  rule(:block)      { lcb >> blank? >> body >> blank? >> rcb } # Arranjar um jeito de ser sequencia ou expression
 
   rule(:op_if)      { str("if") >> space? }
   rule(:ex_if)      { op_if >> lp >> ex_bool >> rp >> block }
 
-  rule(:command)    { ex_asgn | ex_if }
+  rule(:op_sep)     { match('[;]') >> space? }
+  rule(:ex_seq)     { inner_body >> op_sep >> inner_body.repeat(1) }
 
-  rule(:seq)        { (expression | command).repeat(1) }
+  rule(:command)    { ex_asgn | ex_if | ex_seq }
+
+  rule(:inner_body) { ex_asgn | expression }
 
 
   # Root
-  rule(:body)       { expression | command }
+  rule(:body)       { command | expression }
   
-  #rule(:test) { identifier >> op_asgn >> expression }
   root(:body)
 end
 
-#=begin
+
 Parceiro.new.parse("1 + 3") # Math expression
 Parceiro.new.parse("1 - 3") # Math expression
 Parceiro.new.parse("1 * 3") # Math expression
@@ -117,15 +119,14 @@ Parceiro.new.parse("!(1 > 2) A 1 < 2 O !(1 > 3)") # Bool and math expression wit
 Parceiro.new.parse("if (1 > 2) {\n
                       1 + 1     \n
                     }"          ) # If expression
-Parceiro.new.parse("top := 1 + 1")
-Parceiro.new.parse("if (1 > 2) { \n
-                      gg := 1 + 1\n
-                      1 + 1\n
-                    }"           ) # If expression
-#=end
+Parceiro.new.parse("gg := 1 + 1")
 #Parceiro.new.parse("if (1 > 2) { \n
-#                      1 > 2 A 1 < 2 O 1 > 3\n
-#                    }"           ) # If expression    # NÃO TA FUNCIONANDO
+#                      gg := 1 + 1 ; 1 + 1\n
+#                    }"           ) # If expression   # NÃO TA FUNCIONANDO = ñ sei pq
+Parceiro.new.parse("if (1 < 2) { \n
+                      1 > 2 A 1 < 2 O 1 > 3; 1 + 1\n
+                    }"           ) # If expression com seq
+Parceiro.new.parse("1 > 2 A 1 < 2 O 1 > 3; 1 + 1")
 
 
 class Parceiro_exemplo < Parslet::Parser
