@@ -17,7 +17,17 @@ class Parceiro < Parslet::Parser
   rule(:space)      { match('\s').repeat(1) }
   rule(:space?)     { space.maybe }
 
+  rule(:line)       { match('\n').repeat(1) }
+  rule(:line?)      { line.maybe }
+
+  rule(:blank)      { (space | line).repeat(1) }
+  rule(:blank?)     { blank.maybe }
+
   rule(:integer)    { match('[0-9]').repeat(1) >> space? }
+
+  rule(:lowcase)    { match('[a-z]').repeat(1) }
+  rule(:upcase)     { match('[A-Z]').repeat(1) }
+  rule(:identifier) { (lowcase | upcase).repeat(1) >> space? }
 
   # Math expressions
   rule(:op_sum)     { match('[+]') >> space? }
@@ -65,28 +75,57 @@ class Parceiro < Parslet::Parser
 
   rule(:ex_bool)    { relational >> logic.maybe }
 
+  rule(:expression) { ex_math | ex_bool }
+
+
+  # Commands
+  rule(:op_asgn)    { str(":=") >> space? }
+  rule(:ex_asgn)    { identifier >> op_asgn >> expression }
+
+  rule(:lcb)        { match('[{]') >> space? }
+  rule(:rcb)        { match('[}]') >> space? }
+  rule(:block)      { lcb >> blank? >> seq >> blank? >> rcb }
+
+  rule(:op_if)      { str("if") >> space? }
+  rule(:ex_if)      { op_if >> lp >> ex_bool >> rp >> block }
+
+  rule(:command)    { ex_asgn | ex_if }
+
+  rule(:seq)        { (expression | command).repeat(1) }
+
 
   # Root
-  rule(:expression) { ex_math | ex_bool }
+  rule(:body)       { expression | command }
   
-  root(:expression)
+  #rule(:test) { identifier >> op_asgn >> expression }
+  root(:body)
 end
 
-
-Parceiro.new.parse("1 + 3")
-Parceiro.new.parse("1 - 3")
-Parceiro.new.parse("1 * 3")
-Parceiro.new.parse("1 / 3")
-Parceiro.new.parse("1 + 3 - 2 * 3 / 4")
-Parceiro.new.parse("1 > 2")
-Parceiro.new.parse("1 >= 2")
-Parceiro.new.parse("1 < 2")
-Parceiro.new.parse("1 <= 2")
-Parceiro.new.parse("1 == 2")
-Parceiro.new.parse("1 > 2 A 1 < 2 O 1 > 3")
-Parceiro.new.parse("!(1 > 2) A 1 < 2 O !(1 > 3)")
-
-
+#=begin
+Parceiro.new.parse("1 + 3") # Math expression
+Parceiro.new.parse("1 - 3") # Math expression
+Parceiro.new.parse("1 * 3") # Math expression
+Parceiro.new.parse("1 / 3") # Math expression
+Parceiro.new.parse("1 + 3 - 2 * 3 / 4") # Math expression
+Parceiro.new.parse("1 > 2") # Bool expression
+Parceiro.new.parse("1 >= 2") # Bool expression
+Parceiro.new.parse("1 < 2") # Bool expression
+Parceiro.new.parse("1 <= 2") # Bool expression
+Parceiro.new.parse("1 == 2") # Bool expression
+Parceiro.new.parse("1 > 2 A 1 < 2 O 1 > 3") # Bool and math expression
+Parceiro.new.parse("!(1 > 2) A 1 < 2 O !(1 > 3)") # Bool and math expression with negation
+Parceiro.new.parse("if (1 > 2) {\n
+                      1 + 1     \n
+                    }"          ) # If expression
+Parceiro.new.parse("top := 1 + 1")
+Parceiro.new.parse("if (1 > 2) { \n
+                      gg := 1 + 1\n
+                      1 + 1\n
+                    }"           ) # If expression
+#=end
+#Parceiro.new.parse("if (1 > 2) { \n
+#                      1 > 2 A 1 < 2 O 1 > 3\n
+#                    }"           ) # If expression    # NÃO TA FUNCIONANDO
 
 
 class Parceiro_exemplo < Parslet::Parser
