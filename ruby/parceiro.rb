@@ -145,3 +145,71 @@ class Parceiro_exemplo < Parslet::Parser
 end
 
 #Parceiro_exemplo.new.parse("1 + 1")
+
+
+class ParceiroReborn < Parslet::Parser
+  # Basics
+  rule(:space)      { str("\s").repeat(1) }
+  rule(:space?)     { space.maybe }
+
+  rule(:line)       { str("\n").repeat(1) }
+  rule(:line?)      { line.maybe }
+
+  rule(:blank)      { (space | line).repeat(1) }
+  rule(:blank?)     { blank.maybe }
+
+  rule(:integer)    { match('[0-9]').repeat(1) >> space? }
+
+  rule(:lowcase)    { match('[a-z]').repeat(1) }
+  rule(:upcase)     { match('[A-Z]').repeat(1) }
+  rule(:word)       { (lowcase | upcase).repeat(1) >> space? }
+
+  rule(:ident)      { word | integer }
+
+  rule(:sum_op)     { str("+") >> space? }
+  rule(:mul_op)     { str("*") >> space? }
+  rule(:sub_op)     { str("-") >> space? }
+  rule(:div_op)     { str("/") >> space? }
+  rule(:cho_op)     { str("|") >> space? }
+
+  rule(:neg_op)     { str("~") >> space? }
+  rule(:eq_op)      { str("==") >> space? }
+  rule(:lt_op)      { str("<") >> space? }
+  rule(:lteq_op)    { str("<=") >> space? }
+  rule(:gt_op)      { str(">") >> space? }
+  rule(:gteq_op)    { str(">=") >> space? }
+
+  rule(:com_op)     { str(",") >> space? }
+  rule(:ass_op)     { str('=') >> space? }
+
+  rule(:var_op)     { str("var") >> space? }
+  rule(:const_op)   { str("const") >> space? }
+  rule(:init_op)    { str("init") >> space? }
+
+  # IMP Syntax      {  }
+  #rule(:program)   {  }
+  #rule(:clauses)   {  }
+  rule(:var)        { var_op >> ident >> (( com_op >> ident ).repeat(1)).maybe }
+  rule(:const)      { const_op >> ident >> (( com_op >> ident ).repeat(1)).maybe }
+  rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe }
+  rule(:ini)        { ident >> ass_op >> exp }
+  #rule(:proc)      {  }
+  #rule(:block)     {  }
+  #rule(:cmd)       {  }
+  #rule(:if)        {  }
+  #rule(:while)     {  }
+  #rule(:print)     {  }
+  #rule(:exit)      {  }
+  #rule(:call)      {  }
+  #rule(:seq)       {  }
+  #rule(:choice)    {  }
+  rule(:exp)        { ident | ident >> arithop >> ident | boolexp }
+  rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
+  rule(:boolexp)    { ident >> boolop >> ident }
+  rule(:boolop)     { neg_op | eq_op | lt_op | lteq_op | gt_op | gteq_op }
+
+  root(:var)
+end
+
+
+ParceiroReborn.new.parse("var top, to, fa, f");
