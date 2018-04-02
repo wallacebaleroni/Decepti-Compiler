@@ -12,7 +12,7 @@ P1 - 25 e 27/04 - Expressões e comandos.
 =end
 
 # Math and boolean expressions
-class Parceiro < Parslet::Parser
+class Parceiro < Parslet::Parser #5-Implementar um parser PEG para operações aritméticas, Booleanas e comandos.
   # Basics
   rule(:space)      { match('\s').repeat(1) }
   rule(:space?)     { space.maybe }
@@ -35,10 +35,10 @@ class Parceiro < Parslet::Parser
   rule(:op_sub)     { match('[-]') >> space? }
   rule(:op_div)     { match('[/]') >> space? }
 
-  rule(:sum)        { integer >> op_sum >> expression }
-  rule(:mul)        { integer >> op_mul >> expression }
-  rule(:sub)        { integer >> op_sub >> expression }
-  rule(:div)        { integer >> op_div >> expression }
+  rule(:sum)        { integer.as(:left) >> op_sum.as(:op) >> expression.as(:right) }
+  rule(:mul)        { integer.as(:left) >> op_mul.as(:op) >> expression.as(:right) }
+  rule(:sub)        { integer.as(:left) >> op_sub.as(:op) >> expression.as(:right) }
+  rule(:div)        { integer.as(:left) >> op_div.as(:op) >> expression.as(:right) }
 
   rule(:ex_math)    { sum | mul | sub | div | integer }
 
@@ -103,7 +103,46 @@ class Parceiro < Parslet::Parser
   root(:body)
 end
 
+=begin
+def parse(str) #pro erro vir "bonitinho"
+  parca = Parceiro.new
 
+  parca.parse(str)
+rescue Parslet::ParseFailed => failure
+  puts failure.parse_failure_cause.ascii_tree
+end
+require 'pp' #pro print vir "bonitinho"
+pp Parceiro.new.parse("10-10-10-10")
+=end
+
+
+class OptimusPrime < Parslet::Transform #transform que aplica operaçoes matematicas, op com mais de um elemento e q a ordem influencia nao funcionam direito
+  rule(:left => simple(:left), :right => simple(:right), :op => '+'){
+    resp = Integer(left) + Integer(right)
+    resp
+  }
+  rule(:left => simple(:left), :right => simple(:right), :op => '-'){
+    resp = Integer(left) - Integer(right)
+    resp
+  }
+  rule(:left => simple(:left), :right => simple(:right), :op => '*'){
+    resp = Integer(left) * Integer(right)
+    resp
+  }
+  rule(:left => simple(:left), :right => simple(:right), :op => '/'){
+    resp = Integer(left) / Integer(right)
+    resp
+  }
+end
+
+
+puts(OptimusPrime.new.apply(Parceiro.new.parse("10+5")))
+puts(OptimusPrime.new.apply(Parceiro.new.parse("10-5")))
+puts(OptimusPrime.new.apply(Parceiro.new.parse("10*5")))
+puts(OptimusPrime.new.apply(Parceiro.new.parse("10/5")))
+
+
+=begin Testes de unidade
 Parceiro.new.parse("1 + 3") # Math expression
 Parceiro.new.parse("1 - 3") # Math expression
 Parceiro.new.parse("1 * 3") # Math expression
@@ -127,8 +166,11 @@ Parceiro.new.parse("if (1 < 2) { \n
                       1 > 2 A 1 < 2 O 1 > 3; 1 + 1\n
                     }"           ) # If expression com seq
 Parceiro.new.parse("1 > 2 A 1 < 2 O 1 > 3; 1 + 1")
+=end
 
 
+
+=begin Exemplo
 class Parceiro_exemplo < Parslet::Parser
   rule(:space)      { match('\s').repeat(1) }
   rule(:space?)     { space.maybe }
@@ -143,5 +185,5 @@ class Parceiro_exemplo < Parslet::Parser
 
   root(:expression)
 end
+=end
 
-#Parceiro_exemplo.new.parse("1 + 1")
