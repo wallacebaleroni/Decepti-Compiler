@@ -83,13 +83,13 @@ class ParceiroReborn < Parslet::Parser #5-Implementar um parser PEG para operaç
   rule(:call)       { ident >> lp >> exp.maybe >> rp }
   rule(:seq)        { cmd >> com_op >> cmd }
   rule(:choice)     { cmd >> cho_op >> cmd }
-  rule(:exp)        { ident | ident >> arithop >> ident | boolexp }
+  rule(:exp)        { ident >> arithop >> ident | ident | boolexp }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
   rule(:boolexp)    { ident >> boolop >> ident }
   rule(:boolop)     { neg_op | eq_op | lt_op | lteq_op | gt_op | gteq_op }
 
-  root(:var)
+  root(:var) # para testar
 end
 
-ParceiroReborn.new.parse("var top, to, fa, f");
 
+ParceiroReborn.new.parse("var top, to, fa, f")
