@@ -1,4 +1,6 @@
+
 require 'parslet' #gem indicada
+require 'pp'
 
 =begin
 P1 - 25 e 27/04 - Expressões e comandos.
@@ -83,13 +85,42 @@ class ParceiroReborn < Parslet::Parser #5-Implementar um parser PEG para operaç
   rule(:call)       { ident >> lp >> exp.maybe >> rp }
   rule(:seq)        { cmd >> com_op >> cmd }
   rule(:choice)     { cmd >> cho_op >> cmd }
-  rule(:exp)        { ident >> arithop >> ident | ident | boolexp }
+  rule(:exp)        { ident.as(:left) >> arithop.as(:op) >> ident.as(:right) | ident | boolexp } #left,op,right sao aliases para o transform identificar
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
   rule(:boolexp)    { ident >> boolop >> ident }
   rule(:boolop)     { neg_op | eq_op | lt_op | lteq_op | gt_op | gteq_op }
 
-  root(:var) # para testar
+  root(:exp) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
 end
 
+def parse(str) #pro erro e o print vir "bonitinho"
+  pp ParceiroReborn.new.parse(str)
+rescue Parslet::ParseFailed => failure
+  puts failure.parse_failure_cause.ascii_tree
+end
 
-ParceiroReborn.new.parse("var top, to, fa, f")
+class OptimusPrime < Parslet::Transform #transform que aplica operaçoes matematicas com apenas dois termos
+  rule(:left => simple(:left), :right => simple(:right), :op => '+'){
+    resp = Integer(left) + Integer(right)
+    resp
+  }
+  rule(:left => simple(:left), :right => simple(:right), :op => '-'){
+    resp = Integer(left) - Integer(right)
+    resp
+  }
+  rule(:left => simple(:left), :right => simple(:right), :op => '*'){
+    resp = Integer(left) * Integer(right)
+    resp
+  }
+  rule(:left => simple(:left), :right => simple(:right), :op => '/'){
+    resp = Integer(left) / Integer(right)
+    resp
+  }
+end
+
+#parse("var top, to, fa, f");
+puts("--------------Parsing, Transform & Execucao--------------")
+puts(OptimusPrime.new.apply(parse("10+5")))
+puts(OptimusPrime.new.apply(parse("10-5")))
+puts(OptimusPrime.new.apply(parse("10*5")))
+puts(OptimusPrime.new.apply(parse("10/5")))
