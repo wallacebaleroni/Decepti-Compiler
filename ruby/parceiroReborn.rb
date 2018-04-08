@@ -76,7 +76,7 @@ class ParceiroReborn < Parslet::Parser #5-Implementar um parser PEG para operaç
   rule(:ini)        { ident >> ini_op >> exp }
   rule(:ex_proc)    { proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block }
   rule(:block)      { lcb >> cmd >> (( com_op >> cmd ).repeat(1)).maybe >> rcb }
-  rule(:cmd)        { ident >> ass_op >> exp | ex_if | ex_while | ex_print | ex_exit | call | seq | choice }
+  rule(:cmd)        { ident >> ass_op >> exp | ex_while | ex_print | ex_exit | call | seq | choice | ex_if }
   rule(:ex_if)      { if_op >> boolexp >> cmd >> else_op >> cmd | if_op >> boolexp >> cmd >> else_op >> block | if_op >> boolexp >> block >> else_op >> cmd | if_op >> boolexp >> block >> else_op >> block }
   rule(:ex_while)   { while_op >> boolexp >> block }
   rule(:ex_print)   { print_op >> lp >> exp >> rp }
@@ -84,10 +84,10 @@ class ParceiroReborn < Parslet::Parser #5-Implementar um parser PEG para operaç
   rule(:call)       { ident >> lp >> exp.maybe >> rp }
   rule(:seq)        { cmd >> com_op >> cmd }
   rule(:choice)     { cmd >> cho_op >> cmd }
-  rule(:exp)        { ident.as(:left) >> arithop.as(:op) >> ident.as(:right) | ident | boolexp } #left,op,right sao aliases para o transform identificar
+  rule(:exp)        { ident.as(:left) >> arithop.as(:op) >> ident.as(:right) | boolexp | ident } #left,op,right sao aliases para o transform identificar
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
   rule(:boolexp)    { ident >> boolop >> ident }
-  rule(:boolop)     { neg_op | eq_op | lt_op | lteq_op | gt_op | gteq_op }
+  rule(:boolop)     { neg_op | eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
   root(:exp) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
 
