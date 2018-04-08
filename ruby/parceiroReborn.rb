@@ -13,7 +13,6 @@ P1 - 25 e 27/04 - Expressões e comandos.
     6-Implementar um compilador de AST PEG para operações aritméticas, Booleanas e comandos para BPLC-mark0.
 =end
 
-
 class ParceiroReborn < Parslet::Parser #5-Implementar um parser PEG para operações aritméticas, Booleanas e comandos.
   # Basics
   rule(:space)      { str("\s").repeat(1) }
@@ -91,36 +90,18 @@ class ParceiroReborn < Parslet::Parser #5-Implementar um parser PEG para operaç
   rule(:boolop)     { neg_op | eq_op | lt_op | lteq_op | gt_op | gteq_op }
 
   root(:exp) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
+
+  def parsea(str) #pro erro e o print vir "bonitinho"
+    pp ParceiroReborn.new.parse(str)
+  rescue Parslet::ParseFailed => failure
+    puts failure.parse_failure_cause.ascii_tree
+  end
+
 end
 
-def parse(str) #pro erro e o print vir "bonitinho"
-  pp ParceiroReborn.new.parse(str)
-rescue Parslet::ParseFailed => failure
-  puts failure.parse_failure_cause.ascii_tree
-end
 
-class OptimusPrime < Parslet::Transform #transform que aplica operaçoes matematicas com apenas dois termos
-  rule(:left => simple(:left), :right => simple(:right), :op => '+'){
-    resp = Integer(left) + Integer(right)
-    resp
-  }
-  rule(:left => simple(:left), :right => simple(:right), :op => '-'){
-    resp = Integer(left) - Integer(right)
-    resp
-  }
-  rule(:left => simple(:left), :right => simple(:right), :op => '*'){
-    resp = Integer(left) * Integer(right)
-    resp
-  }
-  rule(:left => simple(:left), :right => simple(:right), :op => '/'){
-    resp = Integer(left) / Integer(right)
-    resp
-  }
-end
 
-#parse("var top, to, fa, f");
-puts("--------------Parsing, Transform & Execucao--------------")
-puts(OptimusPrime.new.apply(parse("10+5")))
-puts(OptimusPrime.new.apply(parse("10-5")))
-puts(OptimusPrime.new.apply(parse("10*5")))
-puts(OptimusPrime.new.apply(parse("10/5")))
+=begin
+ParceiroReborn.new.parsea("1+");
+ParceiroReborn.new.parsea("var top, to, fa, f");
+=end
