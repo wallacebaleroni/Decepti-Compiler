@@ -30,6 +30,8 @@ parceiro = ParceiroReborn.new()
 parceiro.parsea('1+1')
 parceiro.parsea('1+')
 
+meh
+
 TESTES bumblebee
 autobot = Bumblebee.new()
 puts(autobot.apply(parceiro.parsea("10+5")))
