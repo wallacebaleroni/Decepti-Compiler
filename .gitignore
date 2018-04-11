@@ -10,6 +10,9 @@
 /test/version_tmp/
 /tmp/
 
+# Exclusive to RubiMine
+/.idea/
+
 # Used by dotenv library to load environment variables.
 # .env
 
