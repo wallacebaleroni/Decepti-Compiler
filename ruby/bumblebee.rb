@@ -2,6 +2,7 @@ require 'parslet'
 require_relative 'smc'
 
 def roda(smc)
+  puts("rodando...")
   while(smc.tamPilhaControle>0)
     val = smc.desempilhaControle()
     if(val.is_a?(Fixnum))
@@ -31,6 +32,7 @@ def roda(smc)
       end
     end
   end
+  puts("...fim")
 end
 
 class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematicas com apenas dois termos
