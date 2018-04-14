@@ -1,50 +1,19 @@
 require 'parslet'
 require_relative 'smc'
+require_relative 'bplc'
 
-def roda(smc)
-  puts("rodando...")
-  while(smc.tamPilhaControle>0)
-    val = smc.desempilhaControle()
-    if(val.is_a?(Fixnum))
-      smc.empilhaValor(val)
-    else
-      case val
-        when '+'
-          n1 = smc.desempilhaValor
-          n2 = smc.desempilhaValor
-          resp = n1 + n2
-          smc.empilhaValor(resp)
-        when '-'
-          n1 = smc.desempilhaValor
-          n2 = smc.desempilhaValor
-          resp = n1 - n2
-          smc.empilhaValor(resp)
-        when '*'
-          n1 = smc.desempilhaValor
-          n2 = smc.desempilhaValor
-          resp = n1 * n2
-          smc.empilhaValor(resp)
-        when '/'
-          n1 = smc.desempilhaValor
-          n2 = smc.desempilhaValor
-          resp = n1 / n2
-          smc.empilhaValor(resp)
-      end
-    end
-  end
-  puts("...fim")
-end
+No = Struct.new(:dad ,:left, :right)
 
-class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematicas com apenas dois termos
+class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematicas
 
 
   rule(:left => simple(:left), :right => simple(:right), :op => '+'){
-
     @smc = SMC.new
-    @smc.empilhaControle('+')
+    @smc.empilhaControle('add')
     @smc.empilhaControle(Integer(left))
     @smc.empilhaControle(Integer(right))
-    roda(@smc)
+    @bplc = BPLC.new(@smc)
+    @bplc.roda()
   }
 
   rule(:left => simple(:left), :right => simple(:right), :op => '-'){

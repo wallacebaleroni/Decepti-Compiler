@@ -49,6 +49,38 @@ class SMC
     puts(@memoria)
   end
 
+  #plotkin
+  def en()
+    aux = self.desempilhaControle()
+    self.empilhaValor(aux)
+  end
+
+  def ev()
+    aux = self.desempilhaControle()
+    aux2 = self.acessaMemoria(aux)
+    self.empilhaValor(aux2)
+  end
+
+  def ee()
+    val1 = self.desempilhaValor()
+    val2 = self.desempilhaValor()
+    operator = self.desempilhaControle()
+    case operator
+      when 'add'
+        resp = val1 + val2
+        self.empilhaValor(resp)
+      when 'sub'
+        resp = val1 - val2
+        self.empilhaValor(resp)
+      when 'mul'
+        resp = val1 * val2
+        self.empilhaValor(resp)
+      when 'div'
+        resp = val1 / val2
+        self.empilhaValor(resp)
+    end
+  end
+
 end
 
 =begin
