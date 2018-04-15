@@ -13,7 +13,7 @@ P1 - 25 e 27/04 - Expressões e comandos.
     6-Implementar um compilador de AST PEG para operações aritméticas, Booleanas e comandos para BPLC-mark0.
 =end
 
-class ParceiroReborn < Parslet::Parser #5-Implementar um parser PEG para operações aritméticas, Booleanas e comandos.
+class ParceiroReborn < Parslet::Parser
   # Basics
   rule(:space)      { str("\s").repeat(1) }
   rule(:space?)     { space.maybe }
