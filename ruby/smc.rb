@@ -2,7 +2,7 @@ class SMC
 
   def initialize()
     @pilhaValor = []
-    @pilhaMemoria = []
+    @memoria = []
     @pilhaControle = []
   end
 
@@ -12,33 +12,93 @@ class SMC
 
   def empilhaValor(valor)
     @pilhaValor.unshift(valor)
-    puts(@pilhaValor)
-    puts('----Valor------')
+    puts("---------#{@pilhaControle}---------#{@pilhaValor}---------")
+    puts("---------Controle---------Valor---------")
+    puts()
   end
 
-  def empilhaMemoria(memoria)
-    @pilhaMemoria.unshift(memoria)
-    puts(@pilhaMemoria)
-    puts('-----Memoria-----')
-  end
 
   def empilhaControle(controle)
     @pilhaControle.unshift(controle)
-    puts(@pilhaControle)
-    puts('-----Controle-----')
+    puts("---------#{@pilhaControle}---------#{@pilhaValor}---------")
+    puts("---------Controle---------Valor---------")
+    puts()
   end
 
   def desempilhaValor()
     @pilhaValor.shift()
   end
 
-  def desempilhaMemoria()
-    @pilhaMemoria.shift()
-  end
-
   def desempilhaControle()
     @pilhaControle.shift()
   end
 
+  def acessaMemoria(variavel)
+    indice = @memoria.index(variavel)
+    @memoria[indice+1]
+  end
+
+  def escreveMemoria(variavel, dado)
+    indice = @memoria.index(variavel)
+    if(indice)
+      @memoria[indice+1] = dado
+    else
+      @memoria.push(variavel)
+      @memoria.push(dado)
+    end
+    puts(@memoria)
+  end
+
+  #plotkin
+  def en()
+    aux = self.desempilhaControle()
+    self.empilhaValor(aux)
+  end
+
+  def ev()
+    aux = self.desempilhaControle()
+    aux2 = self.acessaMemoria(aux)
+    self.empilhaValor(aux2)
+  end
+
+  def ee()
+    val1 = self.desempilhaValor()
+    val2 = self.desempilhaValor()
+    operator = self.desempilhaControle()
+    case operator
+      when 'add'
+        resp = val1 + val2
+        self.empilhaValor(resp)
+      when 'sub'
+        resp = val1 - val2
+        self.empilhaValor(resp)
+      when 'mul'
+        resp = val1 * val2
+        self.empilhaValor(resp)
+      when 'div'
+        resp = val1 / val2
+        self.empilhaValor(resp)
+    end
+  end
+
+  def topoControle()
+    @pilhaControle[0]
+  end
 end
 
+=begin
+smc = SMC.new
+smc.escreveMemoria("teste",2)
+puts("----------")
+smc.escreveMemoria("teste2","julia")
+puts("----------")
+smc.escreveMemoria("teste3",40)
+puts("----------")
+puts(smc.acessaMemoria("teste2"))
+puts(smc.acessaMemoria("teste"))
+puts(smc.acessaMemoria("teste3"))
+puts("--------")
+smc.escreveMemoria('teste2',"vacilona")
+puts("--------")
+puts(smc.acessaMemoria("teste2"))
+=end

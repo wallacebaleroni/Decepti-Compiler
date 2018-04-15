@@ -12,6 +12,9 @@
 /.idea/
 Todo.txt
 
+# Exclusive to RubyMine
+/.idea/
+
 # Used by dotenv library to load environment variables.
 # .env
 
@@ -49,3 +52,6 @@ build-iPhoneSimulator/
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
+
+# Mac file that stores folder attributes
+.DS_Store

@@ -38,11 +38,11 @@ puts(autobot.apply(parceiro.parsea("10+5")))
 =end
 
 Bumblebee.new.apply(ParceiroReborn.new.parsea("1+2"))
-puts('\/\/\/\/\/\/\/\/')
+
 Bumblebee.new.apply(ParceiroReborn.new.parsea("10-8"))
-puts('\/\/\/\/\/\/\/\/')
+
 Bumblebee.new.apply(ParceiroReborn.new.parsea("10*5"))
-puts('\/\/\/\/\/\/\/\/')
+
 Bumblebee.new.apply(ParceiroReborn.new.parsea("30/5"))
-puts('\/\/\/\/\/\/\/\/')
+
 
