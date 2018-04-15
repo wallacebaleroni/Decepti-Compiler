@@ -17,28 +17,30 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
   }
 
   rule(:left => simple(:left), :right => simple(:right), :op => '-'){
-
     @smc = SMC.new
-    @smc.empilhaControle('-')
+    @smc.empilhaControle('sub')
     @smc.empilhaControle(Integer(left))
     @smc.empilhaControle(Integer(right))
-    roda(@smc)
+    @bplc = BPLC.new(@smc)
+    @bplc.roda()
   }
 
   rule(:left => simple(:left), :right => simple(:right), :op => '*'){
     @smc = SMC.new
-    @smc.empilhaControle('*')
+    @smc.empilhaControle('mul')
     @smc.empilhaControle(Integer(left))
     @smc.empilhaControle(Integer(right))
-    roda(@smc)
+    @bplc = BPLC.new(@smc)
+    @bplc.roda()
   }
 
   rule(:left => simple(:left), :right => simple(:right), :op => '/'){
     @smc = SMC.new
-    @smc.empilhaControle('/')
+    @smc.empilhaControle('div')
     @smc.empilhaControle(Integer(left))
     @smc.empilhaControle(Integer(right))
-    roda(@smc)
+    @bplc = BPLC.new(@smc)
+    @bplc.roda()
   }
 
 end

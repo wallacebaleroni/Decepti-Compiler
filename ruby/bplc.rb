@@ -8,32 +8,11 @@ class BPLC
   def roda()
     puts("rodando...")
     while(@smc.tamPilhaControle>0)
-      val = @smc.desempilhaControle()
+      val = @smc.topoControle()
       if(val.is_a?(Fixnum))
-        @smc.empilhaValor(val)
+        @smc.en()
       else
-        case val
-          when '+'
-            n1 = smc.desempilhaValor
-            n2 = smc.desempilhaValor
-            resp = n1 + n2
-            smc.empilhaValor(resp)
-          when '-'
-            n1 = smc.desempilhaValor
-            n2 = smc.desempilhaValor
-            resp = n1 - n2
-            smc.empilhaValor(resp)
-          when '*'
-            n1 = smc.desempilhaValor
-            n2 = smc.desempilhaValor
-            resp = n1 * n2
-            smc.empilhaValor(resp)
-          when '/'
-            n1 = smc.desempilhaValor
-            n2 = smc.desempilhaValor
-            resp = n1 / n2
-            smc.empilhaValor(resp)
-        end
+        @smc.ee()
       end
     end
     puts("...fim")

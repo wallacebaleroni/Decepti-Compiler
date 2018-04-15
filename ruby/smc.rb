@@ -81,6 +81,9 @@ class SMC
     end
   end
 
+  def topoControle()
+    @pilhaControle[0]
+  end
 end
 
 =begin
