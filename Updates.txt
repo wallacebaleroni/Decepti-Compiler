@@ -1,0 +1,4 @@
+- Expressões matemáticas agora podem ser mais complexas: 1 + 1 + 1
+- Expressões booleanas agora podem ser mais complexas: A | B & C
+- Identificadores agora admitem números: Top1. Isso pode fazer com que algumas regras deem problema já que identificadores antes aceitavam strings compostas por somente números, e por isso era usada em algumas operações matemáticas
+- Clauses mais correto agora
