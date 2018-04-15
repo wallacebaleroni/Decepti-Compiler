@@ -36,7 +36,7 @@ class ParceiroReborn < Parslet::Parser #5-Implementar um parser PEG para operaç
   rule(:lcb)        { match('[{]') >> space? }
   rule(:rcb)        { match('[}]') >> space? }
 
-  rule(:ident)      { word | integer }
+  rule(:ident)      { (lowcase | upcase).repeat(1) >> ((lowcase | upcase | integer).repeat(1)).maybe >> space? } # Aceita numeros também no nome
 
   rule(:sum_op)     { str("+") >> space? }
   rule(:mul_op)     { str("*") >> space? }
@@ -69,29 +69,34 @@ class ParceiroReborn < Parslet::Parser #5-Implementar um parser PEG para operaç
 
   # IMP Syntax
   rule(:program)    { module_op >> ident >> clauses >> end_op }
-  rule(:clauses)    { var.maybe >> const.maybe >> init.maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe } # 3 primeiros termos parecem errados pra mim, mas não entendi o +
+  rule(:clauses)    { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
   rule(:var)        { var_op >> ident >> (( com_op >> ident ).repeat(1)).maybe }
   rule(:const)      { const_op >> ident >> (( com_op >> ident ).repeat(1)).maybe }
   rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe }
   rule(:ini)        { ident >> ini_op >> exp }
   rule(:ex_proc)    { proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block }
   rule(:block)      { lcb >> cmd >> (( com_op >> cmd ).repeat(1)).maybe >> rcb }
+
+  rule(:cmd_unt)	{ cmd | cmd >> cho_op >> cmd }
+
   rule(:cmd)        { ident >> ass_op >> exp | ex_while | ex_print | ex_exit | call | seq | choice | ex_if }
-  rule(:ex_if)      { if_op >> boolexp >> cmd >> else_op >> cmd | if_op >> boolexp >> cmd >> else_op >> block | if_op >> boolexp >> block >> else_op >> cmd | if_op >> boolexp >> block >> else_op >> block }
-  rule(:ex_while)   { while_op >> boolexp >> block }
+  rule(:ex_if)      { if_op >> lp >> boolexp >> rp >> block >> else_op >> block | if_op >> lp >> boolexp >> rp >> cmd >> else_op >> block | if_op >> lp >> boolexp >> rp >> block >> else_op >> cmd | if_op >> lp >> boolexp >> rp >> cmd >> else_op >> cmd}
+  rule(:ex_while)   { while_op >> lp >> boolexp >> rp >> block }
   rule(:ex_print)   { print_op >> lp >> exp >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
   rule(:call)       { ident >> lp >> exp.maybe >> rp }
   rule(:seq)        { cmd >> com_op >> cmd }
   rule(:choice)     { cmd >> cho_op >> cmd }
-  rule(:exp)        { ident.as(:left) >> arithop.as(:op) >> ident.as(:right) | boolexp | ident } #left,op,right sao aliases para o transform identificar
+  rule(:exp)        { ident.as(:left) >> arithop.as(:op) >> ident.as(:right) | boolexp | ident }
+  rule(:exp_new)    { mathexp | boolexp | ident } # substituir a de cima por essa pra ter suporte a expressões mais complexas
+  rule(:mathexp)	{ integer >> arithop >> integer >> ((arithop >> integer).repeat(1)).maybe }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
-  rule(:boolexp)    { ident >> boolop >> ident }
+  rule(:boolexp)    { ident >> boolop >> ident >> ((boolop >> ident).repeat(1)).maybe }
   rule(:boolop)     { neg_op | eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:exp) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
+  root(:program) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
 
-  def parsea(str) #pro erro e o print vir "bonitinho"
+  def parsea(str)
     pp ParceiroReborn.new.parse(str)
   rescue Parslet::ParseFailed => failure
     puts failure.parse_failure_cause.ascii_tree
@@ -99,9 +104,6 @@ class ParceiroReborn < Parslet::Parser #5-Implementar um parser PEG para operaç
 
 end
 
-
-
-=begin
-ParceiroReborn.new.parsea("1+");
-ParceiroReborn.new.parsea("var top, to, fa, f");
-=end
+#ParceiroReborn.new.parse("1 + 1 + 1")
+#ParceiroReborn.new.parse("if (1 > 1) { af := 1 } else { af := 1 }");
+#ParceiroReborn.new.parse("module top var top proc top ( top ) { af := 1 } end"); # :program
