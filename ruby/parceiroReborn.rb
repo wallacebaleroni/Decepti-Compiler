@@ -77,11 +77,11 @@ class ParceiroReborn < Parslet::Parser
   rule(:var)        { var_op >> ident >> (( com_op >> ident ).repeat(1)).maybe >> blank? }
   rule(:const)      { const_op >> ident >> (( com_op >> ident ).repeat(1)).maybe >> blank? }
   rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe >> blank? }
-  rule(:ini)        { ident >> ini_op >> exp }
+  rule(:ini)        { ident >> ini_op >> exp >> blank? }
   rule(:ex_proc)    { proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block }
-  rule(:block)      { lcb >> blank? >> cmd >> blank? >> rcb }
+  rule(:block)      { lcb >> blank? >> cmd >> rcb >> blank? }
 
-  rule(:cmd)        { cmd_unt >> cho_op >> cmd | cmd_unt >> seq_op >> cmd | cmd_unt}
+  rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt >> seq_op >> cmd | cmd_unt) >> blank? }
 
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident >> ass_op >> exp_new }
   rule(:ex_if)      { if_op >> lp >> boolexp >> rp >> block >> else_op >> block | if_op >> lp >> boolexp >> rp >> cmd >> else_op >> block | if_op >> lp >> boolexp >> rp >> block >> else_op >> cmd | if_op >> lp >> boolexp >> rp >> cmd >> else_op >> cmd }
