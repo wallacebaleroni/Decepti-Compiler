@@ -21,7 +21,10 @@ class ParceiroReborn < Parslet::Parser
   rule(:line)       { str("\n").repeat(1) }
   rule(:line?)      { line.maybe }
 
-  rule(:blank)      { (space | line).repeat(1) }
+  rule(:tab)        { str("\t").repeat(1) }
+  rule(:tab?)       { tab.maybe }
+
+  rule(:blank)      { (space | line | tab).repeat(1) }
   rule(:blank?)     { blank.maybe }
 
   rule(:integer)    { match('[0-9]').repeat(1) >> space? }
@@ -51,6 +54,7 @@ class ParceiroReborn < Parslet::Parser
   rule(:gt_op)      { str(">") >> space? }
   rule(:gteq_op)    { str(">=") >> space? }
 
+  rule(:seq_op)     { str(";") >> space? }
   rule(:com_op)     { str(",") >> space? }
   rule(:ini_op)     { str('=') >> space? }
   rule(:ass_op)     { str(":=") >> space? }
@@ -68,31 +72,31 @@ class ParceiroReborn < Parslet::Parser
   rule(:exit_op)    { str("exit") >> space? }
 
   # IMP Syntax
-  rule(:program)    { module_op >> ident >> clauses >> end_op }
+  rule(:program)    { module_op >> ident >> blank? >> clauses >> blank? >> end_op }
   rule(:clauses)    { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
-  rule(:var)        { var_op >> ident >> (( com_op >> ident ).repeat(1)).maybe }
-  rule(:const)      { const_op >> ident >> (( com_op >> ident ).repeat(1)).maybe }
-  rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe }
+  rule(:var)        { var_op >> ident >> (( com_op >> ident ).repeat(1)).maybe >> blank? }
+  rule(:const)      { const_op >> ident >> (( com_op >> ident ).repeat(1)).maybe >> blank? }
+  rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe >> blank? }
   rule(:ini)        { ident >> ini_op >> exp }
   rule(:ex_proc)    { proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block }
-  rule(:block)      { lcb >> cmd >> (( com_op >> cmd ).repeat(1)).maybe >> rcb }
+  rule(:block)      { lcb >> blank? >> cmd >> blank? >> rcb }
 
-  rule(:cmd_unt)	{ cmd | cmd >> cho_op >> cmd }
+  rule(:cmd)        { cmd_unt >> cho_op >> cmd | cmd_unt >> seq_op >> cmd | cmd_unt}
 
-  rule(:cmd)        { ident >> ass_op >> exp | ex_while | ex_print | ex_exit | call | seq | choice | ex_if }
-  rule(:ex_if)      { if_op >> lp >> boolexp >> rp >> block >> else_op >> block | if_op >> lp >> boolexp >> rp >> cmd >> else_op >> block | if_op >> lp >> boolexp >> rp >> block >> else_op >> cmd | if_op >> lp >> boolexp >> rp >> cmd >> else_op >> cmd}
+  rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident >> ass_op >> exp_new }
+  rule(:ex_if)      { if_op >> lp >> boolexp >> rp >> block >> else_op >> block | if_op >> lp >> boolexp >> rp >> cmd >> else_op >> block | if_op >> lp >> boolexp >> rp >> block >> else_op >> cmd | if_op >> lp >> boolexp >> rp >> cmd >> else_op >> cmd }
   rule(:ex_while)   { while_op >> lp >> boolexp >> rp >> block }
   rule(:ex_print)   { print_op >> lp >> exp >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
   rule(:call)       { ident >> lp >> exp.maybe >> rp }
   rule(:seq)        { cmd >> com_op >> cmd }
   rule(:choice)     { cmd >> cho_op >> cmd }
-  rule(:exp)        { ident.as(:left) >> arithop.as(:op) >> ident.as(:right) | boolexp | ident }
-  rule(:exp_new)    { mathexp | boolexp | ident } # substituir a de cima por essa pra ter suporte a expressões mais complexas
-  rule(:mathexp)	{ integer >> arithop >> integer >> ((arithop >> integer).repeat(1)).maybe }
+  rule(:exp)        { ident.as(:left) >> arithop.as(:op) >> ident.as(:right) | boolexp | integer | ident }
+  rule(:exp_new)    { mathexp | boolexp | integer | ident } # substituir a de cima por essa pra ter suporte a expressões mais complexas
+  rule(:mathexp)    { ( ident | integer ) >> arithop >> ( ident | integer ) >> ((arithop >> integer).repeat(1)).maybe }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
-  rule(:boolexp)    { ident >> boolop >> ident >> ((boolop >> ident).repeat(1)).maybe }
-  rule(:boolop)     { neg_op | eq_op | lteq_op | lt_op | gteq_op | gt_op }
+  rule(:boolexp)    { neg_op.maybe >> (( ident | integer ) >> boolop >> ( ident | integer ) >> ((boolop >> integer).repeat(1)).maybe) }
+  rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
   root(:program) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
 
@@ -105,5 +109,17 @@ class ParceiroReborn < Parslet::Parser
 end
 
 #ParceiroReborn.new.parse("1 + 1 + 1")
-#ParceiroReborn.new.parse("if (1 > 1) { af := 1 } else { af := 1 }");
+#ParceiroReborn.new.parsea("if (1 > 1) { af := 1 } else { af := 1 }");
+#ParceiroReborn.new.parsea("if (1 > 1) { af := 1 + 1 + 1 - 100 * 1 / 3 ; topstermctopper := 1 } else { af := 1 | vlwjoao := 2 }");
 #ParceiroReborn.new.parse("module top var top proc top ( top ) { af := 1 } end"); # :program
+#  module_op >> ident >> ((var | const | init).repeat(1)).maybe >> proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block >> end_op
+#ParceiroReborn.new.parsea("module Fact var y init y = 1 proc fact(x) { while (~ x == 0) { y := x * y ; x := x - 1 } ; print(y) } end");
+ ParceiroReborn.new.parsea("module Fact
+  								var y
+  								init y = 1 
+  								proc fact(x) { 
+  								 	while (~ x == 0) { 
+  										y := x * y ; y := x - 1 
+  								 	} ; print(y) 
+  								}
+  							end");
