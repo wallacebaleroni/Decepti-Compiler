@@ -8,6 +8,7 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
 
 
   rule(:left => simple(:left), :right => simple(:right), :op => '+'){
+    puts("oi")
     @smc = SMC.new
     @smc.empilhaControle('add')
     @smc.empilhaControle(Integer(left))

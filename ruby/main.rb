@@ -1,4 +1,3 @@
-require_relative 'smc'
 require_relative 'optimusParser'
 require_relative 'bumblebee'
 
@@ -37,6 +36,7 @@ autobot = Bumblebee.new()
 puts(autobot.apply(parceiro.parsea("10+5")))
 =end
 
+=begin
 Bumblebee.new.apply(OptimusParser.new.rollOut("1+2"))
 
 Bumblebee.new.apply(OptimusParser.new.rollOut("10-8"))
@@ -44,5 +44,8 @@ Bumblebee.new.apply(OptimusParser.new.rollOut("10-8"))
 Bumblebee.new.apply(OptimusParser.new.rollOut("10*5"))
 
 Bumblebee.new.apply(OptimusParser.new.rollOut("30/5"))
+=end
+
+Bumblebee.new.apply(OptimusParser.new.rollOut("1+1+1+1"))
 
 

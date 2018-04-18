@@ -94,11 +94,12 @@ class OptimusParser < Parslet::Parser
   rule(:exp)        { ident.as(:left) >> arithop.as(:op) >> ident.as(:right) | boolexp | integer | ident }
   rule(:exp_new)    { mathexp | boolexp | integer | ident } # substituir a de cima por essa pra ter suporte a expressões mais complexas
   rule(:mathexp)    { ( ident | integer ) >> arithop >> ( ident | integer ) >> ((arithop >> integer).repeat(1)).maybe }
+  rule(:mathexpteste)    { ( ident | integer ).as(:left) >> (arithop.as(:op) >> mathexpteste.as(:right)).maybe}
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
   rule(:boolexp)    { neg_op.maybe >> (( ident | integer ) >> boolop >> ( ident | integer ) >> ((boolop >> integer).repeat(1)).maybe) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:program) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
+  root(:mathexpteste) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
@@ -108,13 +109,15 @@ class OptimusParser < Parslet::Parser
 
 end
 
+=begin
 #OptimusParser.new.parse("1 + 1 + 1")
 #OptimusParser.new.parsea("if (1 > 1) { af := 1 } else { af := 1 }");
 #OptimusParser.new.parsea("if (1 > 1) { af := 1 + 1 + 1 - 100 * 1 / 3 ; topstermctopper := 1 } else { af := 1 | vlwjoao := 2 }");
 #OptimusParser.new.parse("module top var top proc top ( top ) { af := 1 } end"); # :program
 #  module_op >> ident >> ((var | const | init).repeat(1)).maybe >> proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block >> end_op
 #OptimusParser.new.parsea("module Fact var y init y = 1 proc fact(x) { while (~ x == 0) { y := x * y ; x := x - 1 } ; print(y) } end");
- OptimusParser.new.rollOut("module Fact
+
+OptimusParser.new.rollOut("module Fact
   								var y
   								init y = 1 
   								proc fact(x) { 
@@ -123,3 +126,6 @@ end
   								 	} ; print(y) 
   								}
   							end");
+=end
+
+OptimusParser.new.rollOut("1+1+1+1")
