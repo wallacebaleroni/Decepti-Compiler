@@ -2,7 +2,7 @@ require 'parslet'
 require_relative 'smc'
 require_relative 'bplc'
 
-No = Struct.new(:dad ,:left, :right)
+
 
 class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematicas
 
@@ -13,7 +13,7 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     @smc.empilhaControle(Integer(left))
     @smc.empilhaControle(Integer(right))
     @bplc = BPLC.new(@smc)
-    @bplc.roda()
+    @bplc.vamosRodar()
   }
 
   rule(:left => simple(:left), :right => simple(:right), :op => '-'){
@@ -22,7 +22,7 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     @smc.empilhaControle(Integer(left))
     @smc.empilhaControle(Integer(right))
     @bplc = BPLC.new(@smc)
-    @bplc.roda()
+    @bplc.vamosRodar()
   }
 
   rule(:left => simple(:left), :right => simple(:right), :op => '*'){
@@ -31,7 +31,7 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     @smc.empilhaControle(Integer(left))
     @smc.empilhaControle(Integer(right))
     @bplc = BPLC.new(@smc)
-    @bplc.roda()
+    @bplc.vamosRodar()
   }
 
   rule(:left => simple(:left), :right => simple(:right), :op => '/'){
@@ -40,7 +40,7 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     @smc.empilhaControle(Integer(left))
     @smc.empilhaControle(Integer(right))
     @bplc = BPLC.new(@smc)
-    @bplc.roda()
+    @bplc.vamosRodar()
   }
 
 end

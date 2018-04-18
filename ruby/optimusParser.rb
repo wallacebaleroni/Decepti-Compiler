@@ -13,7 +13,7 @@ P1 - 25 e 27/04 - Expressões e comandos.
     6-Implementar um compilador de AST PEG para operações aritméticas, Booleanas e comandos para BPLC-mark0.
 =end
 
-class ParceiroReborn < Parslet::Parser
+class OptimusParser < Parslet::Parser
   # Basics
   rule(:space)      { str("\s").repeat(1) }
   rule(:space?)     { space.maybe }
@@ -100,21 +100,21 @@ class ParceiroReborn < Parslet::Parser
 
   root(:program) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
 
-  def parsea(str)
-    pp ParceiroReborn.new.parse(str)
+  def rollOut(str)
+    pp OptimusParser.new.parse(str)
   rescue Parslet::ParseFailed => failure
     puts failure.parse_failure_cause.ascii_tree
   end
 
 end
 
-#ParceiroReborn.new.parse("1 + 1 + 1")
-#ParceiroReborn.new.parsea("if (1 > 1) { af := 1 } else { af := 1 }");
-#ParceiroReborn.new.parsea("if (1 > 1) { af := 1 + 1 + 1 - 100 * 1 / 3 ; topstermctopper := 1 } else { af := 1 | vlwjoao := 2 }");
-#ParceiroReborn.new.parse("module top var top proc top ( top ) { af := 1 } end"); # :program
+#OptimusParser.new.parse("1 + 1 + 1")
+#OptimusParser.new.parsea("if (1 > 1) { af := 1 } else { af := 1 }");
+#OptimusParser.new.parsea("if (1 > 1) { af := 1 + 1 + 1 - 100 * 1 / 3 ; topstermctopper := 1 } else { af := 1 | vlwjoao := 2 }");
+#OptimusParser.new.parse("module top var top proc top ( top ) { af := 1 } end"); # :program
 #  module_op >> ident >> ((var | const | init).repeat(1)).maybe >> proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block >> end_op
-#ParceiroReborn.new.parsea("module Fact var y init y = 1 proc fact(x) { while (~ x == 0) { y := x * y ; x := x - 1 } ; print(y) } end");
- ParceiroReborn.new.parsea("module Fact
+#OptimusParser.new.parsea("module Fact var y init y = 1 proc fact(x) { while (~ x == 0) { y := x * y ; x := x - 1 } ; print(y) } end");
+ OptimusParser.new.rollOut("module Fact
   								var y
   								init y = 1 
   								proc fact(x) { 

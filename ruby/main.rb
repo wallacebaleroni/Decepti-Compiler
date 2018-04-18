@@ -1,5 +1,5 @@
 require_relative 'smc'
-require_relative 'parceiroReborn'
+require_relative 'optimusParser'
 require_relative 'bumblebee'
 
 =begin
@@ -26,7 +26,7 @@ smc.empilhaControle(1)
 smc.empilhaControle(2)
 
 TESTES parceiroReborn
-parceiro = ParceiroReborn.new()
+parceiro = OptimusParser.new()
 parceiro.parsea('1+1')
 parceiro.parsea('1+')
 
@@ -37,12 +37,12 @@ autobot = Bumblebee.new()
 puts(autobot.apply(parceiro.parsea("10+5")))
 =end
 
-Bumblebee.new.apply(ParceiroReborn.new.parsea("1+2"))
+Bumblebee.new.apply(OptimusParser.new.rollOut("1+2"))
 
-Bumblebee.new.apply(ParceiroReborn.new.parsea("10-8"))
+Bumblebee.new.apply(OptimusParser.new.rollOut("10-8"))
 
-Bumblebee.new.apply(ParceiroReborn.new.parsea("10*5"))
+Bumblebee.new.apply(OptimusParser.new.rollOut("10*5"))
 
-Bumblebee.new.apply(ParceiroReborn.new.parsea("30/5"))
+Bumblebee.new.apply(OptimusParser.new.rollOut("30/5"))
 
 

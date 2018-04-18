@@ -5,8 +5,8 @@ class BPLC
     @smc = smc
   end
 
-  def roda()
-    puts("rodando...")
+  def vamosRodar()
+    puts("AUTBOTS, vamos rodar...")
     while(@smc.tamPilhaControle>0)
       val = @smc.topoControle()
       if(val.is_a?(Fixnum))
@@ -15,7 +15,7 @@ class BPLC
         @smc.ee()
       end
     end
-    puts("...fim")
+    puts("...cabou")
   end
 
 end
