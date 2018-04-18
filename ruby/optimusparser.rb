@@ -74,32 +74,26 @@ class OptimusParser < Parslet::Parser
   # IMP Syntax
   rule(:program)    { module_op >> ident >> blank? >> clauses >> blank? >> end_op }
   rule(:clauses)    { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
-  rule(:var)        { var_op >> ident >> (( com_op >> ident ).repeat(1)).maybe >> blank? }
-  rule(:const)      { const_op >> ident >> (( com_op >> ident ).repeat(1)).maybe >> blank? }
+  rule(:var)        { var_op >> ident >> (com_op >> ident).repeat(0) >> blank? }
+  rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) >> blank? }
   rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe >> blank? }
-  rule(:ini)        { ident >> ini_op >> exp >> blank? }
-  rule(:ex_proc)    { proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block }
+  rule(:ini)        { ident >> ini_op >> exp }
+  rule(:ex_proc)    { proc_op >> ident >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe >> rp >> block }
   rule(:block)      { lcb >> blank? >> cmd >> rcb >> blank? }
-
   rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt >> seq_op >> cmd | cmd_unt) >> blank? }
-
-  rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident >> ass_op >> exp_new }
-  rule(:ex_if)      { if_op >> lp >> boolexp >> rp >> block >> else_op >> block | if_op >> lp >> boolexp >> rp >> cmd >> else_op >> block | if_op >> lp >> boolexp >> rp >> block >> else_op >> cmd | if_op >> lp >> boolexp >> rp >> cmd >> else_op >> cmd }
+  rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident >> ass_op >> exp }
+  rule(:ex_if)      { if_op >> lp >> boolexp >> rp >> block >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> block >> (else_op >> cmd).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> cmd).maybe }
   rule(:ex_while)   { while_op >> lp >> boolexp >> rp >> block }
   rule(:ex_print)   { print_op >> lp >> exp >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
   rule(:call)       { ident >> lp >> exp.maybe >> rp }
-  rule(:seq)        { cmd >> com_op >> cmd }
-  rule(:choice)     { cmd >> cho_op >> cmd }
-  rule(:exp)        { ident.as(:left) >> arithop.as(:op) >> ident.as(:right) | boolexp | integer | ident }
-  rule(:exp_new)    { mathexp | boolexp | integer | ident } # substituir a de cima por essa pra ter suporte a expressões mais complexas
-  rule(:mathexp)    { ( ident | integer ) >> arithop >> ( ident | integer ) >> ((arithop >> integer).repeat(1)).maybe }
-  rule(:mathexpteste)    { ( ident | integer ).as(:left) >> (arithop.as(:op) >> mathexpteste.as(:right)).maybe}
+  rule(:exp)        { mathexp | boolexp | integer | ident }
+  rule(:mathexp)    { (ident | integer).as(:left) >> (arithop.as(:op) >> mathexp.as(:right)).maybe }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
-  rule(:boolexp)    { neg_op.maybe >> (( ident | integer ) >> boolop >> ( ident | integer ) >> ((boolop >> integer).repeat(1)).maybe) }
+  rule(:boolexp)    { neg_op.maybe >> ((ident | integer) >> (boolop >> boolexp).maybe) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:mathexpteste) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
+  root(:program) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
@@ -115,17 +109,27 @@ end
 #OptimusParser.new.parsea("if (1 > 1) { af := 1 + 1 + 1 - 100 * 1 / 3 ; topstermctopper := 1 } else { af := 1 | vlwjoao := 2 }");
 #OptimusParser.new.parse("module top var top proc top ( top ) { af := 1 } end"); # :program
 #  module_op >> ident >> ((var | const | init).repeat(1)).maybe >> proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block >> end_op
-#OptimusParser.new.parsea("module Fact var y init y = 1 proc fact(x) { while (~ x == 0) { y := x * y ; x := x - 1 } ; print(y) } end");
+
+OptimusParser.new.rollOut("module Fact var y init y = 1 proc fact(x) { while (~ x == 0) { y := x * y ; x := x > 1 } ; print(y) } end");
+=end
+OptimusParser.new.rollOut("module Fact
+                  var y
+                  init y = 1 
+                  proc fact(x) { 
+                    while (~ x == 0) { 
+                      y := x * y ; y := x + 1 
+                    } ; print(y) 
+                  }
+                end");
 
 OptimusParser.new.rollOut("module Fact
-  								var y
-  								init y = 1 
-  								proc fact(x) { 
-  								 	while (~ x == 0) { 
-  										y := x * y ; y := x - 1 
-  								 	} ; print(y) 
-  								}
-  							end");
-=end
+                  var y, x
+                  init y = 1 
+                  proc fact(x) { 
+                    if (~ x == 0) { 
+                      y := x * y ; y := x + 1 
+                    } 
+                  }
+                end");
 
-OptimusParser.new.rollOut("1+1+1+1")
+#OptimusParser.new.rollOut("1+1+1+1")
