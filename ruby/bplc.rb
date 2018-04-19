@@ -1,6 +1,7 @@
 require_relative 'smc'
 
 class BPLC
+
   def initialize(smc)
     @smc = smc
   end

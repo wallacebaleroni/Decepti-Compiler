@@ -49,6 +49,10 @@ class SMC
     puts(@memoria)
   end
 
+  def printa()
+    puts(@pilhaControle)
+  end
+
   #plotkin
   def en()
     aux = self.desempilhaControle()

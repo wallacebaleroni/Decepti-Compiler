@@ -46,6 +46,6 @@ Bumblebee.new.apply(OptimusParser.new.rollOut("10*5"))
 Bumblebee.new.apply(OptimusParser.new.rollOut("30/5"))
 =end
 
-Bumblebee.new.apply(OptimusParser.new.rollOut("1+1+1+1"))
+Bumblebee.new.apply(OptimusParser.new.rollOut("1+2+3+4"))
 
 

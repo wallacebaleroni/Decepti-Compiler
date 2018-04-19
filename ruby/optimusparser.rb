@@ -27,7 +27,7 @@ class OptimusParser < Parslet::Parser
   rule(:blank)      { (space | line | tab).repeat(1) }
   rule(:blank?)     { blank.maybe }
 
-  rule(:integer)    { match('[0-9]').repeat(1) >> space? }
+  rule(:integer)    { match('[0-9]').repeat(1).as(:int) >> space? }
 
   rule(:lowcase)    { match('[a-z]').repeat(1) }
   rule(:upcase)     { match('[A-Z]').repeat(1) }
@@ -93,7 +93,7 @@ class OptimusParser < Parslet::Parser
   rule(:boolexp)    { neg_op.maybe >> ((ident | integer) >> (boolop >> boolexp).maybe) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:program) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
+  root(:mathexp) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
@@ -111,7 +111,6 @@ end
 #  module_op >> ident >> ((var | const | init).repeat(1)).maybe >> proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block >> end_op
 
 OptimusParser.new.rollOut("module Fact var y init y = 1 proc fact(x) { while (~ x == 0) { y := x * y ; x := x > 1 } ; print(y) } end");
-=end
 OptimusParser.new.rollOut("module Fact
                   var y
                   init y = 1 
@@ -132,4 +131,6 @@ OptimusParser.new.rollOut("module Fact
                   }
                 end");
 
-#OptimusParser.new.rollOut("1+1+1+1")
+
+OptimusParser.new.rollOut("1+1+1+1")
+=end

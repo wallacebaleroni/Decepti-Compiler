@@ -7,39 +7,42 @@ require_relative 'bplc'
 class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematicas
 
 
-  rule(:left => simple(:left), :right => simple(:right), :op => '+'){
-    puts("oi")
+  rule(:int => simple(:n)) {
+    Integer(n)
+  }
+
+#So you don’t want to listen and really want that big gun with the foot aiming addon. You’ll be needing subtree(symbol).
+  rule(:op => '+',:left => simple(:l), :right=>{:left => simple(:r)}){ #!!!!!!!!!!:right=>{:left => simple(:r)!!!!!!!!!!!
+    puts(:r)
     @smc = SMC.new
     @smc.empilhaControle('add')
-    @smc.empilhaControle(Integer(left))
-    @smc.empilhaControle(Integer(right))
+    @smc.empilhaControle(l)
+    @smc.empilhaControle(r)
     @bplc = BPLC.new(@smc)
     @bplc.vamosRodar()
   }
 
-  rule(:left => simple(:left), :right => simple(:right), :op => '-'){
+  rule(:op => '-',:left => simple(:l), :right => simple(:r)){
     @smc = SMC.new
     @smc.empilhaControle('sub')
-    @smc.empilhaControle(Integer(left))
-    @smc.empilhaControle(Integer(right))
+    @smc.empilhaControle(l)
+    @smc.empilhaControle(r)
     @bplc = BPLC.new(@smc)
     @bplc.vamosRodar()
   }
-
-  rule(:left => simple(:left), :right => simple(:right), :op => '*'){
+  rule(:op => 'mul',:left => simple(:l), :right => simple(:r)){
     @smc = SMC.new
     @smc.empilhaControle('mul')
-    @smc.empilhaControle(Integer(left))
-    @smc.empilhaControle(Integer(right))
+    @smc.empilhaControle(l)
+    @smc.empilhaControle(r)
     @bplc = BPLC.new(@smc)
     @bplc.vamosRodar()
   }
-
-  rule(:left => simple(:left), :right => simple(:right), :op => '/'){
+  rule(:op => '/',:left => simple(:l), :right => simple(:r)){
     @smc = SMC.new
     @smc.empilhaControle('div')
-    @smc.empilhaControle(Integer(left))
-    @smc.empilhaControle(Integer(right))
+    @smc.empilhaControle(l)
+    @smc.empilhaControle(r)
     @bplc = BPLC.new(@smc)
     @bplc.vamosRodar()
   }
