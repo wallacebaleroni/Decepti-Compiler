@@ -1,6 +1,7 @@
 require_relative 'optimusparser'
 require_relative 'bumblebee'
 require_relative 'bplc'
+require_relative 'smc'
 
 =begin
 P1 - 25 e 27/04 - Expressões e comandos.
@@ -46,9 +47,10 @@ Bumblebee.new.apply(OptimusParser.new.rollOut("10*5"))
 
 Bumblebee.new.apply(OptimusParser.new.rollOut("30/5"))
 =end
-
+$smc = SMC.new
 bplc = BPLC.new
 Bumblebee.new.apply(OptimusParser.new.rollOut("1*2*3*4*5")).eval
+bplc.vamosRodar($smc)
 
 
 

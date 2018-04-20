@@ -76,15 +76,15 @@ end
 
 Multiply = Struct.new(:left, :right) do
   def eval
-    @@smc.empilhaControle('mul')
+    $smc.empilhaControle('mul')
 
     unless(left.eval.nil?)
-      @@smc.empilhaControle(left.eval)
+      $smc.empilhaControle(left.eval)
 
     end
 
     unless(right.eval.nil?)
-      @@smc.empilhaControle(right.eval)
+      $smc.empilhaControle(right.eval)
 
     end
 
