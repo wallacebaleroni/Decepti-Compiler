@@ -2,21 +2,18 @@ require_relative 'smc'
 
 class BPLC
 
-  def initialize(smc)
-    @smc = smc
-  end
-
-  def vamosRodar()
+  def vamosRodar(smc)
     puts("AUTBOTS, vamos rodar...")
-    while(@smc.tamPilhaControle>0)
-      val = @smc.topoControle()
+    while(smc.tamPilhaControle>0)
+      val = smc.topoControle()
       if(val.is_a?(Fixnum))
-        @smc.en()
+        smc.en()
       else
-        @smc.ee()
+        smc.ee()
       end
     end
     puts("...cabou")
   end
+
 
 end

@@ -89,11 +89,12 @@ class OptimusParser < Parslet::Parser
   rule(:call)       { ident >> lp >> exp.maybe >> rp }
   rule(:exp)        { mathexp | boolexp | integer | ident }
   rule(:mathexp)    { (ident | integer).as(:left) >> (arithop.as(:op) >> mathexp.as(:right)).maybe }
+  rule(:mathexpteste)    { (ident | integer).as(:left) >> arithop.as(:op) >> (mathexp | ident | integer).as(:right) | ident | integer}
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
   rule(:boolexp)    { neg_op.maybe >> ((ident | integer) >> (boolop >> boolexp).maybe) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:mathexp) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
+  root(:mathexpteste) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
