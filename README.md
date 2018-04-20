@@ -32,3 +32,9 @@ Para instalar o Parslet, basta executar o seguinte comando:
 gem install parslet
 ```
 
+## Windows
+É possível instalar o Ruby no Windows através do [RubyInstaller](https://rubyinstaller.org/).
+Depois disso, para instalar o Parslet, abra  linha de comando (```cmd.exe```) e execute:
+```
+gem install parslet
+```
