@@ -50,8 +50,8 @@ class SMC
     puts("----------Memoria----------")
   end
 
-  def printa()
-    puts(@pilhaControle)
+  def topoControle()
+    @pilhaControle[0]
   end
 
   #plotkin
@@ -102,9 +102,34 @@ class SMC
     self.desempilhaControle
   end
 
-  def topoControle()
-    @pilhaControle[0]
+  def bt()
+    aux = self.desempilhaControle()
+    self.empilhaValor(aux)
   end
+
+  def be()
+    val1 = self.desempilhaValor()
+    val2 = self.desempilhaValor()
+    operator = self.desempilhaControle()
+    case operator
+      when 'eq'
+        resp = (val1 == val2)
+        self.empilhaValor(resp)
+      when 'gt'
+        resp = (val1 < val2)
+        self.empilhaValor(resp)
+      when 'ge'
+        resp = (val1 <= val2)
+        self.empilhaValor(resp)
+      when 'lt'
+        resp = (val1 > val2)
+        self.empilhaValor(resp)
+      when 'le'
+        resp = (val1 >= val2)
+        self.empilhaValor(resp)
+    end
+  end
+
 end
 
 =begin

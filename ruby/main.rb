@@ -55,10 +55,15 @@ bplc = BPLC.new
 Bumblebee.new.apply(OptimusParser.new.rollOut("1*2*3*4*5")).eval
 bplc.vamosRodar($smc)
 =end
+
+=begin
 $smc = SMC.new
 bplc = BPLC.new
 Bumblebee.new.apply(OptimusParser.new.rollOut("x := 1*2*3*4*5")).eval
 bplc.vamosRodar($smc)
+=end
 
-
-
+$smc = SMC.new
+bplc = BPLC.new
+Bumblebee.new.apply(OptimusParser.new.rollOut("119 <= 1*2*3*4*5")).eval
+bplc.vamosRodar($smc)

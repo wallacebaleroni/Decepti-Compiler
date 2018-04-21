@@ -43,6 +43,26 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     Assignment.new(i,v)
   }
 
+  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '== '){
+    Equal.new(lb,rb)
+  }
+
+  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '> '){
+    GreaterThan.new(lb,rb)
+  }
+
+  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>= '){
+    GreaterEqual.new(lb,rb)
+  }
+
+  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '< '){
+    LessThan.new(lb,rb)
+  }
+
+  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<= '){
+    LessEqual.new(lb,rb)
+  }
+
 end
 
 =begin
@@ -53,32 +73,31 @@ puts(Bumblebee.new.apply(parse("10*5")))
 puts(Bumblebee.new.apply(parse("10/5")))
 =end
 
-@@smc = SMC.new
 
 Addition = Struct.new(:left, :right) do
   def eval
-    @@smc.empilhaControle('add')
+    $smc.empilhaControle('add')
 
     unless(left.eval.nil?)
-      @@smc.empilhaControle(left.eval)
+      $smc.empilhaControle(left.eval)
     end
 
     unless(right.eval.nil?)
-      @@smc.empilhaControle(right.eval)
+      $smc.empilhaControle(right.eval)
     end
   end
 end
 
 Subtractor = Struct.new(:left, :right) do
   def eval
-    @@smc.empilhaControle('sub')
+    $smc.empilhaControle('sub')
 
     unless(left.eval.nil?)
-      @@smc.empilhaControle(left.eval)
+      $smc.empilhaControle(left.eval)
     end
 
     unless(right.eval.nil?)
-      @@smc.empilhaControle(right.eval)
+      $smc.empilhaControle(right.eval)
     end
 
   end
@@ -117,9 +136,49 @@ end
 
 Assignment = Struct.new(:ident, :val) do
   def eval
-      $smc.empilhaControle(':=')
+      $smc.empilhaControle('assign')
       $smc.empilhaControle(val.eval)
       $smc.empilhaControle(ident.eval)
+  end
+end
+
+Equal = Struct.new(:leftbool, :rightbool) do
+  def eval
+    $smc.empilhaControle('eq')
+    $smc.empilhaControle(rightbool.eval)
+    $smc.empilhaControle(leftbool.eval)
+  end
+end
+
+GreaterThan = Struct.new(:leftbool, :rightbool) do
+  def eval
+    $smc.empilhaControle('gt')
+    $smc.empilhaControle(rightbool.eval)
+    $smc.empilhaControle(leftbool.eval)
+  end
+end
+
+GreaterEqual = Struct.new(:leftbool, :rightbool) do
+  def eval
+    $smc.empilhaControle('ge')
+    $smc.empilhaControle(rightbool.eval)
+    $smc.empilhaControle(leftbool.eval)
+  end
+end
+
+LessThan = Struct.new(:leftbool, :rightbool) do
+  def eval
+    $smc.empilhaControle('lt')
+    $smc.empilhaControle(rightbool.eval)
+    $smc.empilhaControle(leftbool.eval)
+  end
+end
+
+LessEqual = Struct.new(:leftbool, :rightbool) do
+  def eval
+    $smc.empilhaControle('le')
+    $smc.empilhaControle(rightbool.eval)
+    $smc.empilhaControle(leftbool.eval)
   end
 end
 
