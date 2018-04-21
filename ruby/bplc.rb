@@ -8,8 +8,16 @@ class BPLC
       val = smc.topoControle()
       if(val.is_a?(Fixnum))
         smc.en()
-      else
-        smc.ee()
+      elsif(val.is_a?(String))
+        if(val == ':=')
+          smc.ce()
+        elsif(val == 'mul' or val == 'div' or val == 'add' or val == 'sub')
+          smc.ee()
+        else
+          smc.ci()
+        end
+      elsif(val.nil?)
+        smc.cnil()
       end
     end
     puts("...cabou")

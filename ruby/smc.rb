@@ -46,7 +46,8 @@ class SMC
       @memoria.push(variavel)
       @memoria.push(dado)
     end
-    puts(@memoria)
+    puts("---------#{@memoria}---------")
+    puts("----------Memoria----------")
   end
 
   def printa()
@@ -83,6 +84,22 @@ class SMC
         resp = val1 / val2
         self.empilhaValor(resp)
     end
+  end
+
+  def ci()
+    aux = self.desempilhaControle()
+    self.empilhaValor(aux)
+  end
+
+  def ce()
+    self.desempilhaControle()
+    val = self.desempilhaValor()
+    ident = self.desempilhaValor()
+    self.escreveMemoria(ident,val)
+  end
+
+  def cnil()
+    self.desempilhaControle
   end
 
   def topoControle()
