@@ -17,6 +17,8 @@ class BPLC
           smc.be()
         elsif(val == 'true' or val == 'false')
           smc.bt()
+        elsif(val == 'neg')
+          smc.bnote()
         else
           smc.ci()
         end

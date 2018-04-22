@@ -11,9 +11,10 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     IntLit.new(n)
   }
 
-  rule(:string => simple(:c)) {
-    StringLit.new(c)
+  rule(:id => simple(:c)) {
+    IdLit.new(c)
   }
+
 
 #So you don’t want to listen and really want that big gun with the foot aiming addon. You’ll be needing subtree(symbol).
   rule(:left => simple(:l), :right => simple(:r), :op => '+'){
@@ -27,15 +28,15 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
 =end
   }
 
-  rule(:left => simple(:l), :right => simple(:r), :op => '-'){
+  rule(:left => simple(:l), :right => simple(:r), :op => '- '){
     Subtractor.new(l, r)
   }
 
-  rule(:left => simple(:l), :right => simple(:r), :op => '*'){
+  rule(:left => simple(:l), :right => simple(:r), :op => '* '){
     Multiply.new(l,r)
   }
 
-  rule(:left => simple(:l), :right => simple(:r), :op => '/'){
+  rule(:left => simple(:l), :right => simple(:r), :op => '/ '){
     Division.new(l,r)
   }
 
@@ -44,36 +45,56 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '== '){
-    Equal.new(lb,rb)
+    Equal.new(lb,rb,false)
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '> '){
-    GreaterThan.new(lb,rb)
+    GreaterThan.new(lb,rb,false)
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>= '){
-    GreaterEqual.new(lb,rb)
+    GreaterEqual.new(lb,rb,false)
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '< '){
-    LessThan.new(lb,rb)
+    LessThan.new(lb,rb,false)
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<= '){
-    LessEqual.new(lb,rb)
+    LessEqual.new(lb,rb,false)
+  }
+
+  rule(:neg => '~ ', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '== '){
+    Equal.new(lb,rb,true)
+  }
+
+  rule(:neg => '~ ', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '> '){
+    GreaterThan.new(lb,rb,true)
+  }
+
+  rule(:neg => '~ ', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>= '){
+    GreaterEqual.new(lb,rb,true)
+  }
+
+  rule(:neg => '~ ', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '< '){
+    LessThan.new(lb,rb,true)
+  }
+
+  rule(:neg => '~ ', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<= '){
+    LessEqual.new(lb,rb,true)
+  }
+
+  rule(:while => "while ",:cond => subtree(:cd),:block => subtree(:bl)){
+    While.new(cd,bl)
+  }
+
+  rule(:cmd => subtree(:cmd)){
+    Command.new(cmd)
   }
 
 end
 
-=begin
-puts("--------------Parsing, Transform & Execucao--------------")
-puts(Bumblebee.new.apply(parse("10+5")))
-puts(Bumblebee.new.apply(parse("10-5")))
-puts(Bumblebee.new.apply(parse("10*5")))
-puts(Bumblebee.new.apply(parse("10/5")))
-=end
-
-
+#Estruturas
 Addition = Struct.new(:left, :right) do
   def eval
     $smc.empilhaControle('add')
@@ -142,43 +163,72 @@ Assignment = Struct.new(:ident, :val) do
   end
 end
 
-Equal = Struct.new(:leftbool, :rightbool) do
+Equal = Struct.new(:leftbool, :rightbool,:ehNeg) do
   def eval
+    if(ehNeg)
+      $smc.empilhaControle('neg')
+    end
     $smc.empilhaControle('eq')
     $smc.empilhaControle(rightbool.eval)
     $smc.empilhaControle(leftbool.eval)
   end
 end
 
-GreaterThan = Struct.new(:leftbool, :rightbool) do
+GreaterThan = Struct.new(:leftbool, :rightbool,:ehNeg) do
   def eval
+    if(ehNeg)
+      $smc.empilhaControle('neg')
+    end
     $smc.empilhaControle('gt')
     $smc.empilhaControle(rightbool.eval)
     $smc.empilhaControle(leftbool.eval)
   end
 end
 
-GreaterEqual = Struct.new(:leftbool, :rightbool) do
+GreaterEqual = Struct.new(:leftbool, :rightbool, :ehNeg) do
   def eval
+    if(ehNeg)
+      $smc.empilhaControle('neg')
+    end
     $smc.empilhaControle('ge')
     $smc.empilhaControle(rightbool.eval)
     $smc.empilhaControle(leftbool.eval)
   end
 end
 
-LessThan = Struct.new(:leftbool, :rightbool) do
+LessThan = Struct.new(:leftbool, :rightbool, :ehNeg) do
   def eval
+    if(ehNeg)
+      $smc.empilhaControle('neg')
+    end
     $smc.empilhaControle('lt')
     $smc.empilhaControle(rightbool.eval)
     $smc.empilhaControle(leftbool.eval)
   end
 end
 
-LessEqual = Struct.new(:leftbool, :rightbool) do
+LessEqual = Struct.new(:leftbool, :rightbool, :ehNeg) do
   def eval
+    if(ehNeg)
+      $smc.empilhaControle('neg')
+    end
     $smc.empilhaControle('le')
     $smc.empilhaControle(rightbool.eval)
     $smc.empilhaControle(leftbool.eval)
+  end
+end
+
+While = Struct.new(:cond,:block) do
+  def eval
+    $smc.empilhaControle('while ')
+    $smc.empilhaControle(cond.eval)
+    $smc.empilhaControle(block.eval)
+  end
+end
+
+Command = Struct.new(:cmd) do
+  def eval
+    $smc.empilhaControle(cmd.eval)
   end
 end
 
@@ -188,8 +238,8 @@ IntLit = Struct.new(:int) do
   end
 end
 
-StringLit = Struct.new(:string) do
+IdLit = Struct.new(:id) do
   def eval
-    string.to_s
+    id.to_s
   end
 end

@@ -2,7 +2,7 @@ class SMC
 
   def initialize()
     @pilhaValor = []
-    @memoria = []
+    @memoria = ["x",5,"y",1]
     @pilhaControle = []
   end
 
@@ -129,6 +129,15 @@ class SMC
         self.empilhaValor(resp)
     end
   end
+
+  def bnote()
+    val1 = self.desempilhaValor()
+    self.desempilhaControle()
+    val1 = (!val1)
+    self.empilhaValor(val1)
+  end
+
+
 
 end
 

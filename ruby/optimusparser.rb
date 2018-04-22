@@ -39,7 +39,7 @@ class OptimusParser < Parslet::Parser
   rule(:lcb)        { match('[{]') >> space? }
   rule(:rcb)        { match('[}]') >> space? }
 
-  rule(:ident)      { (lowcase | upcase).repeat(1).as(:string) >> ((lowcase | upcase | integer).repeat(1)).maybe >> space? } # Aceita numeros também no nome
+  rule(:ident)      { (lowcase | upcase).repeat(1).as(:id) >> ((lowcase | upcase | integer).repeat(1)).maybe >> space? } # Aceita numeros também no nome
 
   rule(:sum_op)     { str("+") >> space? }
   rule(:mul_op)     { str("*") >> space? }
@@ -80,10 +80,10 @@ class OptimusParser < Parslet::Parser
   rule(:ini)        { ident >> ini_op >> exp }
   rule(:ex_proc)    { proc_op >> ident >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe >> rp >> block }
   rule(:block)      { lcb >> blank? >> cmd >> rcb >> blank? }
-  rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt >> seq_op >> cmd | cmd_unt) >> blank? }
+  rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt >> seq_op >> cmd | cmd_unt).as(:cmd) >> blank? }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op.as(:ass_op) >> exp.as(:val) }
   rule(:ex_if)      { if_op >> lp >> boolexp >> rp >> block >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> block >> (else_op >> cmd).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> cmd).maybe }
-  rule(:ex_while)   { while_op >> lp >> boolexp >> rp >> block }
+  rule(:ex_while)   { while_op.as(:while) >> lp >> boolexp.as(:cond) >> rp >> block.as(:block)}
   rule(:ex_print)   { print_op >> lp >> exp >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
   rule(:call)       { ident >> lp >> exp.maybe >> rp }
@@ -95,7 +95,7 @@ class OptimusParser < Parslet::Parser
   rule(:boolexp)    { neg_op.as(:neg).maybe >> (ident | integer).as(:leftb) >> boolop.as(:opb) >> (mathexp | boolexp | ident | integer).as(:rightb) | ident | integer}
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:boolexp) # para testar expressoes matematicas, alterar root de acordo com teste por enquanto
+  root(:cmd_unt) #, alterar root de acordo com teste por enquanto
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
