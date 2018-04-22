@@ -3,6 +3,7 @@ require_relative 'smc'
 class BPLC
 
   def vamosRodar(smc)
+    trigger = 0
     puts("AUTBOTS, vamos rodar...")
     while(smc.tamPilhaControle>0)
       val = smc.topoControle()
@@ -20,7 +21,12 @@ class BPLC
         elsif(val == 'neg')
           smc.bnote()
         else
-          smc.ci()
+          if(trigger == 1)
+            smc.ev()
+          else
+            trigger = 1
+            smc.ci()
+          end
         end
       elsif(val.nil?)
         smc.cnil()
