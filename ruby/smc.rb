@@ -193,8 +193,15 @@ class SMC
   def print()
     puts("Print")
     self.desempilhaControle
+
     puts(self.desempilhaValor)
     puts()
+  end
+
+  def csc()
+    puts("C;")
+    puts()
+    self.desempilhaControle
   end
 
 

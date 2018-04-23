@@ -24,6 +24,8 @@ class BPLC
           smc.cwhilee()
         elsif(val == 'fimloop')
           smc.cnil()
+        elsif(val == ';')
+          smc.csc()
         else
           smc.ci_ev()
         end

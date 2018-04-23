@@ -244,6 +244,7 @@ end
 Seq = Struct.new(:s1, :s2) do
   def eval
     $smc.empilhaControle(s2.eval)
+    $smc.empilhaControle(';')
     $smc.empilhaControle(s1.eval)
   end
 end
