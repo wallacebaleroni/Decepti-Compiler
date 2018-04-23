@@ -19,8 +19,10 @@ class BPLC
           smc.bt()
         elsif(val == 'neg')
           smc.bnote()
+        elsif(val == 'loop')
+          smc.desempilhaControle()
         else
-            smc.ci() #ou smc.ev()
+          smc.ci_ev() #ou smc.ev()
         end
       elsif(val.nil?)
         smc.cnil()

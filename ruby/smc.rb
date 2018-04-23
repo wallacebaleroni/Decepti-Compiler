@@ -54,14 +54,23 @@ class SMC
     @pilhaControle[0]
   end
 
+  def ci_ev()
+    aux = self.desempilhaControle()
+    if(topoControle == 'ident')
+      self.desempilhaControle()
+      self.ci(aux)
+    else
+      self.ev(aux)
+    end
+  end
+
   #plotkin
   def en()
     aux = self.desempilhaControle()
     self.empilhaValor(aux)
   end
 
-  def ev()
-    aux = self.desempilhaControle()
+  def ev(aux)
     aux2 = self.acessaMemoria(aux)
     self.empilhaValor(aux2)
   end
@@ -86,8 +95,7 @@ class SMC
     end
   end
 
-  def ci()
-    aux = self.desempilhaControle()
+  def ci(aux)
     self.empilhaValor(aux)
   end
 

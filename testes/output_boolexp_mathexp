@@ -179,7 +179,8 @@ AUTBOTS, vamos rodar...
 
 ...cabou
 
-" x > 1*2*3*4*5" x = 121
+" x > 1*2*3*4*5" x = 121"
+
 {:leftb=>{:id=>"x"@0},
  :opb=>"> "@2,
  :rightb=>

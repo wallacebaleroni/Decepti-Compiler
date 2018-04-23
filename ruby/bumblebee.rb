@@ -17,7 +17,7 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
 
 
 #So you don’t want to listen and really want that big gun with the foot aiming addon. You’ll be needing subtree(symbol).
-  rule(:left => simple(:l), :right => simple(:r), :op => '+'){
+  rule(:left => simple(:l), :right => simple(:r), :op => '+ '){
     Addition.new(l, r)
 =begin
     @smc = SMC.new
@@ -159,6 +159,7 @@ Assignment = Struct.new(:ident, :val) do
   def eval
       $smc.empilhaControle('assign')
       $smc.empilhaControle(val.eval)
+      $smc.empilhaControle('ident')
       $smc.empilhaControle(ident.eval)
   end
 end
@@ -220,7 +221,7 @@ end
 
 While = Struct.new(:cond,:block) do
   def eval
-    $smc.empilhaControle('while ')
+    $smc.empilhaControle('loop')
     $smc.empilhaControle(cond.eval)
     $smc.empilhaControle(block.eval)
   end
