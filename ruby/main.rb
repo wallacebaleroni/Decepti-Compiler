@@ -77,10 +77,11 @@ Bumblebee.new.apply(OptimusParser.new.rollOut("~ x < 1*2*3*4*5")).eval
 bplc.vamosRodar($smc)
 =end
 
+=begin
 $smc = SMC.new
 bplc = BPLC.new
-Bumblebee.new.apply(OptimusParser.new.rollOut("while (~ x == 0) {
-                      y := x + 1
+Bumblebee.new.apply(OptimusParser.new.rollOut("while (~ y == 10) {
+                      y := y + 1
                     }")).eval
 bplc.vamosRodar($smc)
-
+=end

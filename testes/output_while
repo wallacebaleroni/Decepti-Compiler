@@ -1,0 +1,327 @@
+while (~ y == 10) {
+                      y := y + 1
+                    }"
+
+{:while=>"while "@0,
+ :cond=>
+  {:neg=>"~ "@7,
+   :leftb=>{:id=>"y"@9},
+   :opb=>"== "@11,
+   :rightb=>{:int=>"10"@14}},
+ :block=>
+  {:cmd=>
+    {:ident=>{:id=>"y"@42},
+     :ass_op=>":= "@44,
+     :val=>{:left=>{:id=>"y"@47}, :op=>"+ "@49, :right=>{:int=>"1"@51}}}}}
+
+---------["fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------[10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------[nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------[1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------[nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------[nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------[nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["neg", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------[10, "eq", "neg", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------["y", 10, "eq", "neg", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+---------[nil, "y", 10, "eq", "neg", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[]---------
+---------Controle---------Valor---------
+
+AUTBOTS, vamos rodar...
+---------[10, "eq", "neg", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, 1]---------
+---------Controle---------Valor---------
+
+---------["neg", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[false]---------
+---------Controle---------Valor---------
+
+---------["loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[true]---------
+---------Controle---------Valor---------
+
+---------[nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------["y"]---------
+---------Controle---------Valor---------
+
+---------["y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1, "y"]---------
+---------Controle---------Valor---------
+
+---------["add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1, 1, "y"]---------
+---------Controle---------Valor---------
+
+---------["assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[2, "y"]---------
+---------Controle---------Valor---------
+
+---------["x", 5, "y", 2]---------
+----------Memoria----------
+---------[10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[2]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, 2]---------
+---------Controle---------Valor---------
+
+---------["neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[false]---------
+---------Controle---------Valor---------
+
+---------["fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[true]---------
+---------Controle---------Valor---------
+
+---------[nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------["y"]---------
+---------Controle---------Valor---------
+
+---------["y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1, "y"]---------
+---------Controle---------Valor---------
+
+---------["add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[2, 1, "y"]---------
+---------Controle---------Valor---------
+
+---------["assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[3, "y"]---------
+---------Controle---------Valor---------
+
+---------["x", 5, "y", 3]---------
+----------Memoria----------
+---------[10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[3]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, 3]---------
+---------Controle---------Valor---------
+
+---------["neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[false]---------
+---------Controle---------Valor---------
+
+---------["fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[true]---------
+---------Controle---------Valor---------
+
+---------[nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------["y"]---------
+---------Controle---------Valor---------
+
+---------["y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1, "y"]---------
+---------Controle---------Valor---------
+
+---------["add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[3, 1, "y"]---------
+---------Controle---------Valor---------
+
+---------["assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[4, "y"]---------
+---------Controle---------Valor---------
+
+---------["x", 5, "y", 4]---------
+----------Memoria----------
+---------[10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[4]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, 4]---------
+---------Controle---------Valor---------
+
+---------["neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[false]---------
+---------Controle---------Valor---------
+
+---------["fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[true]---------
+---------Controle---------Valor---------
+
+---------[nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------["y"]---------
+---------Controle---------Valor---------
+
+---------["y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1, "y"]---------
+---------Controle---------Valor---------
+
+---------["add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[4, 1, "y"]---------
+---------Controle---------Valor---------
+
+---------["assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[5, "y"]---------
+---------Controle---------Valor---------
+
+---------["x", 5, "y", 5]---------
+----------Memoria----------
+---------[10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[5]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, 5]---------
+---------Controle---------Valor---------
+
+---------["neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[false]---------
+---------Controle---------Valor---------
+
+---------["fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[true]---------
+---------Controle---------Valor---------
+
+---------[nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------["y"]---------
+---------Controle---------Valor---------
+
+---------["y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1, "y"]---------
+---------Controle---------Valor---------
+
+---------["add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[5, 1, "y"]---------
+---------Controle---------Valor---------
+
+---------["assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[6, "y"]---------
+---------Controle---------Valor---------
+
+---------["x", 5, "y", 6]---------
+----------Memoria----------
+---------[10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[6]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, 6]---------
+---------Controle---------Valor---------
+
+---------["neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[false]---------
+---------Controle---------Valor---------
+
+---------["fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[true]---------
+---------Controle---------Valor---------
+
+---------[nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------["y"]---------
+---------Controle---------Valor---------
+
+---------["y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1, "y"]---------
+---------Controle---------Valor---------
+
+---------["add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[6, 1, "y"]---------
+---------Controle---------Valor---------
+
+---------["assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[7, "y"]---------
+---------Controle---------Valor---------
+
+---------["x", 5, "y", 7]---------
+----------Memoria----------
+---------[10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[7]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, 7]---------
+---------Controle---------Valor---------
+
+---------["neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[false]---------
+---------Controle---------Valor---------
+
+---------["fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[true]---------
+---------Controle---------Valor---------
+
+---------[nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------["y"]---------
+---------Controle---------Valor---------
+
+---------["y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1, "y"]---------
+---------Controle---------Valor---------
+
+---------["add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[7, 1, "y"]---------
+---------Controle---------Valor---------
+
+---------["assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[8, "y"]---------
+---------Controle---------Valor---------
+
+---------["x", 5, "y", 8]---------
+----------Memoria----------
+---------[10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[8]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, 8]---------
+---------Controle---------Valor---------
+
+---------["neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[false]---------
+---------Controle---------Valor---------
+
+---------["fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[true]---------
+---------Controle---------Valor---------
+
+---------[nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------["y"]---------
+---------Controle---------Valor---------
+
+---------["y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1, "y"]---------
+---------Controle---------Valor---------
+
+---------["add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[8, 1, "y"]---------
+---------Controle---------Valor---------
+
+---------["assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[9, "y"]---------
+---------Controle---------Valor---------
+
+---------["x", 5, "y", 9]---------
+----------Memoria----------
+---------[10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[9]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, 9]---------
+---------Controle---------Valor---------
+
+---------["neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[false]---------
+---------Controle---------Valor---------
+
+---------["fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[true]---------
+---------Controle---------Valor---------
+
+---------[nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------["y"]---------
+---------Controle---------Valor---------
+
+---------["y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[1, "y"]---------
+---------Controle---------Valor---------
+
+---------["add", "assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[9, 1, "y"]---------
+---------Controle---------Valor---------
+
+---------["assign", nil, "y", 10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, "y"]---------
+---------Controle---------Valor---------
+
+---------["x", 5, "y", 10]---------
+----------Memoria----------
+---------[10, "eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10]---------
+---------Controle---------Valor---------
+
+---------["eq", "neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[10, 10]---------
+---------Controle---------Valor---------
+
+---------["neg", "fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[true]---------
+---------Controle---------Valor---------
+
+---------["fimloop", "loop", nil, nil, "y", "ident", nil, 1, "y", "add", "assign", nil, "y", 10, "eq", "neg", "fimloop"]---------[false]---------
+---------Controle---------Valor---------
+
+...cabou

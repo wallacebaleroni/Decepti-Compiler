@@ -221,9 +221,11 @@ end
 
 While = Struct.new(:cond,:block) do
   def eval
-    $smc.empilhaControle('loop')
+    $smc.empilhaControle('fimloop')
     $smc.empilhaControle(cond.eval)
     $smc.empilhaControle(block.eval)
+    $smc.empilhaControle('loop')
+    $smc.empilhaControle(cond.eval)
   end
 end
 

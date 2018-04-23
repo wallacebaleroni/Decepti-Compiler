@@ -54,6 +54,7 @@ class SMC
     @pilhaControle[0]
   end
 
+  #deciders
   def ci_ev()
     aux = self.desempilhaControle()
     if(topoControle == 'ident')
@@ -61,6 +62,16 @@ class SMC
       self.ci(aux)
     else
       self.ev(aux)
+    end
+  end
+
+  def cwhilee()
+    self.desempilhaControle
+    bool = self.desempilhaValor()
+    if(bool)
+      self.cwhilee1()
+    else
+      self.cwhilee2()
     end
   end
 
@@ -145,6 +156,26 @@ class SMC
     self.empilhaValor(val1)
   end
 
+  def cwhilee1()
+    bloco = []
+    i = 0
+    aux = 1
+
+    while(aux != 'fimloop')
+      aux = @pilhaControle[i]
+      bloco.push(aux)
+      i += 1
+    end
+    @pilhaControle.unshift('loop')
+    @pilhaControle.unshift(*bloco)
+  end
+
+  def cwhilee2()
+    aux = self.desempilhaControle
+    while(aux != 'fimloop')
+      aux = self.desempilhaControle
+    end
+  end
 
 
 end
