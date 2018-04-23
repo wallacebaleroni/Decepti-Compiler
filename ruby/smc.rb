@@ -2,7 +2,7 @@ class SMC
 
   def initialize()
     @pilhaValor = []
-    @memoria = ["x",5,"y",1]
+    @memoria = ["x", 5, "y",1]
     @pilhaControle = []
   end
 
@@ -12,16 +12,16 @@ class SMC
 
   def empilhaValor(valor)
     @pilhaValor.unshift(valor)
-    puts("---------#{@pilhaControle}---------#{@pilhaValor}---------")
-    puts("---------Controle---------Valor---------")
+    puts("Controle   #{@pilhaControle}")
+    puts("Valor      #{@pilhaValor}")
     puts()
   end
 
 
   def empilhaControle(controle)
     @pilhaControle.unshift(controle)
-    puts("---------#{@pilhaControle}---------#{@pilhaValor}---------")
-    puts("---------Controle---------Valor---------")
+    puts("Controle   #{@pilhaControle}")
+    puts("Valor      #{@pilhaValor}")
     puts()
   end
 
@@ -40,21 +40,20 @@ class SMC
 
   def escreveMemoria(variavel, dado)
     indice = @memoria.index(variavel)
-    if(indice)
+    if indice
       @memoria[indice+1] = dado
     else
       @memoria.push(variavel)
       @memoria.push(dado)
     end
-    puts("---------#{@memoria}---------")
-    puts("----------Memoria----------")
+    puts("Memoria    #{@memoria}")
   end
 
   def topoControle()
     @pilhaControle[0]
   end
 
-  #deciders
+  # Deciders
   def ci_ev()
     aux = self.desempilhaControle()
     if(topoControle == 'ident')
@@ -66,7 +65,7 @@ class SMC
   end
 
   def cwhilee()
-    self.desempilhaControle
+    self.desempilhaControle()
     bool = self.desempilhaValor()
     if(bool)
       self.cwhilee1()
@@ -75,18 +74,21 @@ class SMC
     end
   end
 
-  #plotkin
+  # Plotkin
   def en()
+    puts("En")
     aux = self.desempilhaControle()
     self.empilhaValor(aux)
   end
 
   def ev(aux)
+    puts("Ev")
     aux2 = self.acessaMemoria(aux)
     self.empilhaValor(aux2)
   end
 
   def ee()
+    puts("E op E")
     val1 = self.desempilhaValor()
     val2 = self.desempilhaValor()
     operator = self.desempilhaControle()
@@ -107,10 +109,13 @@ class SMC
   end
 
   def ci(aux)
+    puts("C := I")
     self.empilhaValor(aux)
+
   end
 
   def ce()
+    puts("C := E")
     self.desempilhaControle()
     val = self.desempilhaValor()
     ident = self.desempilhaValor()
@@ -118,15 +123,19 @@ class SMC
   end
 
   def cnil()
+    puts("C nil")
+    puts()
     self.desempilhaControle
   end
 
   def bt()
+    puts("Bt")
     aux = self.desempilhaControle()
     self.empilhaValor(aux)
   end
 
   def be()
+    puts("B = E")
     val1 = self.desempilhaValor()
     val2 = self.desempilhaValor()
     operator = self.desempilhaControle()
@@ -150,6 +159,7 @@ class SMC
   end
 
   def bnote()
+    puts("B ~ E")
     val1 = self.desempilhaValor()
     self.desempilhaControle()
     val1 = (!val1)
@@ -157,6 +167,7 @@ class SMC
   end
 
   def cwhilee1()
+    puts("C while E1")
     bloco = []
     i = 0
     aux = 1
@@ -171,10 +182,19 @@ class SMC
   end
 
   def cwhilee2()
+    puts("C while E2")
+    puts()
     aux = self.desempilhaControle
     while(aux != 'fimloop')
       aux = self.desempilhaControle
     end
+  end
+
+  def print()
+    puts("Print")
+    self.desempilhaControle
+    puts(self.desempilhaValor)
+    puts()
   end
 
 

@@ -1,16 +1,17 @@
 require_relative 'smc'
 
 class BPLC
-
   def vamosRodar(smc)
-    puts("AUTBOTS, vamos rodar...")
-    while(smc.tamPilhaControle>0)
+    puts("Autobots, let's roll!")
+    while(smc.tamPilhaControle > 0)
       val = smc.topoControle()
       if(val.is_a?(Fixnum))
         smc.en()
       elsif(val.is_a?(String))
         if(val == 'assign')
           smc.ce()
+        elsif(val == 'print')
+          smc.print()
         elsif(val == 'mul' or val == 'div' or val == 'add' or val == 'sub')
           smc.ee()
         elsif(val == 'eq' or val == 'gt' or val == 'ge' or val == 'lt' or val == 'le')
@@ -24,14 +25,12 @@ class BPLC
         elsif(val == 'fimloop')
           smc.cnil()
         else
-          smc.ci_ev() #ou smc.ev()
+          smc.ci_ev()
         end
       elsif(val.nil?)
         smc.cnil()
       end
     end
-    puts("...cabou")
+    puts("THE END")
   end
-
-
 end

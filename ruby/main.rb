@@ -80,8 +80,15 @@ bplc.vamosRodar($smc)
 =begin
 $smc = SMC.new
 bplc = BPLC.new
-Bumblebee.new.apply(OptimusParser.new.rollOut("while (~ y == 10) {
-                      y := y + 1
-                    }")).eval
+Bumblebee.new.apply(OptimusParser.new.rollOut("while (~ y == 3) do {
+                                                   print(x )
+                                               }")).eval
 bplc.vamosRodar($smc)
+
 =end
+$smc = SMC.new
+bplc = BPLC.new
+Bumblebee.new.apply(OptimusParser.new.rollOut("while (~ x == 0) do {
+      y := y * x ; x := x - 1
+    } ; print(y)")).eval
+bplc.vamosRodar($smc)

@@ -3,10 +3,7 @@ require_relative 'smc'
 require_relative 'bplc'
 
 
-
 class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematicas
-
-
   rule(:int => simple(:n)) {
     IntLit.new(n)
   }
@@ -29,7 +26,7 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
   }
 
   rule(:left => simple(:l), :right => simple(:r), :op => '- '){
-    Subtractor.new(l, r)
+    Subtractor.new(l,r)
   }
 
   rule(:left => simple(:l), :right => simple(:r), :op => '* '){
@@ -84,8 +81,16 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     LessEqual.new(lb,rb,true)
   }
 
-  rule(:while => "while ",:cond => subtree(:cd),:block => subtree(:bl)){
+  rule(:while => "while ", :cond => subtree(:cd), :block => subtree(:bl)){
     While.new(cd,bl)
+  }
+
+  rule(:print => "print", :arg => subtree(:ag)) {
+    Print.new(ag)
+  }
+
+  rule(:seq1 => subtree(:s1), :seq2 => subtree(:s2)) {
+    Seq.new(s1, s2)
   }
 
   rule(:cmd => subtree(:cmd)){
@@ -164,7 +169,7 @@ Assignment = Struct.new(:ident, :val) do
   end
 end
 
-Equal = Struct.new(:leftbool, :rightbool,:ehNeg) do
+Equal = Struct.new(:leftbool, :rightbool, :ehNeg) do
   def eval
     if(ehNeg)
       $smc.empilhaControle('neg')
@@ -226,6 +231,20 @@ While = Struct.new(:cond,:block) do
     $smc.empilhaControle(block.eval)
     $smc.empilhaControle('loop')
     $smc.empilhaControle(cond.eval)
+  end
+end
+
+Print = Struct.new(:ag) do
+  def eval
+    $smc.empilhaControle('print')
+    $smc.empilhaControle(ag.eval)
+  end
+end
+
+Seq = Struct.new(:s1, :s2) do
+  def eval
+    $smc.empilhaControle(s2.eval)
+    $smc.empilhaControle(s1.eval)
   end
 end
 

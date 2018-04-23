@@ -1,17 +1,7 @@
 
-require 'parslet' #gem indicada
+require 'parslet'
 require 'pp'
 
-=begin
-P1 - 25 e 27/04 - Expressões e comandos.
-    Objetivos:
-    1-Ambientar-se com a linguagem escolhida e suas ferramentas.
-    2-Entender PEG.
-    3-Entender SMC.
-    4-Implementar BPLC-mark0: (i) O tipo de dados SMC, (ii) operações aritméticas, Booleanas e comandos.
-    5-Implementar um parser PEG para operações aritméticas, Booleanas e comandos.
-    6-Implementar um compilador de AST PEG para operações aritméticas, Booleanas e comandos para BPLC-mark0.
-=end
 
 class OptimusParser < Parslet::Parser
   # Basics
@@ -39,7 +29,7 @@ class OptimusParser < Parslet::Parser
   rule(:lcb)        { match('[{]') >> space? }
   rule(:rcb)        { match('[}]') >> space? }
 
-  rule(:ident)      { (lowcase | upcase).repeat(1).as(:id) >> ((lowcase | upcase | integer).repeat(1)).maybe >> space? } # Aceita numeros também no nome
+  rule(:ident)      { (lowcase | upcase).repeat(1).as(:id) >> ((lowcase | upcase | integer).repeat(1)).maybe >> space? }
 
   rule(:sum_op)     { str("+") >> space? }
   rule(:mul_op)     { str("*") >> space? }
@@ -68,11 +58,12 @@ class OptimusParser < Parslet::Parser
   rule(:if_op)      { str("if") >> space? }
   rule(:else_op)    { str("else") >> space? }
   rule(:while_op)   { str("while") >> space? }
+  rule(:do_op)      { str("do") >> space? }
   rule(:print_op)   { str("print") >> space? }
   rule(:exit_op)    { str("exit") >> space? }
 
   # IMP Syntax
-  rule(:program)    { module_op >> ident >> blank? >> clauses >> blank? >> end_op }
+  rule(:program)    { blank? >> module_op >> ident >> blank? >> clauses >> blank? >> end_op }
   rule(:clauses)    { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
   rule(:var)        { var_op >> ident >> (com_op >> ident).repeat(0) >> blank? }
   rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) >> blank? }
@@ -80,22 +71,20 @@ class OptimusParser < Parslet::Parser
   rule(:ini)        { ident >> ini_op >> exp }
   rule(:ex_proc)    { proc_op >> ident >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe >> rp >> block }
   rule(:block)      { lcb >> blank? >> cmd >> rcb >> blank? }
-  rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt >> seq_op >> cmd | cmd_unt).as(:cmd) >> blank? }
+  rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt.as(:cmd)) >> blank? }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op.as(:ass_op) >> exp.as(:val) }
   rule(:ex_if)      { if_op >> lp >> boolexp >> rp >> block >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> block >> (else_op >> cmd).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> cmd).maybe }
-  rule(:ex_while)   { while_op.as(:while) >> lp >> boolexp.as(:cond) >> rp >> block.as(:block)}
-  rule(:ex_print)   { print_op >> lp >> exp >> rp }
+  rule(:ex_while)   { while_op.as(:while) >> lp >> boolexp.as(:cond) >> rp >> do_op >> block.as(:block)}
+  rule(:ex_print)   { print_op.as(:print) >> lp >> exp.as(:arg) >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
   rule(:call)       { ident >> lp >> exp.maybe >> rp }
   rule(:exp)        { mathexp | boolexp | integer | ident }
-  #rule(:mathexp)    { (ident | integer).as(:left) >> (arithop.as(:op) >> mathexp.as(:right)).maybe }
-  rule(:mathexp)    { (ident | integer).as(:left) >> arithop.as(:op) >> (mathexp | ident | integer).as(:right) | ident | integer}
+  rule(:mathexp)    { (ident | integer).as(:left) >> arithop.as(:op) >> (mathexp | ident | integer).as(:right) }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
-  #rule(:boolexp)    { neg_op.maybe.as(:neg) >> ((ident | integer).as(:leftb) >> (boolop.as(:opb) >> boolexp.as(:rightb)).maybe) }
-  rule(:boolexp)    { neg_op.as(:neg).maybe >> (ident | integer).as(:leftb) >> boolop.as(:opb) >> (mathexp | boolexp | ident | integer).as(:rightb) | ident | integer}
+  rule(:boolexp)    { neg_op.as(:neg).maybe >>  (ident | integer).as(:leftb) >> boolop.as(:opb) >> exp.as(:rightb) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:cmd_unt) #, alterar root de acordo com teste por enquanto
+  root(:cmd)
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
@@ -106,33 +95,15 @@ class OptimusParser < Parslet::Parser
 end
 
 =begin
-#OptimusParser.new.parse("1 + 1 + 1")
-#OptimusParser.new.parsea("if (1 > 1) { af := 1 } else { af := 1 }");
-#OptimusParser.new.parsea("if (1 > 1) { af := 1 + 1 + 1 - 100 * 1 / 3 ; topstermctopper := 1 } else { af := 1 | vlwjoao := 2 }");
-#OptimusParser.new.parse("module top var top proc top ( top ) { af := 1 } end"); # :program
-#  module_op >> ident >> ((var | const | init).repeat(1)).maybe >> proc_op >> ident >> lp >> ( ident >> (( com_op >> ident ).repeat(1)).maybe ).maybe >> rp >> block >> end_op
-
-OptimusParser.new.rollOut("module Fact var y init y = 1 proc fact(x) { while (~ x == 0) { y := x * y ; x := x > 1 } ; print(y) } end");
-OptimusParser.new.rollOut("module Fact
-                  var y
-                  init y = 1 
-                  proc fact(x) { 
-                    while (~ x == 0) { 
-                      y := x * y ; y := x + 1 
-                    } ; print(y) 
-                  }
-                end");
-
-OptimusParser.new.rollOut("module Fact
-                  var y, x
-                  init y = 1 
-                  proc fact(x) { 
-                    if (~ x == 0) { 
-                      y := x * y ; y := x + 1 
-                    } 
-                  }
-                end");
-
-
-OptimusParser.new.rollOut("1+1+1+1")
+# Fatorial
+OptimusParser.new.rollOut("
+module Fact
+  var y
+  init y = 1 
+  proc fact(x) { 
+    while (~ x == 0) do { 
+      y := y * x ; x := x - 1 
+    } ; print(y) 
+  }
+end");
 =end
