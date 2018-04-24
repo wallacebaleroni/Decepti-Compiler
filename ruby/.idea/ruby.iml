@@ -7,6 +7,6 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="parslet (v1.8.2, jruby-9.1.16.0-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="parslet (v1.8.2, ruby-2.4.3-p205) [gem]" level="application" />
   </component>
 </module>
