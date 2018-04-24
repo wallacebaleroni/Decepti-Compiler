@@ -204,6 +204,19 @@ class SMC
     self.desempilhaControle
   end
 
+  def cife()
+    puts("C if E")
+    puts()
+    self.desempilhaControle()
+    bool = self.desempilhaValor()
+    if(!bool)
+      aux = self.desempilhaControle
+      while(aux != 'fimif')
+        aux = self.desempilhaControle
+      end
+    end
+
+  end
 
 end
 

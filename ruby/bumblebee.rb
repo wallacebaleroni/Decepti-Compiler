@@ -89,6 +89,10 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     While.new(cd,bl)
   }
 
+  rule(:if => "if ", :cond => subtree(:cd), :block => subtree(:bl)){
+    If.new(cd,bl)
+  }
+
   rule(:print => "print", :arg => subtree(:ag)) {
     Print.new(ag)
   }
@@ -238,6 +242,15 @@ While = Struct.new(:cond,:block) do
     $smc.empilhaControle(cond.eval)
     $smc.empilhaControle(block.eval)
     $smc.empilhaControle('loop')
+    $smc.empilhaControle(cond.eval)
+  end
+end
+
+If = Struct.new(:cond,:block) do
+  def eval
+    $smc.empilhaControle('fimif')
+    $smc.empilhaControle(block.eval)
+    $smc.empilhaControle('if')
     $smc.empilhaControle(cond.eval)
   end
 end
