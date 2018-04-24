@@ -73,7 +73,7 @@ class OptimusParser < Parslet::Parser
   rule(:block)      { lcb >> blank? >> cmd >> rcb >> blank? }
   rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt.as(:cmd)) >> blank? }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op.as(:ass_op) >> exp.as(:val) }
-  rule(:ex_if)      { if_op.as(:if) >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> block >> (else_op >> cmd).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> cmd).maybe }
+  rule(:ex_if)      { if_op.as(:if) >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op.as(:else) >> block.as(:blockelse)).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> block >> (else_op >> cmd).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> cmd).maybe }
   rule(:ex_while)   { while_op.as(:while) >> lp >> boolexp.as(:cond) >> rp >> do_op >> block.as(:block)}
   rule(:ex_print)   { print_op.as(:print) >> lp >> exp.as(:arg) >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }

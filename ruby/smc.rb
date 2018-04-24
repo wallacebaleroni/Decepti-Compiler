@@ -209,7 +209,13 @@ class SMC
     puts()
     self.desempilhaControle()
     bool = self.desempilhaValor()
-    if(!bool)
+    if(bool)
+      i = @pilhaControle.index('fimif')
+      while(@pilhaControle[i] != 'fimelse')
+        @pilhaControle[i] = nil
+        i += 1
+      end
+    else
       aux = self.desempilhaControle
       while(aux != 'fimif')
         aux = self.desempilhaControle

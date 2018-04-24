@@ -93,6 +93,10 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     If.new(cd,bl)
   }
 
+  rule(:if => "if ", :cond => subtree(:cd), :block => subtree(:blif),:else => "else ", :blockelse => subtree(:blelse)){
+    IfElse.new(cd,blif,blelse)
+  }
+
   rule(:print => "print", :arg => subtree(:ag)) {
     Print.new(ag)
   }
@@ -250,6 +254,17 @@ If = Struct.new(:cond,:block) do
   def eval
     $smc.empilhaControle('fimif')
     $smc.empilhaControle(block.eval)
+    $smc.empilhaControle('if')
+    $smc.empilhaControle(cond.eval)
+  end
+end
+
+IfElse = Struct.new(:cond,:blockif,:blockelse) do
+  def eval
+    $smc.empilhaControle('fimelse')
+    $smc.empilhaControle(blockelse.eval)
+    $smc.empilhaControle('fimif')
+    $smc.empilhaControle(blockif.eval)
     $smc.empilhaControle('if')
     $smc.empilhaControle(cond.eval)
   end

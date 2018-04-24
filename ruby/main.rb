@@ -85,6 +85,17 @@ Bumblebee.new.apply(OptimusParser.new.rollOut("while (~ y == 3) do {
                                                }")).eval
 bplc.vamosRodar($smc)
 
+$smc = SMC.new
+bplc = BPLC.new
+Bumblebee.new.apply(OptimusParser.new.rollOut("proc fact(x) {
+  x := 6 ; if (x == 0) {
+      x := x - 1
+  } else { x := x - 2 }
+  }")).eval
+bplc.vamosRodar($smc)
+=end
+
+
 ################# ESSE DEVE SER A MAIN NO DIA DA APRENSENTAÇÃO#######################
 $smc = SMC.new
 bplc = BPLC.new
@@ -96,13 +107,3 @@ Bumblebee.new.apply(OptimusParser.new.rollOut("proc fact(x) {
 )).eval
 bplc.vamosRodar($smc)
 #####################################################################################
-=end
-
-$smc = SMC.new
-bplc = BPLC.new
-Bumblebee.new.apply(OptimusParser.new.rollOut("proc fact(x) {
-  x := 6 ; if (x == 0) {
-      x := x - 1
-  }
-  }")).eval
-bplc.vamosRodar($smc)

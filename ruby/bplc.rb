@@ -24,7 +24,7 @@ class BPLC
           smc.cwhilee()
         elsif(val == 'if')
           smc.cife()
-        elsif(val == 'fimloop'or val == 'fimif')
+        elsif(val == 'fimloop'or val == 'fimif' or val =='fimelse')
           smc.cnil()
         elsif(val == ';')
           smc.csc()
