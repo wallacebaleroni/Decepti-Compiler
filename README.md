@@ -6,7 +6,7 @@ Compilador utilizando Ruby e a Gem [Parslet (PEG Parser Generator for Ruby)](htt
 
 Compilador para a linguagem [IMP](https://github.com/ChristianoBraga/BPLC/tree/master/examples/imp) escrito em Ruby, utilizando o [Parslet](http://kschiess.github.io/parslet/), uma biblioteca para construir parsers seguindo o modelo PEG (Parsing Expression Grammar).
 
-Trabalho em grupo feito para a matéria de Compiladores, por [Raffael Paranhos](https://github.com/rmparanhos), [Wallace Baleroni](https://github.com/wallacebaleroni) e [Júlia Falcão](https://github.com/juliafalcao).
+Trabalho em grupo feito para a matéria de Compiladores, por [Júlia Falcão](https://github.com/juliafalcao), [Raffael Paranhos](https://github.com/rmparanhos) e [Wallace Baleroni](https://github.com/wallacebaleroni).
 
 # Pré-requisitos
 É necessário ter a linguagem Ruby e o Parslet instalados.
