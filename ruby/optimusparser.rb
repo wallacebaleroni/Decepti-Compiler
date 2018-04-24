@@ -69,7 +69,7 @@ class OptimusParser < Parslet::Parser
   rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) >> blank? }
   rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe >> blank? }
   rule(:ini)        { ident >> ini_op >> exp }
-  rule(:ex_proc)    { proc_op >> ident >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe >> rp >> block }
+  rule(:ex_proc)    { proc_op. >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
   rule(:block)      { lcb >> blank? >> cmd >> rcb >> blank? }
   rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt.as(:cmd)) >> blank? }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op.as(:ass_op) >> exp.as(:val) }
@@ -84,7 +84,7 @@ class OptimusParser < Parslet::Parser
   rule(:boolexp)    { neg_op.as(:neg).maybe >>  (ident | integer).as(:leftb) >> boolop.as(:opb) >> exp.as(:rightb) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:cmd)
+  root(:ex_proc)
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
@@ -99,11 +99,11 @@ end
 OptimusParser.new.rollOut("
 module Fact
   var y
-  init y = 1 
-  proc fact(x) { 
-    while (~ x == 0) do { 
-      y := y * x ; x := x - 1 
-    } ; print(y) 
+  init y = 1
+  proc fact(x) {
+    while (~ x == 0) do {
+      y := y * x ; x := x - 1
+    } ; print(y)
   }
 end");
 =end

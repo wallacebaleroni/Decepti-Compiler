@@ -41,6 +41,10 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     Assignment.new(i,v)
   }
 
+  rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':= ', :cmd => subtree(:c)){
+    Assignment.new(i,v)
+  }
+
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '== '){
     Equal.new(lb,rb,false)
   }
@@ -95,6 +99,10 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
 
   rule(:cmd => subtree(:cmd)){
     Command.new(cmd)
+  }
+
+  rule(:proc => simple(:n), :parametros => subtree(:p), :block => subtree(:bl)){
+    Procedure.new(bl)
   }
 
 end
@@ -252,6 +260,12 @@ end
 Command = Struct.new(:cmd) do
   def eval
     $smc.empilhaControle(cmd.eval)
+  end
+end
+
+Procedure = Struct.new(:bl) do
+  def eval
+    $smc.empilhaControle(bl.eval)
   end
 end
 

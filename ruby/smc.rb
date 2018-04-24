@@ -2,7 +2,7 @@ class SMC
 
   def initialize()
     @pilhaValor = []
-    @memoria = ["x", 5, "y",1]
+    @memoria = []
     @pilhaControle = []
   end
 
