@@ -3,7 +3,7 @@ require_relative 'smc'
 require_relative 'bplc'
 
 
-class Bumblebee < Parslet::Transform # Transform que aplica operaçoes matematicas
+class Bumblebee < Parslet::Transform
   rule(:int => simple(:n)) {
     IntLit.new(n)
   }
