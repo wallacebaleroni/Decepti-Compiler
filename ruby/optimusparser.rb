@@ -31,23 +31,23 @@ class OptimusParser < Parslet::Parser
 
   rule(:ident)      { (lowcase | upcase).repeat(1).as(:id) >> ((lowcase | upcase | integer).repeat(1)).maybe >> blank? }
 
-  rule(:sum_op)     { str("+") >> blank? }
-  rule(:mul_op)     { str("*") >> blank? }
-  rule(:sub_op)     { str("-") >> blank? }
-  rule(:div_op)     { str("/") >> blank? }
-  rule(:cho_op)     { str("|") >> blank? }
+  rule(:sum_op)     { str("+").as(:op) >> blank? }
+  rule(:mul_op)     { str("*").as(:op) >> blank? }
+  rule(:sub_op)     { str("-").as(:op) >> blank? }
+  rule(:div_op)     { str("/").as(:op) >> blank? }
+  rule(:cho_op)     { str("|").as(:op) >> blank? }
 
-  rule(:neg_op)     { str("~") >> blank? }
-  rule(:eq_op)      { str("==") >> blank? }
-  rule(:lt_op)      { str("<") >> blank? }
-  rule(:lteq_op)    { str("<=") >> blank? }
-  rule(:gt_op)      { str(">") >> blank? }
-  rule(:gteq_op)    { str(">=") >> blank? }
+  rule(:neg_op)     { str("~").as(:neg) >> blank? }
+  rule(:eq_op)      { str("==").as(:opb) >> blank? }
+  rule(:lt_op)      { str("<").as(:opb) >> blank? }
+  rule(:lteq_op)    { str("<=").as(:opb) >> blank? }
+  rule(:gt_op)      { str(">").as(:opb) >> blank? }
+  rule(:gteq_op)    { str(">=").as(:opb) >> blank? }
 
   rule(:seq_op)     { str(";") >> blank? }
   rule(:com_op)     { str(",") >> blank? }
   rule(:ini_op)     { str('=') >> blank? }
-  rule(:ass_op)     { str(":=") >> blank? }
+  rule(:ass_op)     { str(":=").as(:ass_op) >> blank? }
 
   rule(:module_op)  { blank? >> str("module") >> blank? }
   rule(:end_op)     { str("end") >> blank? }
@@ -55,11 +55,11 @@ class OptimusParser < Parslet::Parser
   rule(:const_op)   { str("const") >> blank? }
   rule(:init_op)    { str("init") >> blank? }
   rule(:proc_op)    { blank? >> str("proc") >> blank? }
-  rule(:if_op)      { str("if") >> blank? }
-  rule(:else_op)    { str("else") >> blank? }
-  rule(:while_op)   { str("while") >> blank? }
+  rule(:if_op)      { str("if").as(:if) >> blank? }
+  rule(:else_op)    { str("else").as(:else) >> blank? }
+  rule(:while_op)   { str("while").as(:while) >> blank? }
   rule(:do_op)      { str("do") >> blank? }
-  rule(:print_op)   { str("print") >> blank? }
+  rule(:print_op)   { str("print").as(:print) >> blank? }
   rule(:exit_op)    { str("exit") >> blank? }
 
   # IMP Syntax
@@ -72,16 +72,16 @@ class OptimusParser < Parslet::Parser
   rule(:ex_proc)    { proc_op. >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
   rule(:block)      { lcb >> cmd >> rcb }
   rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt.as(:cmd)) }
-  rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op.as(:ass_op) >> exp.as(:val) }
-  rule(:ex_if)      { if_op.as(:if) >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op.as(:else) >> block.as(:blockelse)).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> block >> (else_op >> cmd).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> cmd).maybe }
-  rule(:ex_while)   { while_op.as(:while) >> lp >> boolexp.as(:cond) >> rp >> do_op >> block.as(:block)}
-  rule(:ex_print)   { print_op.as(:print) >> lp >> exp.as(:arg) >> rp }
+  rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op >> exp.as(:val) }
+  rule(:ex_if)      { if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block.as(:blockelse)).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> block).maybe | if_op >> lp >> boolexp >> rp >> block >> (else_op >> cmd).maybe | if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> cmd).maybe }
+  rule(:ex_while)   { while_op >> lp >> boolexp.as(:cond) >> rp >> do_op >> block.as(:block)}
+  rule(:ex_print)   { print_op >> lp >> exp.as(:arg) >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
   rule(:call)       { ident >> lp >> exp.maybe >> rp }
   rule(:exp)        { mathexp | boolexp | integer | ident }
-  rule(:mathexp)    { (ident | integer).as(:left) >> arithop.as(:op) >> (mathexp | ident | integer).as(:right) }
+  rule(:mathexp)    { (ident | integer).as(:left) >> arithop >> (mathexp | ident | integer).as(:right) }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
-  rule(:boolexp)    { neg_op.as(:neg).maybe >>  (ident | integer).as(:leftb) >> boolop.as(:opb) >> exp.as(:rightb) }
+  rule(:boolexp)    { neg_op.maybe >>  (ident | integer).as(:leftb) >> boolop >> exp.as(:rightb) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
   root(:ex_proc)
@@ -93,17 +93,3 @@ class OptimusParser < Parslet::Parser
   end
 
 end
-
-=begin
-# Fatorial
-OptimusParser.new.rollOut("
-module Fact
-  var y
-  init y = 1
-  proc fact(x) {
-    while (~ x == 0) do {
-      y := y * x ; x := x - 1
-    } ; print(y)
-  }
-end");
-=end

@@ -3,7 +3,7 @@ require_relative 'smc'
 require_relative 'bplc'
 
 
-class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematicas
+class Bumblebee < Parslet::Transform # Transform que aplica operaçoes matematicas
   rule(:int => simple(:n)) {
     IntLit.new(n)
   }
@@ -12,88 +12,79 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     IdLit.new(c)
   }
 
-
-#So you don’t want to listen and really want that big gun with the foot aiming addon. You’ll be needing subtree(symbol).
-  rule(:left => simple(:l), :right => simple(:r), :op => '+ '){
+  rule(:left => simple(:l), :right => simple(:r), :op => '+') {
     Addition.new(l, r)
-=begin
-    @smc = SMC.new
-    @smc.empilhaControle('add')
-    @smc.empilhaControle(l)
-    @smc.empilhaControle(r)
-    @bplc = BPLC.new(@smc)
-=end
   }
 
-  rule(:left => simple(:l), :right => simple(:r), :op => '- '){
+  rule(:left => simple(:l), :right => simple(:r), :op => '-') {
     Subtractor.new(l,r)
   }
 
-  rule(:left => simple(:l), :right => simple(:r), :op => '* '){
+  rule(:left => simple(:l), :right => simple(:r), :op => '*') {
     Multiply.new(l,r)
   }
 
-  rule(:left => simple(:l), :right => simple(:r), :op => '/ '){
+  rule(:left => simple(:l), :right => simple(:r), :op => '/') {
     Division.new(l,r)
   }
 
-  rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':= '){
+  rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':=') {
     Assignment.new(i,v)
   }
 
-  rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':= ', :cmd => subtree(:c)){
+  rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':=', :cmd => subtree(:c)) {
     Assignment.new(i,v)
   }
 
-  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '== '){
+  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '==') {
     Equal.new(lb,rb,false)
   }
 
-  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '> '){
+  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>') {
     GreaterThan.new(lb,rb,false)
   }
 
-  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>= '){
+  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>=') {
     GreaterEqual.new(lb,rb,false)
   }
 
-  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '< '){
+  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<') {
     LessThan.new(lb,rb,false)
   }
 
-  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<= '){
+  rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<=') {
     LessEqual.new(lb,rb,false)
   }
 
-  rule(:neg => '~ ', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '== '){
+  rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '==') {
     Equal.new(lb,rb,true)
   }
 
-  rule(:neg => '~ ', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '> '){
+  rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>') {
     GreaterThan.new(lb,rb,true)
   }
 
-  rule(:neg => '~ ', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>= '){
+  rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>=') {
     GreaterEqual.new(lb,rb,true)
   }
 
-  rule(:neg => '~ ', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '< '){
+  rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<') {
     LessThan.new(lb,rb,true)
   }
 
-  rule(:neg => '~ ', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<= '){
+  rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<=') {
     LessEqual.new(lb,rb,true)
   }
 
-  rule(:while => "while ", :cond => subtree(:cd), :block => subtree(:bl)){
+  rule(:while => "while", :cond => subtree(:cd), :block => subtree(:bl)) {
     While.new(cd,bl)
   }
 
-  rule(:if => "if ", :cond => subtree(:cd), :block => subtree(:bl)){
+  rule(:if => "if", :cond => subtree(:cd), :block => subtree(:bl)) {
     If.new(cd,bl)
   }
 
-  rule(:if => "if ", :cond => subtree(:cd), :block => subtree(:blif),:else => "else ", :blockelse => subtree(:blelse)){
+  rule(:if => "if", :cond => subtree(:cd), :block => subtree(:blif),:else => "else", :blockelse => subtree(:blelse)) {
     IfElse.new(cd,blif,blelse)
   }
 
@@ -105,11 +96,11 @@ class Bumblebee < Parslet::Transform #transform que aplica operaçoes matematica
     Seq.new(s1, s2)
   }
 
-  rule(:cmd => subtree(:cmd)){
+  rule(:cmd => subtree(:cmd)) {
     Command.new(cmd)
   }
 
-  rule(:proc => simple(:n), :parametros => subtree(:p), :block => subtree(:bl)){
+  rule(:proc => simple(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
     Procedure.new(bl)
   }
 
