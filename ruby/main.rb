@@ -99,10 +99,15 @@ bplc.vamosRodar($smc)
 ################# ESSE DEVE SER A MAIN NO DIA DA APRENSENTAÇÃO#######################
 $smc = SMC.new
 bplc = BPLC.new
-Bumblebee.new.apply(OptimusParser.new.rollOut("proc fact(x) {
-  x := 6 ; y := 1 ; while (~ x == 0) do {
-      y := y * x ; x := x - 1
-  } ; print(y)
+Bumblebee.new.apply(OptimusParser.new.rollOut("
+proc fact(x) {
+  x := 6;
+  y := 1;
+  while (~ x == 0) do {
+      y := y * x;
+      x := x - 1
+  };
+  print(y)
   }"
 )).eval
 bplc.vamosRodar($smc)
