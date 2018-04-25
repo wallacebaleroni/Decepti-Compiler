@@ -249,20 +249,3 @@ class SMC
   end
 
 end
-
-=begin
-smc = SMC.new
-smc.escreveMemoria("teste",2)
-puts("----------")
-smc.escreveMemoria("teste2","julia")
-puts("----------")
-smc.escreveMemoria("teste3",40)
-puts("----------")
-puts(smc.acessaMemoria("teste2"))
-puts(smc.acessaMemoria("teste"))
-puts(smc.acessaMemoria("teste3"))
-puts("--------")
-smc.escreveMemoria('teste2',"vacilona")
-puts("--------")
-puts(smc.acessaMemoria("teste2"))
-=end
