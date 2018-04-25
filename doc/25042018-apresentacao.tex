@@ -1,0 +1,225 @@
+\documentclass{beamer}
+
+\usetheme[
+  outer/progressbar=frametitle
+]{metropolis}
+
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyvrb} % for "\Verb" macro
+
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue}
+
+\title{DeceptiCompiler}
+
+\subtitle{Mais do que os olhos podem ver.}
+
+\author[Abbrev.]{P1 de Compiladores (2018.1), por Raffael Paranhos, Wallace Baleroni e Júlia Falcão}
+
+\institute[UFF]{Universidade Federal Fluminense}
+
+\date{25 de Abril de 2018}
+
+\begin{document}
+
+% ---
+
+\begin{frame}[plain]
+
+\titlepage
+
+\end{frame}
+
+% ---
+
+\begin{frame}[fragile]{Parser}
+Classe \verb|OptimusParser < Parslet::Parser|, contendo regras do tipo:
+\begin{verbatim}
+rule(:exp) { mathexp | boolexp | integer | ident }
+\end{verbatim}
+
+Uma "expressão" pode ser uma exp. matemática, booleana, um inteiro ou um identificador (uma variável).
+
+\begin{verbatim}
+rule(:ini) { ident >> ini_op >> exp }
+\end{verbatim}
+Uma inicialização é composta por um identificador, o operador e uma "expressão".
+
+
+A regra na qual o parser inicia o processo é declarada por:
+\begin{verbatim}
+root(:ex_proc)
+\end{verbatim}
+
+\end{frame}
+
+% ---
+
+\begin{frame}[fragile]{Parser}
+\begin{itemize}
+\item \textbf{Expressão  aritmética}:
+\begin{verbatim}
+rule(:mathexp) { (ident | integer) >> arithop
+>> (mathexp | ident | integer) }
+\end{verbatim}
+
+
+\item \textbf{Expressão booleana}:
+\begin{verbatim}
+rule(:boolexp) { neg_op.maybe >> (ident | integer)
+>> boolop >> exp }
+\end{verbatim}
+
+\item \textbf{Comando}:
+\begin{verbatim}
+rule(:cmd) { (cmd_unt >> cho_op >> cmd |
+cmd_unt >> seq_op >> cmd | cmd_unt) }
+
+rule(:cmd_unt) { ex_if | ex_while | ex_print |
+ex_exit | call | ident >> ass_op >> exp }
+\end{verbatim}
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Parser}
+Executando o parse de um módulo inteiro:
+\begin{verbatim}
+OptimusParser.new.rollOut("
+    module Fact
+    var y, x
+    init y = 1 
+
+    proc fact(x) {
+        if (~ x == 0) {
+            y := x * y ; y := x + 1
+        } 
+    }
+    end
+");
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Transform}
+A classe \verb|Bumblebee < Parslet::Transform| recebe a saída do parser e determina como e onde cada parte do código será empilhada, inicializando a estrutura SMC.
+
+Para fazer isso, são usados \textit{aliases} no código do \verb|OptimusParser| que identificam as partes de cada expressão/comando para que o transform as reconheça.
+
+\begin{verbatim}
+rule(:mathexp) { (ident | integer).as(:left) >> arithop
+>> (mathexp | ident | integer).as(:right) }
+
+rule(:sum_op) { str("+").as(:op) >> blank? }
+
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]{Transform}
+Nessa classe \verb|Bumblebee|, são implementadas estruturas para cada tipo de expressão/comando, que avaliam os componentes e constroem o \verb|SMC| correspondente.
+
+\begin{verbatim}
+Addition = Struct.new(:left, :right) do
+  def eval
+    $smc.empilhaControle('add')
+    $smc.empilhaControle(left.eval)
+    $smc.empilhaControle(right.eval)
+  end
+end
+\end{verbatim}
+No caso de uma adição, por exemplo, empilhamos na pilha de controle a string "add", o lado esquerdo da expressão, e por fim o lado direito.
+
+\end{frame}
+
+\begin{frame}[fragile]{SMC}
+A classe SMC é usada para representar uma instância da estrutura \verb|<S, M, C>|, que tem como atributos as pilhas de controle, de valor e a lista de memória. Nessa lista, um item é o nome do identificador e o item seguinte é seu valor atual guardado em memória.
+
+Exemplo:
+\begin{verbatim}
+@memoria = ["x", 5, "y", 1]
+\end{verbatim}
+
+A classe também define as operações para manipular a estrutura, ou seja, empilhar e desempilhar itens nas pilhas, acessar a memória e escrever nela.
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{BPLC}
+A classe \verb|BPLC| possui o método \verb|vamosRodar| que recebe uma instância de \verb|SMC| e vai desempilhando o que está nas pilhas e executando as operações devidas.
+
+\begin{verbatim}
+val = smc.topoControle()
+if (val == 'assign') smc.ce()
+\end{verbatim}
+
+\textbf{smc.rb}
+\begin{verbatim}
+def ce()
+  self.desempilhaControle()
+  val = self.desempilhaValor()
+  ident = self.desempilhaValor()
+  self.escreveMemoria(ident, val)
+end
+\end{verbatim}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Execução}
+Exemplo:
+
+\verb|code = "x := 2"  #| código em IMP\newline\newline
+\verb|$smc = SMC.new  #| cria instância de SMC\newline\newline
+\verb|bplc = BPLC.new  #| cria instância de BPLC\newline\newline
+\verb|Bumblebee.new.apply(OptimusParser.new.rollOut(code)).eval|\newline
+\verb|#| roda o parser no código em IMP e passa a saída para o método que aplica a transformação e constrói o SMC\newline\newline
+\verb|bplc.vamosRodar($smc)|\newline
+\verb|#| chama o método de BPLC que vai executar o programa a partir do SMC
+
+\end{frame}
+
+\begin{frame}[fragile]{Saída}
+
+\begin{itemize}
+\item \textbf{Saída do parser}
+\begin{verbatim}
+{:cmd => {:ident => {:id => "x" @0},
+:ass_op => ":= " @2, :val => {:int => "2" @5}}}
+\end{verbatim}
+
+\item \textbf{Situação do SMC a cada passo}
+\begin{verbatim}
+Controle   ["x", "ident", 2, "assign"]
+Valor      [1, 1, "x"]
+Memoria    ["x", 1, "y", 720]
+\end{verbatim}
+
+\item \textbf{Regras}
+\begin{verbatim}
+E op E
+C := E
+\end{verbatim}
+
+\item \textbf{Comandos de \textit{print}}
+\begin{verbatim}
+Print
+720
+\end{verbatim}
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Makefile}
+O comando \verb|make| instala as dependências necessárias para o compilador funcionar e roda o teste do fatorial de x = 6.
+
+Testes adicionais podem ser executados digitando \verb|make [test]|, e os disponíveis são \verb|add|, \verb|sub|, \verb|mul|, \verb|div|, \verb|if|, \verb|while|.
+
+\verb|testes/add.rb|, por exemplo, contém um procedimento simples em IMP que executa algumas adições e imprime o resultado. \verb|make add| executa esse teste e imprime o retorno.
+
+\end{frame}
+\end{document}
+
