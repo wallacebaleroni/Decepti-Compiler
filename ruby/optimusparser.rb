@@ -93,5 +93,4 @@ class OptimusParser < Parslet::Parser
   rescue Parslet::ParseFailed => failure
     puts failure.parse_failure_cause.ascii_tree
   end
-
 end
