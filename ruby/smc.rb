@@ -210,9 +210,10 @@ class SMC
     self.desempilhaControle()
     bool = self.desempilhaValor()
     # Checa condição do if
-    if(bool)
+    if(bool) # TRUE
       # Checa se existe 'else' apos o 'fimif'
       i = @pilhaControle.index('fimif')
+      @pilhaControle[i] = nil # Remove o 'fimif'
       while(@pilhaControle[i] == nil)
         i += 1
       end
@@ -222,10 +223,9 @@ class SMC
           @pilhaControle[i] = nil
           i += 1
         end
+        @pilhaControle[i] = nil
       end
-    else
-      # tem que apagar conteudo do if
-      # vai apagando, no final, procura 'else', se tiver apaga o token
+    else # FALSE
       i = 0
       # Desempilha tudo antes do 'fimif'
       while(@pilhaControle[i] != 'fimif')
