@@ -17,7 +17,6 @@ class SMC
     puts()
   end
 
-
   def empilhaControle(controle)
     @pilhaControle.unshift(controle)
     puts("Controle   #{@pilhaControle}")

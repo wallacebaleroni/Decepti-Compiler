@@ -4,6 +4,7 @@ require_relative 'bplc'
 
 
 class Bumblebee < Parslet::Transform
+
   rule(:int => simple(:n)) {
     IntLit.new(n)
   }
@@ -105,6 +106,7 @@ class Bumblebee < Parslet::Transform
   }
 
 end
+
 
 #Estruturas
 Addition = Struct.new(:left, :right) do
