@@ -69,14 +69,14 @@ class OptimusParser < Parslet::Parser
   rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) }
   rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe }
   rule(:ini)        { ident >> ini_op >> exp }
-  rule(:ex_proc)    { proc_op. >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
+  rule(:ex_proc)    { proc_op >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
   rule(:block)      { lcb >> cmd >> rcb }
   rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt.as(:cmd)) }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op >> exp.as(:val) }
   rule(:ex_if)      { if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block.as(:blockelse)).maybe |
-                      if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> block).maybe |
-                      if_op >> lp >> boolexp >> rp >> block >> (else_op >> cmd).maybe |
-                      if_op >> lp >> boolexp >> rp >> cmd >> (else_op >> cmd).maybe }
+                            if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block) >> (else_op >> block.as(:blockelse)).maybe |
+                            if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> cmd.as(:blockelse)).maybe |
+                            if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block) >> (else_op >> cmd.as(:blockelse)).maybe }
   rule(:ex_while)   { while_op >> lp >> boolexp.as(:cond) >> rp >> do_op >> block.as(:block)}
   rule(:ex_print)   { print_op >> lp >> exp.as(:arg) >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }

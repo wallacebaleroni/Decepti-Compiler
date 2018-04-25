@@ -254,6 +254,7 @@ IfElse = Struct.new(:cond,:blockif,:blockelse) do
   def eval
     $smc.empilhaControle('fimelse')
     $smc.empilhaControle(blockelse.eval)
+    $smc.empilhaControle('else')
     $smc.empilhaControle('fimif')
     $smc.empilhaControle(blockif.eval)
     $smc.empilhaControle('if')

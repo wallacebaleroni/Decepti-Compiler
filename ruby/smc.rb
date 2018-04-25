@@ -209,16 +209,40 @@ class SMC
     puts()
     self.desempilhaControle()
     bool = self.desempilhaValor()
+    # Checa condição do if
     if(bool)
+      # Checa se existe 'else' apos o 'fimif'
       i = @pilhaControle.index('fimif')
-      while(@pilhaControle[i] != 'fimelse')
-        @pilhaControle[i] = nil
+      while(@pilhaControle[i] == nil)
         i += 1
       end
+      if(@pilhaControle[i] == 'else')
+        # Se existe, apaga o conteudo do else
+        while(@pilhaControle[i] != 'fimelse')
+          @pilhaControle[i] = nil
+          i += 1
+        end
+      end
     else
-      aux = self.desempilhaControle
-      while(aux != 'fimif')
-        aux = self.desempilhaControle
+      # tem que apagar conteudo do if
+      # vai apagando, no final, procura 'else', se tiver apaga o token
+      i = 0
+      # Desempilha tudo antes do 'fimif'
+      while(@pilhaControle[i] != 'fimif')
+        self.desempilhaControle()
+      end
+      self.desempilhaControle() # Desempilha o 'fimif'
+
+      # Checa se existe 'else' apos o 'fimif'
+      i = 0
+      while(@pilhaControle[i] == nil && self.tamPilhaControle > 0)
+        i += 1
+      end
+      if(@pilhaControle[i] == 'else')
+        self.desempilhaControle()
+        # Se existe, apaga o token 'else' e 'fimelse' pra executar o resto
+        i = @pilhaControle.index('fimelse')
+        @pilhaControle[i] = nil
       end
     end
 
