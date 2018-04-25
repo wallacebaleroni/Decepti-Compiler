@@ -22,8 +22,11 @@ div:
 while:
 	ruby ./testes/while.rb
 
-if:
-	ruby ./testes/if.rb
+iftrue:
+	ruby ./testes/iftrue.rb
+
+iffalse:
+	ruby ./testes/iffalse.rb
 
 
 uninstall:
