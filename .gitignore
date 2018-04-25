@@ -13,7 +13,7 @@ Todo.txt
 
 # Exclusive to RubyMine and VS Code:
 /.idea/
-/ruby/.idea/
+/ruby/.idea
 .vscode/
 
 # Used by dotenv library to load environment variables.
