@@ -1,5 +1,3 @@
-require 'parslet'
-
 class Tree
     @id = nil
     @children = nil
@@ -18,7 +16,7 @@ class Tree
             @children.add(item)
 
         else
-            @children = @children.push(Tree.new(item))
+            @children.push(Tree.new(item, []))
         end
     end
 
@@ -38,6 +36,3 @@ class Tree
     end
 
 end
-
-add1 = Tree.new("add", [1, Tree.new("add", [2, 3])])
-puts add1
