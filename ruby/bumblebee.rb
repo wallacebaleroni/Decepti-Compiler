@@ -113,13 +113,9 @@ Addition = Struct.new(:left, :right) do
   def eval
     $smc.empilhaControle('add')
 
-    unless(left.eval.nil?)
-      $smc.empilhaControle(left.eval)
-    end
+      $smc.empilhaControle(left)
 
-    unless(right.eval.nil?)
-      $smc.empilhaControle(right.eval)
-    end
+      $smc.empilhaControle(right)
   end
 end
 
@@ -127,13 +123,9 @@ Subtractor = Struct.new(:left, :right) do
   def eval
     $smc.empilhaControle('sub')
 
-    unless(left.eval.nil?)
-      $smc.empilhaControle(left.eval)
-    end
+      $smc.empilhaControle(left)
 
-    unless(right.eval.nil?)
-      $smc.empilhaControle(right.eval)
-    end
+      $smc.empilhaControle(right)
 
   end
 end
@@ -142,15 +134,10 @@ Multiply = Struct.new(:left, :right) do
   def eval
     $smc.empilhaControle('mul')
 
-    unless(left.eval.nil?)
-      $smc.empilhaControle(left.eval)
+      $smc.empilhaControle(left)
 
-    end
+      $smc.empilhaControle(right)
 
-    unless(right.eval.nil?)
-      $smc.empilhaControle(right.eval)
-
-    end
 
   end
 end
@@ -159,22 +146,17 @@ Division = Struct.new(:left, :right) do
   def eval
     $smc.empilhaControle('div')
 
-    unless(left.eval.nil?)
-      $smc.empilhaControle(left.eval)
-    end
+      $smc.empilhaControle(left)
 
-    unless(right.eval.nil?)
-      $smc.empilhaControle(right.eval)
-    end
+      $smc.empilhaControle(right)
   end
 end
 
 Assignment = Struct.new(:ident, :val) do
   def eval
       $smc.empilhaControle('assign')
-      $smc.empilhaControle(val.eval)
-      $smc.empilhaControle('ident')
-      $smc.empilhaControle(ident.eval)
+      $smc.empilhaControle(val)
+      $smc.empilhaControle(ident)
   end
 end
 
@@ -184,8 +166,8 @@ Equal = Struct.new(:leftbool, :rightbool, :ehNeg) do
       $smc.empilhaControle('neg')
     end
     $smc.empilhaControle('eq')
-    $smc.empilhaControle(rightbool.eval)
-    $smc.empilhaControle(leftbool.eval)
+    $smc.empilhaControle(rightbool)
+    $smc.empilhaControle(leftbool)
   end
 end
 
@@ -195,8 +177,8 @@ GreaterThan = Struct.new(:leftbool, :rightbool,:ehNeg) do
       $smc.empilhaControle('neg')
     end
     $smc.empilhaControle('gt')
-    $smc.empilhaControle(rightbool.eval)
-    $smc.empilhaControle(leftbool.eval)
+    $smc.empilhaControle(rightbool)
+    $smc.empilhaControle(leftbool)
   end
 end
 
@@ -206,8 +188,8 @@ GreaterEqual = Struct.new(:leftbool, :rightbool, :ehNeg) do
       $smc.empilhaControle('neg')
     end
     $smc.empilhaControle('ge')
-    $smc.empilhaControle(rightbool.eval)
-    $smc.empilhaControle(leftbool.eval)
+    $smc.empilhaControle(rightbool)
+    $smc.empilhaControle(leftbool)
   end
 end
 
@@ -217,8 +199,8 @@ LessThan = Struct.new(:leftbool, :rightbool, :ehNeg) do
       $smc.empilhaControle('neg')
     end
     $smc.empilhaControle('lt')
-    $smc.empilhaControle(rightbool.eval)
-    $smc.empilhaControle(leftbool.eval)
+    $smc.empilhaControle(rightbool)
+    $smc.empilhaControle(leftbool)
   end
 end
 
@@ -228,15 +210,13 @@ LessEqual = Struct.new(:leftbool, :rightbool, :ehNeg) do
       $smc.empilhaControle('neg')
     end
     $smc.empilhaControle('le')
-    $smc.empilhaControle(rightbool.eval)
-    $smc.empilhaControle(leftbool.eval)
+    $smc.empilhaControle(rightbool)
+    $smc.empilhaControle(leftbool)
   end
 end
 
 While = Struct.new(:cond,:block) do
   def eval
-    $smc.empilhaControle('fimloop')
-    $smc.empilhaControle(cond.eval)
     $smc.empilhaControle(block.eval)
     $smc.empilhaControle('loop')
     $smc.empilhaControle(cond.eval)
@@ -245,60 +225,57 @@ end
 
 If = Struct.new(:cond,:block) do
   def eval
-    $smc.empilhaControle('fimif')
-    $smc.empilhaControle(block.eval)
+    $smc.empilhaControle(block)
     $smc.empilhaControle('if')
-    $smc.empilhaControle(cond.eval)
+    $smc.empilhaControle(cond)
   end
 end
 
 IfElse = Struct.new(:cond,:blockif,:blockelse) do
   def eval
-    $smc.empilhaControle('fimelse')
-    $smc.empilhaControle(blockelse.eval)
+    $smc.empilhaControle(blockelse)
     $smc.empilhaControle('else')
-    $smc.empilhaControle('fimif')
-    $smc.empilhaControle(blockif.eval)
+    $smc.empilhaControle(blockif)
     $smc.empilhaControle('if')
-    $smc.empilhaControle(cond.eval)
+    $smc.empilhaControle(cond)
   end
 end
 
 Print = Struct.new(:ag) do
   def eval
     $smc.empilhaControle('print')
-    $smc.empilhaControle(ag.eval)
+    $smc.empilhaControle(ag)
   end
 end
 
 Seq = Struct.new(:s1, :s2) do
   def eval
-    $smc.empilhaControle(s2.eval)
+    $smc.empilhaControle(s2)
     $smc.empilhaControle(';')
-    $smc.empilhaControle(s1.eval)
+    $smc.empilhaControle(s1)
   end
 end
 
 Command = Struct.new(:cmd) do
   def eval
-    $smc.empilhaControle(cmd.eval)
+    $smc.empilhaControle(cmd)
   end
 end
 
 Procedure = Struct.new(:bl) do
   def eval
-    $smc.empilhaControle(bl.eval)
+    $smc.empilhaControle(bl)
   end
 end
 
 IntLit = Struct.new(:int) do
   def eval
-    int.to_i
+    $smc.empilhaControle(int.to_i)
   end
 end
 
 IdLit = Struct.new(:id) do
   def eval
-    id.to_s
+    $smc.empilhaControle(id.to_s)
   end
 end
