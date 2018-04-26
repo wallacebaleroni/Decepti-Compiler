@@ -213,12 +213,12 @@ Print
 
 \end{frame}
 
-\begin{frame}[fragile]{Makefile}
+\begin{frame}[fragile]{Make}
 O comando \verb|make| instala as dependências necessárias para o compilador funcionar e roda o teste do fatorial de x = 6.
 
-Testes adicionais podem ser executados digitando \verb|make [test]|, e os disponíveis são \verb|add|, \verb|sub|, \verb|mul|, \verb|div|, \verb|if|, \verb|while|.
+Testes adicionais podem ser executados digitando \verb|make [test]|, e os testes disponíveis são \verb|add|, \verb|sub|, \verb|mul|, \verb|div| \verb|while|, \verb|iftrue| (entra no bloco \verb|if|) e \verb|iffalse| (entra no \verb|else|).
 
-\verb|testes/add.rb|, por exemplo, contém um procedimento simples em IMP que executa algumas adições e imprime o resultado. \verb|make add| executa esse teste e imprime o retorno.
+O arquivo \verb|testes/add.rb|, por exemplo, contém um procedimento simples em IMP que executa algumas adições e imprime o resultado. O comando \verb|make add| executa esse teste e imprime o retorno.
 
 \end{frame}
 \end{document}
