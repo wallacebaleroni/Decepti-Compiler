@@ -22,12 +22,22 @@ class BPLC
           self.eq(val)
         when "mul"
           self.mul(val)
+        when "div"
+          self.div(val)
         when "sub"
           self.sub(val)
         when "add"
           self.add(val)
         when "print"
           self.pprint(val)
+        when "lt"
+          self.lt(val)
+        when "gt"
+          self.gt(val)
+        when "gteq"
+          self.gteq(val)
+        when "lteq"
+          self.lteq(val)
         else
           if is_integer?(val.id)
             self.num(val)
@@ -148,6 +158,63 @@ def sub(val)
         left = $smc.desempilhaValor()
         right = $smc.desempilhaValor()
         if right.id.str.to_i() < left.id.str.to_i()
+          $smc.empilhaValor("true")
+        else
+          $smc.empilhaValor("false")
+        end
+      else
+        left = val.children.shift()
+        right = val.children.shift()
+        $smc.empilhaControle(left)
+        $smc.empilhaControle(right)
+    end
+  end
+
+  def lteq(val)
+    case val.children.length
+      when 0
+        $smc.desempilhaControle()
+        left = $smc.desempilhaValor()
+        right = $smc.desempilhaValor()
+        if right.id.str.to_i() <= left.id.str.to_i()
+          $smc.empilhaValor("true")
+        else
+          $smc.empilhaValor("false")
+        end
+      else
+        left = val.children.shift()
+        right = val.children.shift()
+        $smc.empilhaControle(left)
+        $smc.empilhaControle(right)
+    end
+  end
+
+  def gt(val)
+    case val.children.length
+      when 0
+        $smc.desempilhaControle()
+        left = $smc.desempilhaValor()
+        right = $smc.desempilhaValor()
+        if right.id.str.to_i() > left.id.str.to_i()
+          $smc.empilhaValor("true")
+        else
+          $smc.empilhaValor("false")
+        end
+      else
+        left = val.children.shift()
+        right = val.children.shift()
+        $smc.empilhaControle(left)
+        $smc.empilhaControle(right)
+    end
+  end
+
+  def gteq(val)
+    case val.children.length
+      when 0
+        $smc.desempilhaControle()
+        left = $smc.desempilhaValor()
+        right = $smc.desempilhaValor()
+        if right.id.str.to_i() >= left.id.str.to_i()
           $smc.empilhaValor("true")
         else
           $smc.empilhaValor("false")
