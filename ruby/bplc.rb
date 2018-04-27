@@ -9,7 +9,7 @@ class BPLC
       val = $smc.topoControle()
       case val.id
         when "proc"
-          self.proc(val)
+          self.pproc(val)
         when "seq"
           self.seq(val)
         when "assign"
@@ -25,7 +25,7 @@ class BPLC
         when "sub"
           self.sub(val)
         when "print"
-          self.print(val)
+          self.pprint(val)
         else
           if is_integer?(val.id)
             self.num(val)
@@ -37,7 +37,7 @@ class BPLC
   end
 
 
-  def print(val)
+  def pprint(val)
     case val.children.length
       when 0
         $smc.desempilhaControle()
@@ -49,7 +49,26 @@ class BPLC
     end
   end
 
-  def sub(val)
+
+  def add(val)
+    case val.children.length
+      when 0
+        $smc.desempilhaControle()
+        left = $smc.desempilhaValor()
+        right = $smc.desempilhaValor()
+        left = left.id.str.to_i()
+        right = right.id.str.to_i()
+        res = (right + left).to_s()
+        res = Tree.new((Parslet::Slice.new(0,res)))
+        $smc.empilhaValor(res)
+      else
+        $smc.empilhaControle(val.children[0])
+        val.children.shift()
+    end
+  end
+
+
+def sub(val)
     case val.children.length
       when 0
         $smc.desempilhaControle()
@@ -84,13 +103,50 @@ class BPLC
     end
   end
 
+  def div(val)
+    case val.children.length
+      when 0
+        $smc.desempilhaControle()
+        left = $smc.desempilhaValor()
+        right = $smc.desempilhaValor()
+        left = left.id.str.to_i()
+        right = right.id.str.to_i()
+        res = (left / right).to_s()
+        res = Tree.new((Parslet::Slice.new(0, res)))
+        $smc.empilhaValor(res)
+      else
+        $smc.empilhaControle(val.children[0])
+        val.children.shift()
+    end
+  end
+
   def eq(val)
     case val.children.length
       when 0
         $smc.desempilhaControle()
         left = $smc.desempilhaValor()
         right = $smc.desempilhaValor()
-        if left.id.str == right.id.str
+        if left.id.str.to_i() == right.id.str.to_i()
+          $smc.empilhaValor("true")
+        else
+          $smc.empilhaValor("false")
+        end
+      else
+        left = val.children.shift()
+        right = val.children.shift()
+        $smc.empilhaControle(left)
+        $smc.empilhaControle(right)
+    end
+  end
+
+
+  def lt(val)
+    case val.children.length
+      when 0
+        $smc.desempilhaControle()
+        left = $smc.desempilhaValor()
+        right = $smc.desempilhaValor()
+        if right.id.str.to_i() < left.id.str.to_i()
           $smc.empilhaValor("true")
         else
           $smc.empilhaValor("false")
@@ -157,7 +213,7 @@ class BPLC
     $smc.empilhaValor(val)
   end
 
-  def proc(val)
+  def pproc(val)
     $smc.desempilhaControle()
     $smc.empilhaControle(val.children[0])
   end
@@ -189,74 +245,3 @@ class BPLC
     val.to_i.to_s == val
   end
 end
-
-
-
-=begin
-      if(val.is_a?(Fixnum))
-        smc.en()
-      elsif(val.is_a?(String))
-        if(val == 'assign')
-          smc.ce()
-        elsif(val == 'print')
-          smc.print()
-        elsif(val == 'mul' or val == 'div' or val == 'add' or val == 'sub')
-          smc.ee()
-        elsif(val == 'eq' or val == 'gt' or val == 'ge' or val == 'lt' or val == 'le')
-          smc.be()
-        elsif(val == 'true' or val == 'false')
-          smc.bt()
-        elsif(val == 'neg')
-          smc.bnote()
-        elsif(val == 'loop')
-          smc.cwhilee()
-        elsif(val == 'if')
-          smc.cife()
-        elsif(val == 'fimloop'or val == 'fimif' or val =='fimelse')
-          smc.cnil()
-        elsif(val == ';')
-          smc.csc()
-        else
-          smc.en()
-        end
-      else
-          puts(val)
-          val.eval()
-      end
-    puts("THE END")
-    end
-  end
-end
-=end
-
-=begin
-if(val.is_a?(Fixnum))
-        smc.en()
-      elsif(val.is_a?(String))
-        if(val == 'assign')
-          smc.ce()
-        elsif(val == 'print')
-          smc.print()
-        elsif(val == 'mul' or val == 'div' or val == 'add' or val == 'sub')
-          smc.ee()
-        elsif(val == 'eq' or val == 'gt' or val == 'ge' or val == 'lt' or val == 'le')
-          smc.be()
-        elsif(val == 'true' or val == 'false')
-          smc.bt()
-        elsif(val == 'neg')
-          smc.bnote()
-        elsif(val == 'loop')
-          smc.cwhilee()
-        elsif(val == 'if')
-          smc.cife()
-        elsif(val == 'fimloop'or val == 'fimif' or val =='fimelse')
-          smc.cnil()
-        elsif(val == ';')
-          smc.csc()
-        else
-          smc.ci_ev()
-        end
-      elsif(val.nil?)
-        smc.cnil()
-      end
-=end
