@@ -76,6 +76,7 @@ class BPLC
         else
           if not belse.nil?
             $smc.empilhaControle(belse)
+          end
         end
       else
         cond = val.children.shift()
