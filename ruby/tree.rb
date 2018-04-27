@@ -4,15 +4,27 @@ class Tree
 
     # construtor
     def initialize(id, children=[])
+        id_type = id.class.to_s
+        if id_type != "String" and id_type != "Fixnum" and id_type != "Float"
+            puts "ERRO: id = #{id}"
+            puts "O id da árvore é sua raiz e só pode ser um número ou uma string (ex.: 'add')"
+            return
+        end
+
         @id = id
         @children = children
     end
 
     # getters
-    def children() @children end
-    def id() @id end
+    def children()
+        @children
+    end
+
+    def id()
+        @id
+    end
     
-    # retorna se uma árvore é uma folha ou não
+    # retorna se a árvore é uma folha ou não
     def leaf?()
         @children.length == 0
     end
@@ -24,7 +36,6 @@ class Tree
     end
 
     # representação simples da árvore, para facilitar debug e visualização
-
     def inspect()
         "<#{@id}, #{@children}>"
     end
@@ -51,3 +62,8 @@ class Tree
     end
 
 end
+
+
+t = Tree.new("add", [1, 2])
+t1 = Tree.new(1.2, [1, 2])
+t2 = Tree.new(Tree.new(1))
