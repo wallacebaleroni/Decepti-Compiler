@@ -7,6 +7,7 @@ class Tree
     def initialize(id, children=[])
         @id = id
         @children = children
+        #puts(self)
     end
     
     def leaf?()
@@ -40,4 +41,3 @@ class Tree
 end
 
 add1 = Tree.new("add", [1, Tree.new("add", [2, 3])])
-puts add1

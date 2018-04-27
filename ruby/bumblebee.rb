@@ -1,281 +1,108 @@
 require 'parslet'
 require_relative 'smc'
 require_relative 'bplc'
+require_relative 'tree'
 
 
 class Bumblebee < Parslet::Transform
 
   rule(:int => simple(:n)) {
-    IntLit.new(n)
+    Tree.new(n)
   }
 
   rule(:id => simple(:c)) {
-    IdLit.new(c)
+    Tree.new(c)
   }
 
   rule(:left => simple(:l), :right => simple(:r), :op => '+') {
-    Addition.new(l, r)
+    Tree.new("add", [l, r])
   }
 
   rule(:left => simple(:l), :right => simple(:r), :op => '-') {
-    Subtractor.new(l,r)
+    Tree.new("sub", [l, r])
   }
 
   rule(:left => simple(:l), :right => simple(:r), :op => '*') {
-    Multiply.new(l,r)
+    Tree.new("mul", [l, r])
   }
 
   rule(:left => simple(:l), :right => simple(:r), :op => '/') {
-    Division.new(l,r)
+    Tree.new("div", [l, r])
   }
 
   rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':=') {
-    Assignment.new(i,v)
+    Tree.new("assign", [i, v])
   }
 
   rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':=', :cmd => subtree(:c)) {
-    Assignment.new(i,v)
+    Tree.new("assign", [i, v])
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '==') {
-    Equal.new(lb,rb,false)
+    Tree.new("eq", [lb, rb])
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>') {
-    GreaterThan.new(lb,rb,false)
+    Tree.new("gt", [lb, rb])
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>=') {
-    GreaterEqual.new(lb,rb,false)
+    Tree.new("gteq" [lb, rb])
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<') {
-    LessThan.new(lb,rb,false)
+    Tree.new("lt", [lb, rb])
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<=') {
-    LessEqual.new(lb,rb,false)
+    Tree.new("lteq", [lb, rb])
   }
 
   rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '==') {
-    Equal.new(lb,rb,true)
+    Tree.new("neq", [lb, rb])
   }
 
   rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>') {
-    GreaterThan.new(lb,rb,true)
+    Tree.new("ngt", [lb, rb])
   }
 
   rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>=') {
-    GreaterEqual.new(lb,rb,true)
+    Tree.new("ngteq", [lb, rb])
   }
 
   rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<') {
-    LessThan.new(lb,rb,true)
+    Tree.new("nlt", [lb, rb])
   }
 
   rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<=') {
-    LessEqual.new(lb,rb,true)
+    Tree.new("nlteq", [lb, rb])
   }
 
   rule(:while => "while", :cond => subtree(:cd), :block => subtree(:bl)) {
-    While.new(cd,bl)
+    Tree.new("while", [cd, bl])
   }
 
   rule(:if => "if", :cond => subtree(:cd), :block => subtree(:bl)) {
-    If.new(cd,bl)
+    Tree.new("if", [cd, bl])
   }
 
   rule(:if => "if", :cond => subtree(:cd), :block => subtree(:blif),:else => "else", :blockelse => subtree(:blelse)) {
-    IfElse.new(cd,blif,blelse)
+    Tree.new("if" [cd, blif, blelse])
   }
 
   rule(:print => "print", :arg => subtree(:ag)) {
-    Print.new(ag)
+    Tree.new("print", [ag])
   }
 
   rule(:seq1 => subtree(:s1), :seq2 => subtree(:s2)) {
-    Seq.new(s1, s2)
+    Tree.new("seq", [s1, s2])
   }
 
   rule(:cmd => subtree(:cmd)) {
-    Command.new(cmd)
+    Tree.new("cmd", [cmd])
   }
 
   rule(:proc => simple(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
-    Procedure.new(bl)
+    puts(Tree.new("proc", [bl]))
   }
-
-end
-
-
-#Estruturas
-Addition = Struct.new(:left, :right) do
-  def eval
-    $smc.empilhaControle('add')
-
-      $smc.empilhaControle(left)
-
-      $smc.empilhaControle(right)
-  end
-end
-
-Subtractor = Struct.new(:left, :right) do
-  def eval
-    $smc.empilhaControle('sub')
-
-      $smc.empilhaControle(left)
-
-      $smc.empilhaControle(right)
-
-  end
-end
-
-Multiply = Struct.new(:left, :right) do
-  def eval
-    $smc.empilhaControle('mul')
-
-      $smc.empilhaControle(left)
-
-      $smc.empilhaControle(right)
-
-
-  end
-end
-
-Division = Struct.new(:left, :right) do
-  def eval
-    $smc.empilhaControle('div')
-
-      $smc.empilhaControle(left)
-
-      $smc.empilhaControle(right)
-  end
-end
-
-Assignment = Struct.new(:ident, :val) do
-  def eval
-      $smc.empilhaControle('assign')
-      $smc.empilhaControle(val)
-      $smc.empilhaControle(ident)
-  end
-end
-
-Equal = Struct.new(:leftbool, :rightbool, :ehNeg) do
-  def eval
-    if(ehNeg)
-      $smc.empilhaControle('neg')
-    end
-    $smc.empilhaControle('eq')
-    $smc.empilhaControle(rightbool)
-    $smc.empilhaControle(leftbool)
-  end
-end
-
-GreaterThan = Struct.new(:leftbool, :rightbool,:ehNeg) do
-  def eval
-    if(ehNeg)
-      $smc.empilhaControle('neg')
-    end
-    $smc.empilhaControle('gt')
-    $smc.empilhaControle(rightbool)
-    $smc.empilhaControle(leftbool)
-  end
-end
-
-GreaterEqual = Struct.new(:leftbool, :rightbool, :ehNeg) do
-  def eval
-    if(ehNeg)
-      $smc.empilhaControle('neg')
-    end
-    $smc.empilhaControle('ge')
-    $smc.empilhaControle(rightbool)
-    $smc.empilhaControle(leftbool)
-  end
-end
-
-LessThan = Struct.new(:leftbool, :rightbool, :ehNeg) do
-  def eval
-    if(ehNeg)
-      $smc.empilhaControle('neg')
-    end
-    $smc.empilhaControle('lt')
-    $smc.empilhaControle(rightbool)
-    $smc.empilhaControle(leftbool)
-  end
-end
-
-LessEqual = Struct.new(:leftbool, :rightbool, :ehNeg) do
-  def eval
-    if(ehNeg)
-      $smc.empilhaControle('neg')
-    end
-    $smc.empilhaControle('le')
-    $smc.empilhaControle(rightbool)
-    $smc.empilhaControle(leftbool)
-  end
-end
-
-While = Struct.new(:cond,:block) do
-  def eval
-    $smc.empilhaControle(block.eval)
-    $smc.empilhaControle('loop')
-    $smc.empilhaControle(cond.eval)
-  end
-end
-
-If = Struct.new(:cond,:block) do
-  def eval
-    $smc.empilhaControle(block)
-    $smc.empilhaControle('if')
-    $smc.empilhaControle(cond)
-  end
-end
-
-IfElse = Struct.new(:cond,:blockif,:blockelse) do
-  def eval
-    $smc.empilhaControle(blockelse)
-    $smc.empilhaControle('else')
-    $smc.empilhaControle(blockif)
-    $smc.empilhaControle('if')
-    $smc.empilhaControle(cond)
-  end
-end
-
-Print = Struct.new(:ag) do
-  def eval
-    $smc.empilhaControle('print')
-    $smc.empilhaControle(ag)
-  end
-end
-
-Seq = Struct.new(:s1, :s2) do
-  def eval
-    $smc.empilhaControle(s2)
-    $smc.empilhaControle(';')
-    $smc.empilhaControle(s1)
-  end
-end
-
-Command = Struct.new(:cmd) do
-  def eval
-    $smc.empilhaControle(cmd)
-  end
-end
-
-Procedure = Struct.new(:bl) do
-  def eval
-    $smc.empilhaControle(bl)
-  end
-end
-
-IntLit = Struct.new(:int) do
-  def eval
-    $smc.empilhaControle(int.to_i)
-  end
-end
-
-IdLit = Struct.new(:id) do
-  def eval
-    $smc.empilhaControle(id.to_s)
-  end
 end
