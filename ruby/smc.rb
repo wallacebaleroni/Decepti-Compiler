@@ -2,7 +2,7 @@ class SMC
 
   def initialize()
     @pilhaValor = []
-    @memoria = []
+    @memoria = {}
     @pilhaControle = []
   end
 
@@ -33,18 +33,11 @@ class SMC
   end
 
   def acessaMemoria(variavel)
-    indice = @memoria.index(variavel)
-    @memoria[indice+1]
+    @memoria[variavel]
   end
 
   def escreveMemoria(variavel, dado)
-    indice = @memoria.index(variavel)
-    if indice
-      @memoria[indice+1] = dado
-    else
-      @memoria.push(variavel)
-      @memoria.push(dado)
-    end
+    @memoria[variavel] = dado
     puts("Memoria    #{@memoria}")
   end
 
