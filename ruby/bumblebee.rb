@@ -38,6 +38,12 @@ class Bumblebee < Parslet::Transform
     Tree.new("assign", [i, v])
   }
 
+  rule(:neg => '~', :bool => simple(:bl)) {
+    Tree.new("neg", [bl])
+  }
+
+  rule(:bool => simple(:bl))
+
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '==') {
     Tree.new("eq", [lb, rb])
   }
@@ -58,11 +64,7 @@ class Bumblebee < Parslet::Transform
     Tree.new("lteq", [lb, rb])
   }
 
-  rule(:neg => '~', :bool => subtree(:bl)) {
-    Tree.new("neg", [bl])
-  }
-
-  rule(:while => "while", :cond => subtree(:cd), :block => subtree(:bl)) {
+  rule(:while => "while", :cond => simple(:cd), :block => subtree(:bl)) {
     Tree.new("while", [cd, bl])
   }
 

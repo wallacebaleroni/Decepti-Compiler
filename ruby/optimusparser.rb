@@ -83,7 +83,9 @@ class OptimusParser < Parslet::Parser
   rule(:exp)        { mathexp | boolexp | integer | ident }
   rule(:mathexp)    { (ident | integer).as(:left) >> arithop >> (mathexp | ident | integer).as(:right) }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
-  rule(:boolexp)    { neg_op.maybe >>  ((ident | integer).as(:leftb) >> boolop >> exp.as(:rightb)).as(:bool) }
+  rule(:boolexp)    { yboolexp | nboolexp }
+  rule(:yboolexp)   { ((ident | integer).as(:leftb) >> boolop >> exp.as(:rightb)) }
+  rule(:nboolexp)   { neg_op >> yboolexp.as(:bool) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
   root(:ex_proc)
