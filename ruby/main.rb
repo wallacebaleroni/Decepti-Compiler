@@ -15,7 +15,7 @@ proc fact(x) {
   };
   print(y)
 }
-  ")).eval
+  "))
 bplc.vamosRodar($smc)
 
 =begin

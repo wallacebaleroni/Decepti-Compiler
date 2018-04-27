@@ -47,7 +47,7 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>=') {
-    Tree.new("gteq" [lb, rb])
+    Tree.new("gteq", [lb, rb])
   }
 
   rule(:leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<') {
@@ -58,24 +58,8 @@ class Bumblebee < Parslet::Transform
     Tree.new("lteq", [lb, rb])
   }
 
-  rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '==') {
-    Tree.new("neq", [lb, rb])
-  }
-
-  rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>') {
-    Tree.new("ngt", [lb, rb])
-  }
-
-  rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '>=') {
-    Tree.new("ngteq", [lb, rb])
-  }
-
-  rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<') {
-    Tree.new("nlt", [lb, rb])
-  }
-
-  rule(:neg => '~', :leftb => simple(:lb), :rightb => simple(:rb), :opb=> '<=') {
-    Tree.new("nlteq", [lb, rb])
+  rule(:neg => '~', :bool => subtree(:bl)) {
+    Tree.new("neg", [bl])
   }
 
   rule(:while => "while", :cond => subtree(:cd), :block => subtree(:bl)) {
@@ -87,7 +71,7 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:if => "if", :cond => subtree(:cd), :block => subtree(:blif),:else => "else", :blockelse => subtree(:blelse)) {
-    Tree.new("if" [cd, blif, blelse])
+    Tree.new("if", [cd, blif, blelse])
   }
 
   rule(:print => "print", :arg => subtree(:ag)) {
@@ -103,6 +87,6 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:proc => simple(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
-    puts(Tree.new("proc", [bl]))
+    $smc.empilhaControle(Tree.new("proc", [bl]))
   }
 end

@@ -70,7 +70,7 @@ class OptimusParser < Parslet::Parser
   rule(:ini)        { ident >> ini_op >> exp }
   rule(:ex_proc)    { proc_op >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
   rule(:block)      { lcb >> cmd >> rcb }
-  rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt.as(:cmd)) }
+  rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt) }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op >> exp.as(:val) }
   rule(:ex_if)      { if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block.as(:blockelse)).maybe |
                       if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> block.as(:blockelse)).maybe |
@@ -83,7 +83,7 @@ class OptimusParser < Parslet::Parser
   rule(:exp)        { mathexp | boolexp | integer | ident }
   rule(:mathexp)    { (ident | integer).as(:left) >> arithop >> (mathexp | ident | integer).as(:right) }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
-  rule(:boolexp)    { neg_op.maybe >>  (ident | integer).as(:leftb) >> boolop >> exp.as(:rightb) }
+  rule(:boolexp)    { neg_op.maybe >>  ((ident | integer).as(:leftb) >> boolop >> exp.as(:rightb)).as(:bool) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
   root(:ex_proc)
