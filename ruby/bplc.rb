@@ -24,6 +24,8 @@ class BPLC
           self.mul(val)
         when "sub"
           self.sub(val)
+        when "add"
+          self.add(val)
         when "print"
           self.pprint(val)
         else
@@ -138,7 +140,6 @@ def sub(val)
         $smc.empilhaControle(right)
     end
   end
-
 
   def lt(val)
     case val.children.length
