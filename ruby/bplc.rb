@@ -24,6 +24,8 @@ class BPLC
           self.mul(val)
         when "sub"
           self.sub(val)
+        when "print"
+          self.print(val)
         else
           if is_integer?(val.id)
             self.num(val)
@@ -34,6 +36,18 @@ class BPLC
     end
   end
 
+
+  def print(val)
+    case val.children.length
+      when 0
+        $smc.desempilhaControle()
+        val = $smc.desempilhaValor()
+        puts(val.id)
+      else
+        exp = val.children.shift()
+        $smc.empilhaControle(exp)
+    end
+  end
 
   def sub(val)
     case val.children.length
@@ -115,9 +129,9 @@ class BPLC
         if bool == "true"
           cond = $smc.desempilhaValor()
           block = $smc.desempilhaValor()
-          novo_while = Tree.new("while", [cond, block])
+          novo_while = Tree.new("while", [cond.deepcopy(), block.deepcopy()])
           $smc.empilhaControle(novo_while)
-          $smc.empilhaControle(block)
+          $smc.empilhaControle(block.deepcopy())
         else
           $smc.desempilhaValor()
           $smc.desempilhaValor()
@@ -125,9 +139,9 @@ class BPLC
       else
         cond = val.children.shift()
         block = val.children.shift()
-        $smc.empilhaValor(block)
-        $smc.empilhaValor(cond)
-        $smc.empilhaControle(cond)
+        $smc.empilhaValor(block.deepcopy())
+        $smc.empilhaValor(cond.deepcopy())
+        $smc.empilhaControle(cond.deepcopy())
     end
   end
 
