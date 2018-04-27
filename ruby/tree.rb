@@ -19,23 +19,35 @@ class Tree
 
     # insere um filho na árvore
     def insert(item)
-        if item.is_a?(Tree)
-            # se o item já é uma árvore: só insere
-            @children.add(item)
-
-        else
-            @children.push(Tree.new(item, []))
-            # senão: cria árvore/folha desse item e insere
-        end
+        # TODO: filtrar isso aqui um pouco talvez
+        @children << item
     end
 
     # representação simples da árvore, para facilitar debug e visualização
+
     def inspect()
         "<#{@id}, #{@children}>"
     end
 
     def to_s
         inspect()
+    end
+
+    # função que retorna uma deepcopy da árvore
+    # (e recursivamente cria deepcopies das árvores filhas dela também)
+    def deepcopy()
+        copy = Tree.new(self.id())
+
+        for child in self.children() do
+            if child.is_a?(Tree)
+                copy.insert(child.deepcopy())
+
+            else
+                copy.insert(child)
+            end
+        end
+
+        copy
     end
 
 end
