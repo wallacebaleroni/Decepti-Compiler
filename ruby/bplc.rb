@@ -123,7 +123,7 @@ def sub(val)
         right = $smc.desempilhaValor()
         left = left.id.str.to_i()
         right = right.id.str.to_i()
-        res = (left / right).to_s()
+        res = (right / left).to_s()
         res = Tree.new((Parslet::Slice.new(0, res)))
         $smc.empilhaValor(res)
       else
