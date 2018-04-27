@@ -3,7 +3,6 @@ require_relative 'bumblebee'
 require_relative 'bplc'
 require_relative 'smc'
 
-
 $smc = SMC.new
 bplc = BPLC.new
 Bumblebee.new.apply(OptimusParser.new.rollOut("
@@ -18,3 +17,10 @@ proc fact(x) {
 }
   ")).eval
 bplc.vamosRodar($smc)
+
+=begin
+$smc = SMC.new
+bplc = BPLC.new
+Bumblebee.new.apply(OptimusParser.new.rollOut("1+2+3")).eval
+bplc.vamosRodar($smc)
+=end

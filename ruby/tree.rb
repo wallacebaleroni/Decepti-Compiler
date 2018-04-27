@@ -39,3 +39,4 @@ class Tree
 end
 
 add1 = Tree.new("add", [1, Tree.new("add", [2, 3])])
+
