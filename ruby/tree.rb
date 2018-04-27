@@ -4,13 +4,6 @@ class Tree
 
     # construtor
     def initialize(id, children=[])
-        id_type = id.class.to_s
-        if id_type != "String" and id_type != "Fixnum" and id_type != "Float"
-            puts "ERRO: id = #{id}"
-            puts "O id da árvore é sua raiz e só pode ser um número ou uma string (ex.: 'add')"
-            return
-        end
-
         @id = id
         @children = children
     end
