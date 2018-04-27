@@ -155,8 +155,8 @@ def sub(val)
     case val.children.length
       when 0
         $smc.desempilhaControle()
-        left = $smc.desempilhaValor()
         right = $smc.desempilhaValor()
+        left = $smc.desempilhaValor()
         if right.id.str.to_i() < left.id.str.to_i()
           $smc.empilhaValor("true")
         else
@@ -174,8 +174,8 @@ def sub(val)
     case val.children.length
       when 0
         $smc.desempilhaControle()
-        left = $smc.desempilhaValor()
         right = $smc.desempilhaValor()
+        left = $smc.desempilhaValor()
         if right.id.str.to_i() <= left.id.str.to_i()
           $smc.empilhaValor("true")
         else
@@ -193,8 +193,8 @@ def sub(val)
     case val.children.length
       when 0
         $smc.desempilhaControle()
-        left = $smc.desempilhaValor()
         right = $smc.desempilhaValor()
+        left = $smc.desempilhaValor()
         if right.id.str.to_i() > left.id.str.to_i()
           $smc.empilhaValor("true")
         else
@@ -212,8 +212,8 @@ def sub(val)
     case val.children.length
       when 0
         $smc.desempilhaControle()
-        left = $smc.desempilhaValor()
         right = $smc.desempilhaValor()
+        left = $smc.desempilhaValor()
         if right.id.str.to_i() >= left.id.str.to_i()
           $smc.empilhaValor("true")
         else
