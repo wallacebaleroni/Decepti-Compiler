@@ -3,15 +3,14 @@ require_relative '../ruby/bumblebee.rb'
 require_relative '../ruby/bplc.rb'
 require_relative '../ruby/smc.rb'
 
-
-$smc = SMC.new
-bplc = BPLC.new
-
 code = "
-proc add(x) {
-        x := 1;
-        y := 5;
-        print(x+y+y)
+proc min(x,y) {
+    x := 5;
+    y := 10;
+
+    if (x < y) {
+        print(x)
+    }
 }"
 
 puts code

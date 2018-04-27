@@ -28,6 +28,12 @@ iftrue:
 iffalse:
 	ruby ./testes/iffalse.rb
 
+ifnoelse:
+	ruby ./testes/ifnoelse.rb
+
+not:
+	ruby ./testes/not.rb
+
 
 uninstall:
 	gem uninstall parslet

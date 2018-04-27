@@ -3,35 +3,20 @@ require_relative '../ruby/bumblebee.rb'
 require_relative '../ruby/bplc.rb'
 require_relative '../ruby/smc.rb'
 
-
-$smc = SMC.new
-bplc = BPLC.new
-
-puts  ("Código:
-    proc wh(x) {
-        x := 2;
-        y := 1;
-    
-        while (~y == 4) do {
-            x := 2 * x;
-            y := y + 1
-        };
-    
-        print(x-6)
-    }
-\n\n")
-
-Bumblebee.new.apply(OptimusParser.new.rollOut("
+code = "
 proc wh(x) {
     x := 2;
     y := 1;
 
-    while (~y == 4) do {
+    while (~ y == 3) do {
         x := 2 * x;
         y := y + 1
     };
 
-    print(x-6)
-}
-\n\n")).eval
+    print(x)
+}"
+
+$smc = SMC.new
+bplc = BPLC.new
+Bumblebee.new.apply(OptimusParser.new.rollOut(code))
 bplc.vamosRodar($smc)

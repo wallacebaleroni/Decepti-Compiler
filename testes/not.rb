@@ -3,18 +3,16 @@ require_relative '../ruby/bumblebee.rb'
 require_relative '../ruby/bplc.rb'
 require_relative '../ruby/smc.rb'
 
+code = "proc not(x) {
+    x := 0;
+    y := 2;
 
-$smc = SMC.new
-bplc = BPLC.new
+    while (~ x == 2 * y) do {
+        x := x + 1
+    };
 
-code = "
-proc add(x) {
-        x := 1;
-        y := 5;
-        print(x+y+y)
+    print(x)
 }"
-
-puts code
 
 $smc = SMC.new
 bplc = BPLC.new
