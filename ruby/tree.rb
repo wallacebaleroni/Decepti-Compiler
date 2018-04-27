@@ -2,41 +2,40 @@ class Tree
     @id = nil
     @children = nil
 
+    # construtor
     def initialize(id, children=[])
         @id = id
         @children = children
-        #puts(self)
     end
+
+    # getters
+    def children() @children end
+    def id() @id end
     
+    # retorna se uma árvore é uma folha ou não
     def leaf?()
         @children.length == 0
     end
 
+    # insere um filho na árvore
     def insert(item)
         if item.is_a?(Tree)
+            # se o item já é uma árvore: só insere
             @children.add(item)
 
         else
             @children.push(Tree.new(item, []))
+            # senão: cria árvore/folha desse item e insere
         end
     end
 
-
-    def to_s()
-        "<id=#{@id}, children=#{@children}>"
-    end
-    
-        
-
-    def children()
-        @children
+    # representação simples da árvore, para facilitar debug e visualização
+    def inspect()
+        "<#{@id}, #{@children}>"
     end
 
-    def id()
-        @id
+    def to_s
+        inspect()
     end
 
 end
-
-add1 = Tree.new("add", [1, Tree.new("add", [2, 3])])
-
