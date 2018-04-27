@@ -69,7 +69,7 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:if => "if", :cond => subtree(:cd), :block => subtree(:bl)) {
-    Tree.new("if", [cd, bl])
+    Tree.new("if", [cd, bl, nil])
   }
 
   rule(:if => "if", :cond => subtree(:cd), :block => subtree(:blif),:else => "else", :blockelse => subtree(:blelse)) {

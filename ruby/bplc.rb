@@ -38,6 +38,8 @@ class BPLC
           self.gteq(val)
         when "lteq"
           self.lteq(val)
+        when "if"
+          self.if(val)
         else
           if is_integer?(val.id)
             self.num(val)
@@ -58,6 +60,30 @@ class BPLC
       else
         exp = val.children.shift()
         $smc.empilhaControle(exp)
+    end
+  end
+
+
+  def if(val)
+    case val.children.length
+      when 0
+        $smc.desempilhaControle()
+        bool = $smc.desempilhaValor()
+        bif = $smc.desempilhaValor()
+        belse = $smc.desempilhaValor()
+        if bool == "true"
+          $smc.empilhaControle(bif)
+        else
+          $smc.empilhaControle(belse)
+        end
+      else
+        cond = val.children.shift()
+        bif = val.children.shift()
+        belse = val.children.shift()
+
+        $smc.empilhaValor(belse)
+        $smc.empilhaValor(bif)
+        $smc.empilhaControle(cond)
     end
   end
 
