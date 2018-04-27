@@ -62,8 +62,3 @@ class Tree
     end
 
 end
-
-
-t = Tree.new("add", [1, 2])
-t1 = Tree.new(1.2, [1, 2])
-t2 = Tree.new(Tree.new(1))
