@@ -6,9 +6,13 @@ require_relative 'smc'
 #=begin
 $smc = SMC.new
 bplc = BPLC.new
+
+$smc.escreveAmbiente('x') #var x
+$smc.escreveAmbiente('y') #var y
+
 Bumblebee.new.apply(OptimusParser.new.rollOut("
 proc fact(x) {
-  x := 6;
+  x := 5;
   y := 1;
   while (x > 0) do {
       y := y * x;

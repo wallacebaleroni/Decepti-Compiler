@@ -1,6 +1,8 @@
 class SMC
 
   def initialize()
+    @enderecos = 0
+    @ambiente = {}
     @pilhaValor = []
     @memoria = {}
     @pilhaControle = []
@@ -33,12 +35,21 @@ class SMC
   end
 
   def acessaMemoria(variavel)
-    @memoria[variavel]
+    endVar = @ambiente[variavel]
+    @memoria[endVar]
   end
 
   def escreveMemoria(variavel, dado)
-    @memoria[variavel] = dado
+    endVar = @ambiente[variavel]
+    @memoria[endVar] = dado
+    puts("Ambiente   #{@ambiente}")
     puts("Memoria    #{@memoria}")
+  end
+
+  def escreveAmbiente(variavel)
+    @ambiente[variavel] = @enderecos
+    @enderecos += 1
+    puts("Ambiente   #{@ambiente}")
   end
 
   def topoControle()
