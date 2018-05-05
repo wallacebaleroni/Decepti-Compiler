@@ -1,0 +1,535 @@
+Ambiente   {"x"=>0}
+Ambiente   {"x"=>0, "y"=>1}
+{:proc=>{:id=>"fact"@6},
+ :parametros=>{:id=>"x"@11},
+ :block=>
+  {:seq1=>{:ident=>{:id=>"x"@18}, :ass_op=>":="@20, :val=>{:int=>"5"@23}},
+   :seq2=>
+    {:seq1=>{:ident=>{:id=>"y"@28}, :ass_op=>":="@30, :val=>{:int=>"1"@33}},
+     :seq2=>
+      {:seq1=>
+        {:while=>"while"@38,
+         :cond=>{:leftb=>{:id=>"x"@45}, :opb=>">"@47, :rightb=>{:int=>"0"@49}},
+         :block=>
+          {:seq1=>
+            {:ident=>{:id=>"y"@63},
+             :ass_op=>":="@65,
+             :val=>{:left=>{:id=>"y"@68}, :op=>"*"@70, :right=>{:id=>"x"@72}}},
+           :seq2=>
+            {:ident=>{:id=>"x"@81},
+             :ass_op=>":="@83,
+             :val=>
+              {:left=>{:id=>"x"@86}, :op=>"-"@88, :right=>{:int=>"1"@90}}}}},
+       :seq2=>{:print=>"print"@99, :arg=>{:id=>"y"@105}}}}}}
+Controle   [<proc, [<seq, [<assign, [<x, []>, <5, []>]>, <seq, [<assign, [<y, []>, <1, []>]>, <seq, [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]>]>]>]>]
+Valor      []
+
+Autobots, let's roll!
+Controle   [<seq, [<assign, [<x, []>, <5, []>]>, <seq, [<assign, [<y, []>, <1, []>]>, <seq, [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]>]>]>]
+Valor      []
+
+Controle   [<seq, [<assign, [<y, []>, <1, []>]>, <seq, [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]>]>]
+Valor      []
+
+Controle   [<assign, [<x, []>, <5, []>]>, <seq, [<assign, [<y, []>, <1, []>]>, <seq, [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]>]>]
+Valor      []
+
+Controle   [<assign, [<x, []>, <5, []>]>, <seq, [<assign, [<y, []>, <1, []>]>, <seq, [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]>]>]
+Valor      [<x, []>]
+
+Controle   [<assign, [<5, []>]>, <seq, [<assign, [<y, []>, <1, []>]>, <seq, [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]>]>]
+Valor      [<5, []>, <x, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"5"}
+Controle   [<seq, [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <1, []>]>, <seq, [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <1, []>]>, <seq, [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]>]
+Valor      [<y, []>]
+
+Controle   [<assign, [<1, []>]>, <seq, [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]>]
+Valor      [<1, []>, <y, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"5", 1=>"1"}
+Controle   [<print, [<y, []>]>]
+Valor      []
+
+Controle   [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, [<x, []>, <0, []>]>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<0, []>, <x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<5, []>, <0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      ["true", <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<assign, [<mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<mul, [<y, []>, <x, []>]>, <y, []>]
+
+Controle   [<mul, [<y, []>, <x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<y, []>, <mul, [<y, []>, <x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<mul, [<x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <y, []>]
+
+Controle   [<x, []>, <mul, [<x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <y, []>]
+
+Controle   [<mul, []>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<5, []>, <1, []>, <y, []>]
+
+Controle   [<assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<5, []>, <y, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"5", 1=>"5"}
+Controle   [<assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<assign, [<sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<sub, [<x, []>, <1, []>]>, <x, []>]
+
+Controle   [<sub, [<x, []>, <1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<x, []>, <sub, [<x, []>, <1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<sub, [<1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<5, []>, <x, []>]
+
+Controle   [<1, []>, <sub, [<1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<5, []>, <x, []>]
+
+Controle   [<sub, []>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <5, []>, <x, []>]
+
+Controle   [<assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<4, []>, <x, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"4", 1=>"5"}
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, [<x, []>, <0, []>]>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<0, []>, <x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<4, []>, <0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      ["true", <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<assign, [<mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<mul, [<y, []>, <x, []>]>, <y, []>]
+
+Controle   [<mul, [<y, []>, <x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<y, []>, <mul, [<y, []>, <x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<mul, [<x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<5, []>, <y, []>]
+
+Controle   [<x, []>, <mul, [<x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<5, []>, <y, []>]
+
+Controle   [<mul, []>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<4, []>, <5, []>, <y, []>]
+
+Controle   [<assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<20, []>, <y, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"4", 1=>"20"}
+Controle   [<assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<assign, [<sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<sub, [<x, []>, <1, []>]>, <x, []>]
+
+Controle   [<sub, [<x, []>, <1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<x, []>, <sub, [<x, []>, <1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<sub, [<1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<4, []>, <x, []>]
+
+Controle   [<1, []>, <sub, [<1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<4, []>, <x, []>]
+
+Controle   [<sub, []>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <4, []>, <x, []>]
+
+Controle   [<assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<3, []>, <x, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"3", 1=>"20"}
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, [<x, []>, <0, []>]>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<0, []>, <x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<3, []>, <0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      ["true", <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<assign, [<mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<mul, [<y, []>, <x, []>]>, <y, []>]
+
+Controle   [<mul, [<y, []>, <x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<y, []>, <mul, [<y, []>, <x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<mul, [<x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<20, []>, <y, []>]
+
+Controle   [<x, []>, <mul, [<x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<20, []>, <y, []>]
+
+Controle   [<mul, []>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<3, []>, <20, []>, <y, []>]
+
+Controle   [<assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<60, []>, <y, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"3", 1=>"60"}
+Controle   [<assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<assign, [<sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<sub, [<x, []>, <1, []>]>, <x, []>]
+
+Controle   [<sub, [<x, []>, <1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<x, []>, <sub, [<x, []>, <1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<sub, [<1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<3, []>, <x, []>]
+
+Controle   [<1, []>, <sub, [<1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<3, []>, <x, []>]
+
+Controle   [<sub, []>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <3, []>, <x, []>]
+
+Controle   [<assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<2, []>, <x, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"2", 1=>"60"}
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, [<x, []>, <0, []>]>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<0, []>, <x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<2, []>, <0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      ["true", <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<assign, [<mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<mul, [<y, []>, <x, []>]>, <y, []>]
+
+Controle   [<mul, [<y, []>, <x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<y, []>, <mul, [<y, []>, <x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<mul, [<x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<60, []>, <y, []>]
+
+Controle   [<x, []>, <mul, [<x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<60, []>, <y, []>]
+
+Controle   [<mul, []>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<2, []>, <60, []>, <y, []>]
+
+Controle   [<assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<120, []>, <y, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"2", 1=>"120"}
+Controle   [<assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<assign, [<sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<sub, [<x, []>, <1, []>]>, <x, []>]
+
+Controle   [<sub, [<x, []>, <1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<x, []>, <sub, [<x, []>, <1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<sub, [<1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<2, []>, <x, []>]
+
+Controle   [<1, []>, <sub, [<1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<2, []>, <x, []>]
+
+Controle   [<sub, []>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <2, []>, <x, []>]
+
+Controle   [<assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <x, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"1", 1=>"120"}
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, [<x, []>, <0, []>]>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<0, []>, <x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<1, []>, <0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      ["true", <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      []
+
+Controle   [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<assign, [<mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<mul, [<y, []>, <x, []>]>, <y, []>]
+
+Controle   [<mul, [<y, []>, <x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<y, []>, <mul, [<y, []>, <x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<y, []>]
+
+Controle   [<mul, [<x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<120, []>, <y, []>]
+
+Controle   [<x, []>, <mul, [<x, []>]>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<120, []>, <y, []>]
+
+Controle   [<mul, []>, <assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <120, []>, <y, []>]
+
+Controle   [<assign, []>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<120, []>, <y, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"1", 1=>"120"}
+Controle   [<assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<assign, [<sub, [<x, []>, <1, []>]>]>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<sub, [<x, []>, <1, []>]>, <x, []>]
+
+Controle   [<sub, [<x, []>, <1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<x, []>, <sub, [<x, []>, <1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<x, []>]
+
+Controle   [<sub, [<1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <x, []>]
+
+Controle   [<1, []>, <sub, [<1, []>]>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <x, []>]
+
+Controle   [<sub, []>, <assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<1, []>, <1, []>, <x, []>]
+
+Controle   [<assign, []>, <while, [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]>, <print, [<y, []>]>]
+Valor      [<0, []>, <x, []>]
+
+Ambiente   {"x"=>0, "y"=>1}
+Memoria    {0=>"0", 1=>"120"}
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, [<x, []>, <0, []>]>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<0, []>, <x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<x, []>, <gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<gt, []>, <while, []>, <print, [<y, []>]>]
+Valor      [<0, []>, <0, []>, <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<while, []>, <print, [<y, []>]>]
+Valor      ["false", <gt, [<x, []>, <0, []>]>, <seq, [<assign, [<y, []>, <mul, [<y, []>, <x, []>]>]>, <assign, [<x, []>, <sub, [<x, []>, <1, []>]>]>]>]
+
+Controle   [<y, []>, <print, []>]
+Valor      []
+
+Controle   [<print, []>]
+Valor      [<120, []>]
+
+120
