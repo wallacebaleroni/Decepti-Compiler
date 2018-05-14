@@ -50,9 +50,9 @@ class OptimusParser < Parslet::Parser
 
   rule(:module_op)  { blank? >> str("module") >> blank? }
   rule(:end_op)     { str("end") >> blank? }
-  rule(:var_op)     { str("var") >> blank? }
+  rule(:var_op)     { str("var").as(:var) >> blank? }
   rule(:const_op)   { str("const") >> blank? }
-  rule(:init_op)    { str("init") >> blank? }
+  rule(:init_op)    { str("init").as(:init) >> blank? }
   rule(:proc_op)    { blank? >> str("proc") >> blank? }
   rule(:if_op)      { str("if").as(:if) >> blank? }
   rule(:else_op)    { str("else").as(:else) >> blank? }
@@ -62,7 +62,7 @@ class OptimusParser < Parslet::Parser
   rule(:exit_op)    { str("exit") >> blank? }
 
   # IMP Syntax
-  rule(:program)    { module_op >> ident >> clauses >> end_op }
+  rule(:program)    { module_op >> ident.as(:module) >> clauses.as(:clauses) >> end_op }
   rule(:clauses)    { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
   rule(:var)        { var_op >> ident >> (com_op >> ident).repeat(0) }
   rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) }
@@ -88,7 +88,7 @@ class OptimusParser < Parslet::Parser
   rule(:nboolexp)   { neg_op >> yboolexp.as(:bool) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:ex_proc)
+  root(:var)
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)

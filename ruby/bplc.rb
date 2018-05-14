@@ -40,6 +40,8 @@ class BPLC
           self.lteq(val)
         when "if"
           self.if(val)
+        when "var"
+          self.varJaExiste(val)
         else
           if is_integer?(val.id)
             self.num(val)
@@ -340,4 +342,19 @@ def sub(val)
   def is_integer?(val)
     val.to_i.to_s == val
   end
+
+#mark1
+  def varJaExiste(val)
+    case val.children.length
+      when 0
+        value = $smc.desempilhaValor()
+        $smc.escreveAmbiente(value)
+        $smc.desempilhaControle()
+      else
+        $smc.empilhaValor(val.children[0])
+        val.children.shift()
+        puts($smc)
+    end
+  end
+
 end

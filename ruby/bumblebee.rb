@@ -5,7 +5,7 @@ require_relative 'tree'
 
 
 class Bumblebee < Parslet::Transform
-
+  #mark0
   rule(:int => simple(:n)) {
     Tree.new(n)
   }
@@ -90,5 +90,10 @@ class Bumblebee < Parslet::Transform
 
   rule(:proc => simple(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
     $smc.empilhaControle(Tree.new("proc", [bl]))
+  }
+
+  #mark1
+  rule(:var => "var", :id => subtree(:ids)) {
+    $smc.empilhaControle(Tree.new("var", [ids]))
   }
 end

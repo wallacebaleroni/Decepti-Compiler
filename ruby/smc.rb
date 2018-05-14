@@ -12,6 +12,12 @@ class SMC
     @pilhaControle.length
   end
 
+  def to_s()
+      puts("Controle   #{@pilhaControle}")
+      puts("Valor      #{@pilhaValor}")
+      puts()
+  end
+
   def empilhaValor(valor)
     @pilhaValor.unshift(valor)
     puts("Controle   #{@pilhaControle}")
