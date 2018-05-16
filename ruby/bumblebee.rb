@@ -89,11 +89,11 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:proc => simple(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
-    $smc.empilhaControle(Tree.new("proc", [bl]))
+    $smc.pushC(Tree.new("proc", [bl]))
   }
 
   #mark1
   rule(:var => "var", :id => subtree(:ids)) {
-    $smc.empilhaControle(Tree.new("var", [ids]))
+    $smc.pushC(Tree.new("var", [ids]))
   }
 end

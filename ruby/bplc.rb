@@ -5,8 +5,8 @@ require_relative 'tree'
 class BPLC
   def vamosRodar(smc)
     puts("Autobots, let's roll!")
-    while($smc.tamPilhaControle > 0)
-      val = $smc.topoControle()
+    while($smc.lengthC > 0)
+      val = $smc.topC()
       case val.id
         when "proc"
           self.pproc(val)
@@ -41,7 +41,7 @@ class BPLC
         when "if"
           self.if(val)
         when "var"
-          self.varJaExiste(val)
+          self.var_exists(val)
         else
           if is_integer?(val.id)
             self.num(val)
@@ -56,12 +56,12 @@ class BPLC
   def pprint(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        val = $smc.desempilhaValor()
+        $smc.popC()
+        val = $smc.popS()
         puts(val.id)
       else
         exp = val.children.shift()
-        $smc.empilhaControle(exp)
+        $smc.pushC(exp)
     end
   end
 
@@ -69,15 +69,15 @@ class BPLC
   def if(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        bool = $smc.desempilhaValor()
-        bif = $smc.desempilhaValor()
-        belse = $smc.desempilhaValor()
+        $smc.popC()
+        bool = $smc.popS()
+        bif = $smc.popS()
+        belse = $smc.popS()
         if bool == "true"
-          $smc.empilhaControle(bif)
+          $smc.pushC(bif)
         else
           if not belse.nil?
-            $smc.empilhaControle(belse)
+            $smc.pushC(belse)
           end
         end
       else
@@ -85,9 +85,9 @@ class BPLC
         bif = val.children.shift()
         belse = val.children.shift()
 
-        $smc.empilhaValor(belse)
-        $smc.empilhaValor(bif)
-        $smc.empilhaControle(cond)
+        $smc.pushS(belse)
+        $smc.pushS(bif)
+        $smc.pushC(cond)
     end
   end
 
@@ -95,16 +95,16 @@ class BPLC
   def add(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        left = $smc.desempilhaValor()
-        right = $smc.desempilhaValor()
+        $smc.popC()
+        left = $smc.popS()
+        right = $smc.popS()
         left = left.id.str.to_i()
         right = right.id.str.to_i()
         res = (right + left).to_s()
         res = Tree.new((Parslet::Slice.new(0,res)))
-        $smc.empilhaValor(res)
+        $smc.pushS(res)
       else
-        $smc.empilhaControle(val.children[0])
+        $smc.pushC(val.children[0])
         val.children.shift()
     end
   end
@@ -113,16 +113,16 @@ class BPLC
 def sub(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        left = $smc.desempilhaValor()
-        right = $smc.desempilhaValor()
+        $smc.popC()
+        left = $smc.popS()
+        right = $smc.popS()
         left = left.id.str.to_i()
         right = right.id.str.to_i()
         res = (right - left).to_s()
         res = Tree.new((Parslet::Slice.new(0,res)))
-        $smc.empilhaValor(res)
+        $smc.pushS(res)
       else
-        $smc.empilhaControle(val.children[0])
+        $smc.pushC(val.children[0])
         val.children.shift()
     end
   end
@@ -131,16 +131,16 @@ def sub(val)
   def mul(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        left = $smc.desempilhaValor()
-        right = $smc.desempilhaValor()
+        $smc.popC()
+        left = $smc.popS()
+        right = $smc.popS()
         left = left.id.str.to_i()
         right = right.id.str.to_i()
         res = (left * right).to_s()
         res = Tree.new((Parslet::Slice.new(0, res)))
-        $smc.empilhaValor(res)
+        $smc.pushS(res)
       else
-        $smc.empilhaControle(val.children[0])
+        $smc.pushC(val.children[0])
         val.children.shift()
     end
   end
@@ -148,16 +148,16 @@ def sub(val)
   def div(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        left = $smc.desempilhaValor()
-        right = $smc.desempilhaValor()
+        $smc.popC()
+        left = $smc.popS()
+        right = $smc.popS()
         left = left.id.str.to_i()
         right = right.id.str.to_i()
         res = (right / left).to_s()
         res = Tree.new((Parslet::Slice.new(0, res)))
-        $smc.empilhaValor(res)
+        $smc.pushS(res)
       else
-        $smc.empilhaControle(val.children[0])
+        $smc.pushC(val.children[0])
         val.children.shift()
     end
   end
@@ -165,176 +165,176 @@ def sub(val)
   def eq(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        left = $smc.desempilhaValor()
-        right = $smc.desempilhaValor()
+        $smc.popC()
+        left = $smc.popS()
+        right = $smc.popS()
         if left.id.str.to_i() == right.id.str.to_i()
-          $smc.empilhaValor("true")
+          $smc.pushS("true")
         else
-          $smc.empilhaValor("false")
+          $smc.pushS("false")
         end
       else
         left = val.children.shift()
         right = val.children.shift()
-        $smc.empilhaControle(left)
-        $smc.empilhaControle(right)
+        $smc.pushC(left)
+        $smc.pushC(right)
     end
   end
 
   def lt(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        right = $smc.desempilhaValor()
-        left = $smc.desempilhaValor()
+        $smc.popC()
+        right = $smc.popS()
+        left = $smc.popS()
         if right.id.str.to_i() < left.id.str.to_i()
-          $smc.empilhaValor("true")
+          $smc.pushS("true")
         else
-          $smc.empilhaValor("false")
+          $smc.pushS("false")
         end
       else
         left = val.children.shift()
         right = val.children.shift()
-        $smc.empilhaControle(left)
-        $smc.empilhaControle(right)
+        $smc.pushC(left)
+        $smc.pushC(right)
     end
   end
 
   def lteq(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        right = $smc.desempilhaValor()
-        left = $smc.desempilhaValor()
+        $smc.popC()
+        right = $smc.popS()
+        left = $smc.popS()
         if right.id.str.to_i() <= left.id.str.to_i()
-          $smc.empilhaValor("true")
+          $smc.pushS("true")
         else
-          $smc.empilhaValor("false")
+          $smc.pushS("false")
         end
       else
         left = val.children.shift()
         right = val.children.shift()
-        $smc.empilhaControle(left)
-        $smc.empilhaControle(right)
+        $smc.pushC(left)
+        $smc.pushC(right)
     end
   end
 
   def gt(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        right = $smc.desempilhaValor()
-        left = $smc.desempilhaValor()
+        $smc.popC()
+        right = $smc.popS()
+        left = $smc.popS()
         if right.id.str.to_i() > left.id.str.to_i()
-          $smc.empilhaValor("true")
+          $smc.pushS("true")
         else
-          $smc.empilhaValor("false")
+          $smc.pushS("false")
         end
       else
         left = val.children.shift()
         right = val.children.shift()
-        $smc.empilhaControle(left)
-        $smc.empilhaControle(right)
+        $smc.pushC(left)
+        $smc.pushC(right)
     end
   end
 
   def gteq(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        right = $smc.desempilhaValor()
-        left = $smc.desempilhaValor()
+        $smc.popC()
+        right = $smc.popS()
+        left = $smc.popS()
         if right.id.str.to_i() >= left.id.str.to_i()
-          $smc.empilhaValor("true")
+          $smc.pushS("true")
         else
-          $smc.empilhaValor("false")
+          $smc.pushS("false")
         end
       else
         left = val.children.shift()
         right = val.children.shift()
-        $smc.empilhaControle(left)
-        $smc.empilhaControle(right)
+        $smc.pushC(left)
+        $smc.pushC(right)
     end
   end
 
   def neg(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        bool = $smc.desempilhaValor()
+        $smc.popC()
+        bool = $smc.popS()
         case bool
           when "true"
-            $smc.empilhaValor("false")
+            $smc.pushS("false")
           when "false"
-            $smc.empilhaValor("true")
+            $smc.pushS("true")
           else
         end
       else
         exp = val.children.shift()
-        $smc.empilhaControle(exp)
+        $smc.pushC(exp)
     end
   end
 
   def while(val)
     case val.children.length
       when 0
-        $smc.desempilhaControle()
-        bool = $smc.desempilhaValor()
+        $smc.popC()
+        bool = $smc.popS()
         if bool == "true"
-          cond = $smc.desempilhaValor()
-          block = $smc.desempilhaValor()
+          cond = $smc.popS()
+          block = $smc.popS()
           novo_while = Tree.new("while", [cond.deepcopy(), block.deepcopy()])
-          $smc.empilhaControle(novo_while)
-          $smc.empilhaControle(block.deepcopy())
+          $smc.pushC(novo_while)
+          $smc.pushC(block.deepcopy())
         else
-          $smc.desempilhaValor()
-          $smc.desempilhaValor()
+          $smc.popS()
+          $smc.popS()
         end
       else
         cond = val.children.shift()
         block = val.children.shift()
-        $smc.empilhaValor(block.deepcopy())
-        $smc.empilhaValor(cond.deepcopy())
-        $smc.empilhaControle(cond.deepcopy())
+        $smc.pushS(block.deepcopy())
+        $smc.pushS(cond.deepcopy())
+        $smc.pushC(cond.deepcopy())
     end
   end
 
   def var(val)
-    $smc.desempilhaControle
-    var = $smc.acessaMemoria(val.id.str).to_s
+    $smc.popC
+    var = $smc.readM(val.id.str).to_s
     new_val = Tree.new((Parslet::Slice.new(0, var)))
-    $smc.empilhaValor(new_val)
+    $smc.pushS(new_val)
   end
 
   def num(val)
-    $smc.desempilhaControle()
-    $smc.empilhaValor(val)
+    $smc.popC()
+    $smc.pushS(val)
   end
 
   def pproc(val)
-    $smc.desempilhaControle()
-    $smc.empilhaControle(val.children[0])
+    $smc.popC()
+    $smc.pushC(val.children[0])
   end
 
   def seq(val)
-    $smc.desempilhaControle()
-    $smc.empilhaControle(val.children[1])
-    $smc.empilhaControle(val.children[0])
+    $smc.popC()
+    $smc.pushC(val.children[1])
+    $smc.pushC(val.children[0])
   end
 
   def assign(val)
     case val.children.length
       when 0
-        value = $smc.desempilhaValor()
+        value = $smc.popS()
         if is_integer?(value.id)
-          $smc.desempilhaControle()
-          var = $smc.desempilhaValor().id.str
-          $smc.escreveMemoria(var, value.id.str)
+          $smc.popC()
+          var = $smc.popS().id.str
+          $smc.writeM(var, value.id.str)
         else
-          $smc.empilhaControle(value)
+          $smc.pushC(value)
         end
       else
-        $smc.empilhaValor(val.children[0])
+        $smc.pushS(val.children[0])
         val.children.shift()
     end
   end
@@ -344,14 +344,14 @@ def sub(val)
   end
 
 #mark1
-  def varJaExiste(val)
+  def var_exists(val)
     case val.children.length
       when 0
-        value = $smc.desempilhaValor()
-        $smc.escreveAmbiente(value)
-        $smc.desempilhaControle()
+        value = $smc.popS()
+        $smc.writeE(value)
+        $smc.popC()
       else
-        $smc.empilhaValor(val.children[0])
+        $smc.pushS(val.children[0])
         val.children.shift()
         puts($smc)
     end
