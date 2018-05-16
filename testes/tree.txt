@@ -1,0 +1,67 @@
+<id=proc, children=[
+	#<Tree:0x0000000004eb04c0 @id="seq", @children=[
+		#<Tree:0x0000000004ee9db0 @id="assign", @children=[
+			#<Tree:0x0000000004ef05e8 @id="x"@18, @children=[]>, 
+			#<Tree:0x0000000004eeac38 @id="6"@23, @children=[]>
+		]>,
+		#<Tree:0x0000000004eb0948 @id="seq", @children=[
+			#<Tree:0x0000000004ee2128 @id="assign", @children=[
+				#<Tree:0x0000000004ee3ed8 @id="y"@28, @children=[]>, 
+				#<Tree:0x0000000004ee2b00 @id="1"@33, @children=[]>
+			]>, 
+			#<Tree:0x0000000004eb0e20 @id="seq", @children=[
+				#<Tree:0x0000000004eb8648 @id="while", @children=[
+					#<Tree:0x0000000004ed9af0 @id="neq", @children=[
+						#<Tree:0x0000000004ee0940 @id="x"@47, @children=[]>, 
+						#<Tree:0x0000000004edb440 @id="0"@52, @children=[]>
+					]>, 
+					#<Tree:0x0000000004eb8f30 @id="seq", @children=[
+						#<Tree:0x0000000004ec3f48 @id="assign", @children=[
+							#<Tree:0x0000000004ed36f0 @id="y"@66, @children=[]>, 
+							#<Tree:0x0000000004ec8908 @id="mul", @children=[
+								#<Tree:0x0000000004ed0bd0 @id="y"@71, @children=[]>, 
+								#<Tree:0x0000000004ec96a0 @id="x"@75, @children[=]>
+							]>
+						]>, 
+						#<Tree:0x0000000004eb97c8 @id="assign", @children=[
+							#<Tree:0x0000000004ec2f80 @id="x"@84, @children=[]>, 
+							#<Tree:0x0000000004ebaa88 @id="sub", @children=[
+								#<Tree:0x0000000004ec1608 @id="x"@89, @children=[]>, 
+								#<Tree:0x0000000004ebbde8 @id="1"@93, @children=[]>
+							]>
+						]>
+					]>
+				]>, 
+				#<Tree:0x0000000004eb17a8 @id="print", @children=[
+					#<Tree:0x0000000004eb1d70 @id="y"@108, @children=[]>
+				]>
+			]>
+		]>
+	]>
+]>
+
+#<Tree:0x0000000005117290 @id="while", @children=[
+	#<Tree:0x0000000005154cd0 @id="neq", @children=[
+		#<Tree:0x0000000005157700 @id="x"@47, @children=[]>, 
+		#<Tree:0x0000000005155ea0 @id="0"@52, @children=[]>
+	]>, 
+	#<Tree:0x000000000511c060 @id="seq", @children=[
+		#<Tree:0x000000000512ac28 @id="assign", @children=[
+			#<Tree:0x000000000513b0f0 @id="y"@66, @children=[]>, 
+			#<Tree:0x00000000051301f0 @id="mul", @children=[
+				#<Tree:0x0000000005138f08 @id="y"@71, @children=[]>, 
+				#<Tree:0x0000000005132478 @id="x"@75, @children=[]>
+			]>
+		]>, 
+		#<Tree:0x000000000511c8d0 @id="assign", @children=[
+			#<Tree:0x0000000005129580 @id="x"@84, @children=[]>, 
+			#<Tree:0x000000000511d898 @id="sub", @children=[
+				#<Tree:0x000000000511fd50 @id="x"@89, @children=[]>, 
+				#<Tree:0x000000000511e3d8 @id="1"@93, @children=[]>
+			]>
+		]>
+	]>
+]>, 
+#<Tree:0x0000000005114360 @id="print", @children=[
+	#<Tree:0x0000000005114b08 @id="y"@108, @children=[]>
+]>
