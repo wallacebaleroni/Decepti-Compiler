@@ -348,13 +348,18 @@ def sub(val)
     case val.children.length
       when 0
         value = $smc.popS()
-        $smc.writeE(value)
-        $smc.popC()
+        if is_integer?(value.id)
+          $smc.popC()
+          var = $smc.popS().id.str
+          $smc.writeE(var)
+        else
+          $smc.pushC(value)
+        end
       else
         $smc.pushS(val.children[0])
         val.children.shift()
-        puts($smc)
     end
+    puts($smc)
   end
 
 end

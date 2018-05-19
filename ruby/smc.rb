@@ -1,8 +1,8 @@
 class SMC
 
   def initialize()
-    @addresses = 0
-    @environment = {}
+    @addresses = 1
+    @environment = [{"cao"=>0}]
     @S = []
     @M = {}
     @C = []
@@ -12,10 +12,15 @@ class SMC
     @C.length
   end
 
+  def length_environment()
+    @environment.length
+  end
+
   def to_s()
       puts("Controle   #{@C}")
       puts("Valor      #{@S}")
-      puts()
+      puts("Memoria      #{@M}")
+      puts("Ambiente      #{@environment}")
   end
 
   def pushS(valor)
@@ -53,7 +58,17 @@ class SMC
   end
 
   def writeE(variavel)
-    @environment[variavel] = @addresses
+
+    #if(@environment.length == 0)
+     # puts("oi")
+     # firsthash = Hash.new
+     # firsthash[variavel] = @addresses
+     # @environment.unshift(lastenvironment)
+
+      lastenvironment = Hash.new
+      lastenvironment = @environment[0].clone
+      lastenvironment[variavel] = @addresses
+      @environment.unshift(lastenvironment)
     @addresses += 1
     puts("Ambiente   #{@environment}")
   end

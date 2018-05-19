@@ -93,7 +93,7 @@ class Bumblebee < Parslet::Transform
   }
 
   #mark1
-  rule(:var => "var", :id => subtree(:ids)) {
-    $smc.pushC(Tree.new("var", [ids]))
+  rule(:ident => simple(:i), :val => subtree(:v), :var=> 'var') {
+    $smc.pushC(Tree.new("var", [i, v]))
   }
 end

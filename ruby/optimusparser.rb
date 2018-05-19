@@ -64,7 +64,9 @@ class OptimusParser < Parslet::Parser
   # IMP Syntax
   rule(:program)    { module_op >> ident.as(:module) >> clauses.as(:clauses) >> end_op }
   rule(:clauses)    { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
-  rule(:var)        { var_op >> ident >> (com_op >> ident).repeat(0) }
+  #rule(:var)        { var_op >> ident >> (com_op >> ident).repeat(0) }
+  rule(:var)       { var_op >> var_new >> (( com_op >> var_new ).repeat(1)).maybe } #var x = 1, wlaace ve isso depois!
+  rule(:var_new)        { ident.as(:ident) >> ini_op >> exp.as(:val) } #e aqui
   rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) }
   rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe }
   rule(:ini)        { ident >> ini_op >> exp }
