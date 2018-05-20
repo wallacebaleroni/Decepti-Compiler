@@ -1,8 +1,8 @@
 class SMC
 
   def initialize()
-    @addresses = 1
-    @environment = [{"cao"=>0}]
+    @addresses = 0
+    @environment = [{}]
     @S = []
     @M = {}
     @C = []
@@ -51,24 +51,17 @@ class SMC
   end
 
   def writeM(variavel, dado)
-    endVar = @environment[variavel]
+    endVar = @environment[0][variavel]
     @M[endVar] = dado
     puts("Ambiente   #{@environment}")
     puts("Memoria    #{@M}")
   end
 
   def writeE(variavel)
-
-    #if(@environment.length == 0)
-     # puts("oi")
-     # firsthash = Hash.new
-     # firsthash[variavel] = @addresses
-     # @environment.unshift(lastenvironment)
-
-      lastenvironment = Hash.new
-      lastenvironment = @environment[0].clone
-      lastenvironment[variavel] = @addresses
-      @environment.unshift(lastenvironment)
+    lastenvironment = Hash.new
+    lastenvironment = @environment[0].clone
+    lastenvironment[variavel] = @addresses
+    @environment.unshift(lastenvironment)
     @addresses += 1
     puts("Ambiente   #{@environment}")
   end

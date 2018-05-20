@@ -352,6 +352,7 @@ def sub(val)
           $smc.popC()
           var = $smc.popS().id.str
           $smc.writeE(var)
+          $smc.writeM(var,value.id)
         else
           $smc.pushC(value)
         end
@@ -359,7 +360,6 @@ def sub(val)
         $smc.pushS(val.children[0])
         val.children.shift()
     end
-    puts($smc)
   end
 
 end
