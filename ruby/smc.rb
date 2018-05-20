@@ -6,6 +6,7 @@ class SMC
     @S = []
     @M = {}
     @C = []
+    @reservado = ["add","sub","div","mul","eq","le","lt","ge","gt","neg","assign","if","while","print","and","or","seq","proc","var"]
   end
 
   def lengthC()
@@ -58,12 +59,16 @@ class SMC
   end
 
   def writeE(variavel)
+    if(@reservado.include?variavel)
+      raise "Palavra reservada usada como identificador"
+    end
     lastenvironment = Hash.new
     lastenvironment = @environment[0].clone
     lastenvironment[variavel] = @addresses
     @environment.unshift(lastenvironment)
     @addresses += 1
     puts("Ambiente   #{@environment}")
+
   end
 
   def topC()
