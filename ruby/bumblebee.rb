@@ -72,8 +72,8 @@ class Bumblebee < Parslet::Transform
     Tree.new("if", [cd, bl, nil])
   }
 
-  rule(:if => "if", :cond => subtree(:cd), :block => subtree(:blif),:else => "else", :blockelse => subtree(:blelse)) {
-    Tree.new("if", [cd, blif, blelse])
+  rule(:if => "if", :cond => subtree(:cd), :block => subtree(:block_if),:else => "else", :blockelse => subtree(:block_else)) {
+    Tree.new("if", [cd, block_if, block_else])
   }
 
   rule(:print => "print", :arg => subtree(:ag)) {
@@ -93,7 +93,26 @@ class Bumblebee < Parslet::Transform
   }
 
   #mark1
+=begin
   rule(:ident => simple(:i), :val => subtree(:v), :var=> 'var') {
     $smc.pushC(Tree.new("var", [i, v]))
   }
+=end
+
+rule(:decl_seq1 => subtree(:s1), :decl_seq2 => subtree(:s2)) {
+  Tree.new("decl_seq", [s1, s2])
+}
+
+rule(:decl => subtree(:decl)) {
+  Tree.new("decl", [decl])
+}
+
+rule(:ident => simple(:i), :val => subtree(:v), :var=> 'var') {
+  $smc.pushC(Tree.new("var", [i, v]))
+}
+
+rule(:ident => simple(:i), :val => subtree(:v), :var=> 'const') {
+  $smc.pushC(Tree.new("const", [i, v]))
+}
+
 end

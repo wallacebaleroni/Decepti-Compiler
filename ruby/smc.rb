@@ -18,7 +18,7 @@ class SMC
   end
 
   def to_s()
-      puts("Controle   #{@C}")
+      puts("Controle #{@C}")
       puts("Valor      #{@S}")
       puts("Memoria      #{@M}")
       puts("Ambiente      #{@environment}")
@@ -59,15 +59,16 @@ class SMC
   end
 
   def writeE(variavel)
-    if(@reservado.include?variavel)
+    if (@reservado.include?(variavel))
       raise "Palavra reservada usada como identificador"
     end
-    lastenvironment = Hash.new
-    lastenvironment = @environment[0].clone
-    lastenvironment[variavel] = @addresses
-    @environment.unshift(lastenvironment)
+
+    new_env = Hash.new
+    new_env = @environment[0].clone
+    new_env[variavel] = @addresses
+    @environment.unshift(new_env)
     @addresses += 1
-    puts("Ambiente   #{@environment}")
+    puts("Ambiente  #{@environment}")
 
   end
 

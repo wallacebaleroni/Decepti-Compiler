@@ -50,9 +50,13 @@ class OptimusParser < Parslet::Parser
 
   rule(:module_op)  { blank? >> str("module") >> blank? }
   rule(:end_op)     { str("end") >> blank? }
+
   rule(:var_op)     { str("var").as(:var) >> blank? }
-  rule(:const_op)   { str("const") >> blank? }
-  rule(:init_op)    { str("init").as(:init) >> blank? }
+  rule(:const_op)   { str("const").as(:const) >> blank? }
+  # rule(:init_op)    { str("init").as(:init) >> blank? }
+  rule(:ini_op)     { str("=").as(:ini) >> blank? }
+  rule(:decl_op)    { var_op | const_op }
+
   rule(:proc_op)    { blank? >> str("proc") >> blank? }
   rule(:if_op)      { str("if").as(:if) >> blank? }
   rule(:else_op)    { str("else").as(:else) >> blank? }
@@ -63,17 +67,24 @@ class OptimusParser < Parslet::Parser
 
   # IMP Syntax
   rule(:program)    { module_op >> ident.as(:module) >> clauses.as(:clauses) >> end_op }
-  rule(:clauses)    { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
-  #rule(:var)        { var_op >> ident >> (com_op >> ident).repeat(0) }
-  rule(:var)       { var_op >> var_new >> (( com_op >> var_new ).repeat(1)).maybe } #var x = 1, wlaace ve isso depois!
-  rule(:var_new)        { ident.as(:ident) >> ini_op >> exp.as(:val) } #e aqui
-  rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) }
-  rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe }
-  rule(:ini)        { ident >> ini_op >> exp }
+  # rule(:clauses)    { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
+  # rule(:var)        { var_op >> ident >> (com_op >> ident).repeat(0) }
+  # rule(:var)        { var_op >> var_new >> (( com_op >> var_new ).repeat(1)).maybe } #var x = 1, wlaace ve isso depois!
+  # rule(:var_new)    { ident.as(:ident) >> ini_op >> exp.as(:val) } #e aqui
+
+  rule(:clauses)    { decl_seq >> ex_proc }
+  rule(:decl)       { decl_op >> ini_seq }
+  rule(:decl_seq)   { decl | decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) } # var x = 1; var y = 2
+  rule(:ini_seq)    { (ident >> ini_op >> exp).as(:ini_seq1) >> (com_op >> ini_seq.as(:ini_seq2)).maybe } # var x = 1, y = 2
+
+  # rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) }
+  # rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe }
+  # rule(:ini)        { ident >> ini_op >> exp }
+
   rule(:ex_proc)    { proc_op >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
   rule(:block)      { lcb >> cmd >> rcb }
   rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt) }
-  rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op >> exp.as(:val) }
+  rule(:cmd_unt)    { ex_if | ex_while | ex_print | decl_seq | ex_exit | call | ident.as(:ident) >> ass_op >> exp.as(:val) }
   rule(:ex_if)      { if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block.as(:blockelse)).maybe |
                       if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> block.as(:blockelse)).maybe |
                       if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> cmd.as(:blockelse)).maybe |
@@ -90,7 +101,7 @@ class OptimusParser < Parslet::Parser
   rule(:nboolexp)   { neg_op >> yboolexp.as(:bool) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:var)
+  root(:decl_seq)
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
