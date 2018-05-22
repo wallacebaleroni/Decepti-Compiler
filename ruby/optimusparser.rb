@@ -45,7 +45,7 @@ class OptimusParser < Parslet::Parser
 
   rule(:seq_op)     { str(";") >> blank? }
   rule(:com_op)     { str(",") >> blank? }
-  rule(:ini_op)     { str('=') >> blank? }
+  rule(:ini_op)     { str('=').as(:ini_op) >> blank? }
   rule(:ass_op)     { str(":=").as(:ass_op) >> blank? }
 
   rule(:module_op)  { blank? >> str("module") >> blank? }
@@ -76,10 +76,10 @@ class OptimusParser < Parslet::Parser
   rule(:clauses)    { decl_seq >> ex_proc }
 
   rule(:decl_seq)   { decl | decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) } # var x = 1; var y = 2; const z = 3
-  rule(:decl)       { decl_op >> ini_seq }
+  rule(:decl)       { decl_op.as(:decl_op) >> ini_seq.as(:ini_seq) }
   rule(:ini)        { ident.as(:id) >> ini_op >> exp.as(:value) }
-  rule(:ini_seq)    { ini | ini.as(:in_seq1) >> com_op >> ini_seq.as(:ini_seq2)
-  # rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) }
+  rule(:ini_seq)    { ini | ini.as(:ini_seq1) >> com_op >> ini_seq.as(:ini_seq2) }
+  # rule(:const)      { const_op >/> ident >> (com_op >> ident).repeat(1) }
   # rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe }
   # rule(:ini)        { ident >> ini_op >> exp }
 
@@ -103,7 +103,7 @@ class OptimusParser < Parslet::Parser
   rule(:nboolexp)   { neg_op >> yboolexp.as(:bool) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:decl_seq)
+  root(:decl)
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
