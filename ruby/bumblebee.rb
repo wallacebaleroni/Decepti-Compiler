@@ -99,20 +99,20 @@ class Bumblebee < Parslet::Transform
   }
 =end
 
-rule(:decl_seq1 => subtree(:s1), :decl_seq2 => subtree(:s2)) {
-  Tree.new("decl_seq", [s1, s2])
-}
+  rule(:decl_seq1 => subtree(:s1), :decl_seq2 => subtree(:s2)) {
+    Tree.new("decl_seq", [s1, s2])
+  }
 
-rule(:decl => subtree(:decl)) {
-  Tree.new("decl", [decl])
-}
+  rule(:decl => subtree(:decl), :declp_op => "var", :ini_seq => subtree(:ini_seq)) { # ??
+    Tree.new("decl", [decl_op, ini_seq])
+  }
 
-rule(:ident => simple(:i), :val => subtree(:v), :var=> 'var') {
-  $smc.pushC(Tree.new("var", [i, v]))
-}
+  rule(:ini_seq1 => subtree(:s1), :ini_seq2 => subtree(:s2)) {
+    Tree.new("ini_seq", [s1, s2])
+  }
 
-rule(:ident => simple(:i), :val => subtree(:v), :var=> 'const') {
-  $smc.pushC(Tree.new("const", [i, v]))
-}
+  rule(:id => simple(:i), :value => subtree(:v), :ini_op=> '=') {
+    Tree.new("ini", [i, v])
+  }
 
 end
