@@ -51,11 +51,12 @@ class OptimusParser < Parslet::Parser
   rule(:module_op)  { blank? >> str("module") >> blank? }
   rule(:end_op)     { str("end") >> blank? }
 
+  # rule(:init_op)    { str("init").as(:init) >> blank? }
+
   rule(:var_op)     { str("var").as(:var) >> blank? }
   rule(:const_op)   { str("const").as(:const) >> blank? }
-  # rule(:init_op)    { str("init").as(:init) >> blank? }
-  rule(:ini_op)     { str("=").as(:ini) >> blank? }
   rule(:decl_op)    { var_op | const_op }
+  rule(:ini_op)     { str("=").as(:ini) >> blank? }
 
   rule(:proc_op)    { blank? >> str("proc") >> blank? }
   rule(:if_op)      { str("if").as(:if) >> blank? }
@@ -73,10 +74,11 @@ class OptimusParser < Parslet::Parser
   # rule(:var_new)    { ident.as(:ident) >> ini_op >> exp.as(:val) } #e aqui
 
   rule(:clauses)    { decl_seq >> ex_proc }
-  rule(:decl)       { decl_op >> ini_seq }
-  rule(:decl_seq)   { decl | decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) } # var x = 1; var y = 2
-  rule(:ini_seq)    { (ident >> ini_op >> exp).as(:ini_seq1) >> (com_op >> ini_seq.as(:ini_seq2)).maybe } # var x = 1, y = 2
 
+  rule(:decl_seq)   { decl | decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) } # var x = 1; var y = 2; const z = 3
+  rule(:decl)       { decl_op >> ini_seq }
+  rule(:ini)        { ident.as(:id) >> ini_op >> exp.as(:value) }
+  rule(:ini_seq)    { ini | ini.as(:in_seq1) >> com_op >> ini_seq.as(:ini_seq2)
   # rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) }
   # rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe }
   # rule(:ini)        { ident >> ini_op >> exp }
