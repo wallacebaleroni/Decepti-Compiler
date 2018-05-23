@@ -18,10 +18,11 @@ class SMC
   end
 
   def to_s()
-      puts("Controle #{@C}")
-      puts("Valor      #{@S}")
-      puts("Memoria      #{@M}")
+      puts("Controle      #{@C}")
+      puts("Valor         #{@S}")
+      puts("Memoria       #{@M}")
       puts("Ambiente      #{@environment}")
+      puts()
   end
 
   def pushS(valor)

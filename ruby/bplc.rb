@@ -3,8 +3,9 @@ require_relative 'tree'
 
 
 class BPLC
-  def vamosRodar(smc)
+  def vamosRodar()
     puts("Autobots, let's roll!")
+
     while($smc.lengthC > 0)
       val = $smc.topC()
       case val.id
@@ -40,8 +41,17 @@ class BPLC
           self.lteq(val)
         when "if"
           self.if(val)
+        when "decl_var"
+          self.decl_var(val)
+          $smc.to_s
+        when "var_seq"
+          self.var_seq(val)
+          $smc.to_s
         when "var"
           self.var_exists(val)
+        when "decl"
+          self.decl(val)
+          $smc.to_s
         else
           if is_integer?(val.id)
             self.num(val)
@@ -53,6 +63,83 @@ class BPLC
   end
 
 
+  #mark1
+
+  def var_seq(val)
+    case val.children.length
+      when 1
+        child = val.children.shift()
+        case child.id
+          when "ini_seq"
+            $smc.popC()
+            child = Tree.new("var_seq", child.children)
+          when "ini"
+            $smc.popC()
+            child = Tree.new("var", child.children)
+        end
+        $smc.pushC(child)
+      else
+        child = val.children.shift()
+        case child.id
+          when "ini_seq"
+            child = Tree.new("var_seq", child.children)
+          when "ini"
+            child = Tree.new("var", child.children)
+        end
+        $smc.pushC(child)
+    end
+  end
+
+  def decl_var(val)
+    case val.children.length
+      when 1
+        child = val.children.shift()
+        case child.id
+          when "ini_seq"
+            $smc.popC()
+            child = Tree.new("var_seq", child.children)
+          when "ini"
+            $smc.popC()
+            child = Tree.new("var", child.children)
+        end
+        $smc.pushC(child)
+      else
+        child = val.children.shift()
+        case child.id
+          when "ini_seq"
+            child = Tree.new("var_seq", child.children)
+          when "ini"
+            child = Tree.new("var", child.children)
+        end
+        $smc.pushC(child)
+    end
+  end
+
+  def decl(val)
+    decl = val.children.shift()
+    $smc.popC()
+    $smc.pushC(decl)
+  end
+
+  def var_exists(val)
+    case val.children.length
+      when 0
+        value = $smc.popS()
+        if is_integer?(value.id)
+          $smc.popC()
+          var = $smc.popS().id.str
+          $smc.writeE(var)
+          $smc.writeM(var,value.id)
+        else
+          $smc.pushC(value)
+        end
+      else
+        $smc.pushS(val.children[0])
+        val.children.shift()
+    end
+  end
+
+  #mark 0
   def pprint(val)
     case val.children.length
       when 0
@@ -341,25 +428,6 @@ def sub(val)
 
   def is_integer?(val)
     val.to_i.to_s == val
-  end
-
-#mark1
-  def var_exists(val)
-    case val.children.length
-      when 0
-        value = $smc.popS()
-        if is_integer?(value.id)
-          $smc.popC()
-          var = $smc.popS().id.str
-          $smc.writeE(var)
-          $smc.writeM(var,value.id)
-        else
-          $smc.pushC(value)
-        end
-      else
-        $smc.pushS(val.children[0])
-        val.children.shift()
-    end
   end
 
 end

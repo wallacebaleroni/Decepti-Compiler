@@ -68,17 +68,17 @@ class OptimusParser < Parslet::Parser
 
   # IMP Syntax
   rule(:program)    { module_op >> ident.as(:module) >> clauses.as(:clauses) >> end_op }
-  # rule(:clauses)    { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
-  # rule(:var)        { var_op >> ident >> (com_op >> ident).repeat(0) }
-  # rule(:var)        { var_op >> var_new >> (( com_op >> var_new ).repeat(1)).maybe } #var x = 1, wlaace ve isso depois!
-  # rule(:var_new)    { ident.as(:ident) >> ini_op >> exp.as(:val) } #e aqui
+  # rule(:clauses)        { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
+  # rule(:var)            { var_op >> ident >> (com_op >> ident).repeat(0) }
+  # rule(:var)            { var_op >> var_new >> (( com_op >> var_new ).repeat(1)).maybe } #var x = 1, wlaace ve isso depois!
+  # rule(:var_new)        { ident.as(:ident) >> ini_op >> exp.as(:val) } #e aqui
 
   rule(:clauses)    { decl_seq >> ex_proc }
 
   rule(:decl_seq)   { decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) | decl } # var x = 1; var y = 2; const z = 3
   rule(:decl)       { decl_op >> ini_seq.as(:ini) }
   rule(:ini_seq)    { ini.as(:ini_seq1) >> com_op >> ini_seq.as(:ini_seq2) | ini }
-  rule(:ini)        { ident >> ini_op >> exp }
+  rule(:ini)        { ident >> ini_op >> exp.as(:val) }
 
 
 
@@ -92,9 +92,9 @@ class OptimusParser < Parslet::Parser
   rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt) }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | decl_seq | ex_exit | call | ident.as(:ident) >> ass_op >> exp.as(:val) }
   rule(:ex_if)      { if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block.as(:blockelse)).maybe |
-                      if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> block.as(:blockelse)).maybe |
-                      if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> cmd.as(:blockelse)).maybe |
-                      if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> cmd.as(:blockelse)).maybe }
+                            if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> block.as(:blockelse)).maybe |
+                            if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> cmd.as(:blockelse)).maybe |
+                            if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> cmd.as(:blockelse)).maybe }
   rule(:ex_while)   { while_op >> lp >> boolexp.as(:cond) >> rp >> do_op >> block.as(:block)}
   rule(:ex_print)   { print_op >> lp >> exp.as(:arg) >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
