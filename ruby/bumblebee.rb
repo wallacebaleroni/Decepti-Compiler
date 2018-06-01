@@ -5,7 +5,7 @@ require_relative 'tree'
 
 
 class Bumblebee < Parslet::Transform
-  #mark0
+  # Mark 0
   rule(:int => simple(:n)) {
     Tree.new(n)
   }
@@ -92,27 +92,21 @@ class Bumblebee < Parslet::Transform
     $smc.pushC(Tree.new("proc", [bl]))
   }
 
-  #mark1
-  rule(:ident => simple(:id), :val => simple(:v)) {
-    Tree.new("ini", [id, v])
-  }
-
+  # Mark 1
   rule(:ini_seq1 => subtree(:i1), :ini_seq2 => subtree(:i2)) {
     Tree.new("ini_seq", [i1, i2])
   }
 
-  rule(:decl_op => "var", :ini => subtree(:ini)) {
-    Tree.new("decl_var", [ini])
+  rule(:ident => simple(:id), :val => simple(:v)) {
+    Tree.new("ini", [id, v])
+  }
+
+  rule(:decl_op => subtree(:op), :ini => subtree(:ini)) {
+    Tree.new("decl", [op, ini])
   }
 
   rule(:decl_seq1 => subtree(:d1), :decl_seq2 => subtree(:d2)) {
-    $smc.pushC(Tree.new("decl", [d1, d2]))
+    $smc.pushC(Tree.new("decl_seq", [d1, d2]))
   }
-
-
-
-
-
-
 
 end

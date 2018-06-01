@@ -46,5 +46,6 @@ bplc.vamosRodar($smc)
 
 $smc = SMC.new
 bplc = BPLC.new
-Bumblebee.new.apply(OptimusParser.new.rollOut("var x = 1, y = 2, z = 3; var i = 0"))
+
+Bumblebee.new.apply(OptimusParser.new.rollOut("var x = 1, y = 2, z = 3; var i = 4"))
 bplc.vamosRodar()

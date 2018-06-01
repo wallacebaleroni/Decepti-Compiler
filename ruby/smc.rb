@@ -2,10 +2,11 @@ class SMC
 
   def initialize()
     @addresses = 0
-    @environment = [{}]
+    @E = [{}]
     @S = []
     @M = {}
     @C = []
+    @A = [{}]
     @reservado = ["add","sub","div","mul","eq","le","lt","ge","gt","neg","assign","if","while","print","and","or","seq","proc","var"]
   end
 
@@ -13,30 +14,25 @@ class SMC
     @C.length
   end
 
-  def length_environment()
-    @environment.length
+  def lengthE()
+    @E.length
   end
 
   def to_s()
-      puts("Controle      #{@C}")
-      puts("Valor         #{@S}")
-      puts("Memoria       #{@M}")
-      puts("Ambiente      #{@environment}")
-      puts()
+    puts("Ambiente      #{@E}")
+    puts("Valor         #{@S}")
+    puts("Controle      #{@C}")
+    puts("Memoria       #{@M}")
+    puts("Aux           #{@A}")
+    puts()
   end
 
   def pushS(valor)
     @S.unshift(valor)
-    puts("Controle   #{@C}")
-    puts("Valor      #{@S}")
-    puts()
   end
 
   def pushC(controle)
     @C.unshift(controle)
-    puts("Controle   #{@C}")
-    puts("Valor      #{@S}")
-    puts()
   end
 
   def popS()
@@ -48,15 +44,13 @@ class SMC
   end
 
   def readM(variavel)
-    endVar = @environment[variavel]
+    endVar = @E[variavel]
     @M[endVar]
   end
 
   def writeM(variavel, dado)
-    endVar = @environment[0][variavel]
+    endVar = @E[0][variavel]
     @M[endVar] = dado
-    puts("Ambiente   #{@environment}")
-    puts("Memoria    #{@M}")
   end
 
   def writeE(variavel)
@@ -65,11 +59,10 @@ class SMC
     end
 
     new_env = Hash.new
-    new_env = @environment[0].clone
+    new_env = @E[0].clone
     new_env[variavel] = @addresses
-    @environment.unshift(new_env)
+    @E.unshift(new_env)
     @addresses += 1
-    puts("Ambiente  #{@environment}")
 
   end
 

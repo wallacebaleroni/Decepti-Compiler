@@ -4,11 +4,16 @@ require_relative 'tree'
 
 class BPLC
   def vamosRodar()
-    puts("Autobots, let's roll!")
+    puts("\nAutobots, let's roll!")
+
+    # Imprime o SMC
+    $smc.to_s()
 
     while($smc.lengthC > 0)
+      # Olha o topo do Controle e vê qual regra se aplica
       val = $smc.topC()
       case val.id
+        # Mark 0
         when "proc"
           self.pproc(val)
         when "seq"
@@ -41,93 +46,100 @@ class BPLC
           self.lteq(val)
         when "if"
           self.if(val)
-        when "decl_var"
-          self.decl_var(val)
-          $smc.to_s
-        when "var_seq"
-          self.var_seq(val)
-          $smc.to_s
-        when "var"
-          self.var_exists(val)
+        # Mark 1
+        when "decl_seq"
+          self.decl_seq(val)
         when "decl"
           self.decl(val)
-          $smc.to_s
+        when "var_seq"
+          self.var_seq(val)
+        when "var"
+          self.var(val)
         else
           if is_integer?(val.id)
             self.num(val)
           else
+            # TODO: olhar isso, ele esperava um identificador aqui, talvez tenha que criar uma regra nova pra esse caso
             self.var(val)
           end
       end
+
+      # Imprime o SMC
+      $smc.to_s()
     end
   end
 
 
-  #mark1
+  # Mark 1
+  def decl_seq(val)
+    # Tira o decl_seq da pilha de controle
+    $smc.popC()
 
-  def var_seq(val)
-    case val.children.length
-      when 1
-        child = val.children.shift()
-        case child.id
-          when "ini_seq"
-            $smc.popC()
-            child = Tree.new("var_seq", child.children)
-          when "ini"
-            $smc.popC()
-            child = Tree.new("var", child.children)
-        end
-        $smc.pushC(child)
-      else
-        child = val.children.shift()
-        case child.id
-          when "ini_seq"
-            child = Tree.new("var_seq", child.children)
-          when "ini"
-            child = Tree.new("var", child.children)
-        end
-        $smc.pushC(child)
-    end
-  end
-
-  def decl_var(val)
-    case val.children.length
-      when 1
-        child = val.children.shift()
-        case child.id
-          when "ini_seq"
-            $smc.popC()
-            child = Tree.new("var_seq", child.children)
-          when "ini"
-            $smc.popC()
-            child = Tree.new("var", child.children)
-        end
-        $smc.pushC(child)
-      else
-        child = val.children.shift()
-        case child.id
-          when "ini_seq"
-            child = Tree.new("var_seq", child.children)
-          when "ini"
-            child = Tree.new("var", child.children)
-        end
-        $smc.pushC(child)
-    end
+    # Coloca os decl na pilha de controle
+    seq1 = val.children.shift()
+    seq2 = val.children.shift()
+    $smc.pushC(seq2)
+    $smc.pushC(seq1)
   end
 
   def decl(val)
-    decl = val.children.shift()
+    # Tira o decl da pilha de controle
     $smc.popC()
-    $smc.pushC(decl)
+
+    tipo = val.children.shift()
+    child = val.children.shift()
+
+    # Vê se o tipo é var ou const
+    case tipo.str
+      when "var"
+        # Vê se o filho é ini_seq ou ini
+        case child.id
+          when "ini_seq"
+            child = Tree.new((Parslet::Slice.new(0, "var_seq")), child.children)
+          when "ini"
+            child = Tree.new((Parslet::Slice.new(0, "var")), child.children)
+        end
+      when "const"
+        # Vê se é ini_seq ou ini
+        case child.id
+          when "ini_seq"
+            child = Tree.new((Parslet::Slice.new(0, "const_seq")), child.children)
+          when "ini"
+            child = Tree.new((Parslet::Slice.new(0, "const")), child.children)
+        end
+    end
+
+    # Reempilha filho na pilha de controle
+    $smc.pushC(child)
   end
 
-  def var_exists(val)
+  def var_seq(val)
+    case val.children.length
+      when 0
+        $smc.popC()
+      else
+        child = val.children.shift()
+
+        # Vê se o filho é ini_seq ou ini
+        case child.id
+          when "ini_seq"
+            child = Tree.new((Parslet::Slice.new(0, "var_seq")), child.children)
+          when "ini"
+            child = Tree.new((Parslet::Slice.new(0, "var")), child.children)
+        end
+
+        # Reempilha filho na pilha de controle
+        $smc.pushC(child)
+    end
+  end
+
+  def var(val)
     case val.children.length
       when 0
         value = $smc.popS()
         if is_integer?(value.id)
           $smc.popC()
-          var = $smc.popS().id.str
+          var = $smc.popS().str
           $smc.writeE(var)
           $smc.writeM(var,value.id)
         else
@@ -139,7 +151,7 @@ class BPLC
     end
   end
 
-  #mark 0
+  # Mark 0
   def pprint(val)
     case val.children.length
       when 0
@@ -384,13 +396,6 @@ def sub(val)
         $smc.pushS(cond.deepcopy())
         $smc.pushC(cond.deepcopy())
     end
-  end
-
-  def var(val)
-    $smc.popC
-    var = $smc.readM(val.id.str).to_s
-    new_val = Tree.new((Parslet::Slice.new(0, var)))
-    $smc.pushS(new_val)
   end
 
   def num(val)
