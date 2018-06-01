@@ -114,23 +114,22 @@ class BPLC
   end
 
   def var_seq(val)
-    case val.children.length
-      when 0
-        $smc.popC()
-      else
-        child = val.children.shift()
-
-        # Vê se o filho é ini_seq ou ini
-        case child.id
-          when "ini_seq"
-            child = Tree.new((Parslet::Slice.new(0, "var_seq")), child.children)
-          when "ini"
-            child = Tree.new((Parslet::Slice.new(0, "var")), child.children)
-        end
-
-        # Reempilha filho na pilha de controle
-        $smc.pushC(child)
+    # Se for o último filho já pode tirar o var_seq da pilha de controle
+    if val.children.length == 1
+      $smc.popC()
     end
+
+    # Vê se o filho é ini_seq ou ini
+    child = val.children.shift()
+    case child.id
+      when "ini_seq"
+        child = Tree.new((Parslet::Slice.new(0, "var_seq")), child.children)
+      when "ini"
+        child = Tree.new((Parslet::Slice.new(0, "var")), child.children)
+    end
+
+    # Reempilha filho na pilha de controle
+    $smc.pushC(child)
   end
 
   def var(val)
