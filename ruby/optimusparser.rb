@@ -95,7 +95,7 @@ class OptimusParser < Parslet::Parser
   rule(:nboolexp)   { neg_op >> yboolexp.as(:bool) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:decl_seq)
+  root(:ex_proc)
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
