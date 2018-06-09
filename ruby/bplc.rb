@@ -65,7 +65,7 @@ class BPLC
       end
 
       # Imprime o SMC
-      $smc.to_s()
+      $smc.print_smc()
     end
   end
 
