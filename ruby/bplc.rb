@@ -383,6 +383,7 @@ def sub(val)
           block = $smc.popS()
           novo_while = Tree.new("while", [cond.deepcopy(), block.deepcopy()])
           $smc.pushC(novo_while)
+          $smc.pushC(Tree.new("blockend",[]))
           $smc.pushC(block.deepcopy())
         else
           $smc.popS()
@@ -420,6 +421,7 @@ def sub(val)
         if is_integer?(value.id)
           $smc.popC()
           var = $smc.popS().id.str
+          print(var)
           $smc.writeM(var, value.id.str)
         else
           $smc.pushC(value)

@@ -44,8 +44,25 @@ Bumblebee.new.apply(OptimusParser.new.rollOut("var y = 6"))
 bplc.vamosRodar($smc)
 =end
 
+=begin
 $smc = SMC.new
 bplc = BPLC.new
 
 Bumblebee.new.apply(OptimusParser.new.rollOut("var x = 1, y = 2, z = 3; var i = 4"))
+bplc.vamosRodar()
+=end
+
+$smc = SMC.new
+bplc = BPLC.new
+Bumblebee.new.apply(OptimusParser.new.rollOut("
+proc fact(x) {
+  x := 5;
+  y := 1;
+  while (x > 0) do {
+      y := y * x;
+  x := x - 1
+  };
+  print(y)
+  }
+"))
 bplc.vamosRodar()
