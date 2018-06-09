@@ -10,7 +10,7 @@ class Bumblebee < Parslet::Transform
     Tree.new(n)
   }
 
-  rule(:id => simple(:c)) {
+  rule(:ident => simple(:c)) {
     Tree.new(c)
   }
 
@@ -30,11 +30,11 @@ class Bumblebee < Parslet::Transform
     Tree.new("div", [l, r])
   }
 
-  rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':=') {
+  rule(:ident => subtree(:i), :val => subtree(:v), :ass_op=> ':=') {
     Tree.new("assign", [i, v])
   }
 
-  rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':=', :cmd => subtree(:c)) {
+  rule(:ident => subtree(:i), :val => subtree(:v), :ass_op=> ':=', :cmd => subtree(:c)) {
     Tree.new("assign", [i, v])
   }
 
@@ -88,7 +88,7 @@ class Bumblebee < Parslet::Transform
     Tree.new("cmd", [cmd])
   }
 
-  rule(:proc => simple(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
+  rule(:proc => subtree(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
     $smc.pushC(Tree.new("proc", [bl]))
   }
 
