@@ -18,7 +18,7 @@ class SMC
     @E.length
   end
 
-  def to_s()
+  def print_smc()
     puts("Ambiente      #{@E}")
     puts("Valor         #{@S}")
     puts("Controle      #{@C}")
