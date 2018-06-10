@@ -60,7 +60,7 @@ class BPLC
             self.num(val)
           else
             # TODO: olhar isso, ele esperava um identificador aqui, talvez tenha que criar uma regra nova pra esse caso
-            self.var(val)
+            self.acessa(val)
           end
       end
 
@@ -214,8 +214,8 @@ def sub(val)
         $smc.popC()
         left = $smc.popS()
         right = $smc.popS()
-        left = left.id.str.to_i()
-        right = right.id.str.to_i()
+        left = left.id.to_i()
+        right = right.id.to_i()
         res = (right - left).to_s()
         res = Tree.new((Parslet::Slice.new(0,res)))
         $smc.pushS(res)
@@ -232,8 +232,8 @@ def sub(val)
         $smc.popC()
         left = $smc.popS()
         right = $smc.popS()
-        left = left.id.str.to_i()
-        right = right.id.str.to_i()
+        left = left.id.to_i()
+        right = right.id.to_i()
         res = (left * right).to_s()
         res = Tree.new((Parslet::Slice.new(0, res)))
         $smc.pushS(res)
@@ -323,7 +323,7 @@ def sub(val)
         $smc.popC()
         right = $smc.popS()
         left = $smc.popS()
-        if right.id.str.to_i() > left.id.str.to_i()
+        if right.id.to_i() > left.id.to_i()
           $smc.pushS("true")
         else
           $smc.pushS("false")
@@ -383,7 +383,7 @@ def sub(val)
           block = $smc.popS()
           novo_while = Tree.new("while", [cond.deepcopy(), block.deepcopy()])
           $smc.pushC(novo_while)
-          $smc.pushC(Tree.new("blockend",[]))
+          #$smc.pushC(Tree.new("blockend",[]))
           $smc.pushC(block.deepcopy())
         else
           $smc.popS()
@@ -433,6 +433,11 @@ def sub(val)
 
   def is_integer?(val)
     val.to_i.to_s == val
+  end
+
+  def acessa(val)
+    $smc.popC
+    $smc.pushS(Tree.new($smc.readM(val.id.str),))
   end
 
 end
