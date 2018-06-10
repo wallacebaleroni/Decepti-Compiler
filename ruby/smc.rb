@@ -1,3 +1,5 @@
+require_relative 'bplc'
+
 class SMC
 
   def initialize()
@@ -6,8 +8,9 @@ class SMC
     @S = []
     @M = {}
     @C = []
+
     @A = []
-    @reservado = ["add","sub","div","mul","eq","le","lt","ge","gt","neg","assign","if","while","print","and","or","seq","proc","var"]
+    @reservado = ["add","sub","div","mul","eq","le","lt","ge","gt","neg","assign","if","while","print","and","or","seq","proc","var","const"]
   end
 
   def lengthC()
@@ -53,16 +56,24 @@ class SMC
     @M[endVar] = dado
   end
 
-  def writeE(variavel)
+  def writeE(variavel, bindable)
     if (@reservado.include?(variavel))
       raise "Palavra reservada usada como identificador"
     end
 
     new_env = Hash.new
     new_env = @E[0].clone
-    new_env[variavel] = @addresses
-    @E.unshift(new_env)
-    @addresses += 1
+
+    if bindable.is_loc? # var decl
+      bindable.setContent(@addresses)
+      new_env[variavel] = bindable
+      @E.unshift(new_env)
+      @addresses += 1
+
+    else # const decl
+      new_env[variavel] = bindable
+      @E.unshift(new_env)
+    end
 
   end
 
@@ -86,4 +97,3 @@ class SMC
   end
 
 end
-

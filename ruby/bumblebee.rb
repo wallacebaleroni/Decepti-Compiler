@@ -72,7 +72,7 @@ class Bumblebee < Parslet::Transform
     Tree.new("if", [cd, bl, nil])
   }
 
-  rule(:if => "if", :cond => subtree(:cd), :block => subtree(:block_if),:else => "else", :blockelse => subtree(:block_else)) {
+  rule(:if => "if", :cond => subtree(:cd), :block => subtree(:block_if), :else => "else", :blockelse => subtree(:block_else)) {
     Tree.new("if", [cd, block_if, block_else])
   }
 
@@ -93,11 +93,15 @@ class Bumblebee < Parslet::Transform
   }
 
   # Mark 1
+  rule(:decl_seq => subtree(:decl_seq), :cmd => subtree(:cmd)) {
+    Tree.new("block", [decl_seq, cmd])
+  }
+
   rule(:ini_seq1 => subtree(:i1), :ini_seq2 => subtree(:i2)) {
     Tree.new("ini_seq", [i1, i2])
   }
 
-  rule(:ident => simple(:id), :val => simple(:v)) {
+  rule(:ident => subtree(:id), :val => subtree(:v)) {
     Tree.new("ini", [id, v])
   }
 

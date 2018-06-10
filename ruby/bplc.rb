@@ -1,6 +1,41 @@
 require_relative 'smc'
 require_relative 'tree'
 
+class Bindable
+  @id = nil # "loc" (var decl) / "value" (const decl) 
+  @content = nil # memory address (var decl) / constant variable (const decl)
+
+  def initialize(id, content)
+    @id = id
+    @content = content
+  end
+
+  def content()
+    @content
+  end
+
+  def setContent(content)
+    @content = content
+  end
+
+  def id()
+    @id
+  end
+
+  def inspect()
+    "(#{@id}, #{@content})"
+  end
+
+  def to_s()
+    inspect()
+  end
+
+  def is_loc?()
+    @id == "loc"
+  end
+
+end
+
 
 class BPLC
   def vamosRodar()
@@ -12,58 +47,91 @@ class BPLC
     while($smc.lengthC > 0)
       # Olha o topo do Controle e vê qual regra se aplica
       val = $smc.topC()
+
       case val.id
         # Mark 0
         when "proc"
           self.pproc(val)
+
         when "seq"
           self.seq(val)
+
         when "assign"
           self.assign(val)
+
         when "while"
           self.while(val)
+
         when "neg"
           self.neg(val)
+
         when "eq"
           self.eq(val)
+
         when "mul"
           self.mul(val)
+
         when "div"
           self.div(val)
+
         when "sub"
           self.sub(val)
+
         when "add"
           self.add(val)
+
         when "print"
           self.pprint(val)
+
         when "lt"
           self.lt(val)
+
         when "gt"
           self.gt(val)
+
         when "gteq"
           self.gteq(val)
+
         when "lteq"
           self.lteq(val)
+
         when "if"
           self.if(val)
+
         # Mark 1
         when "decl_seq"
           self.decl_seq(val)
+
         when "decl"
           self.decl(val)
+
         when "var_seq"
           self.var_seq(val)
+
         when "var"
           self.var(val)
+
+        when "const_seq"
+          self.const_seq(val)
+
+        when "const"
+          self.const(val)
+
+        when "block"
+          self.block(val)
+
         when "blockend"
           self.blockend(val)
+
         else
           if is_integer?(val.id)
             self.num(val)
+          
           else
             # TODO: olhar isso, ele esperava um identificador aqui, talvez tenha que criar uma regra nova pra esse caso
             self.acessa(val)
           end
+
       end
 
       # Imprime o SMC
@@ -72,6 +140,18 @@ class BPLC
   end
 
   # Mark 1
+
+  def block(val)
+    # Tira o block da pilha de controle
+    $smc.popC()
+
+    # Coloca o decl_seq e o cmd na pilha de controle
+    decl_seq = val.children.shift()
+    cmd = val.children.shift()
+    $smc.pushC(cmd)
+    $smc.pushC(decl_seq)
+  end
+
   def decl_seq(val)
     # Tira o decl_seq da pilha de controle
     $smc.popC()
@@ -100,6 +180,7 @@ class BPLC
           when "ini"
             child = Tree.new((Parslet::Slice.new(0, "var")), child.children)
         end
+      
       when "const"
         # Vê se é ini_seq ou ini
         case child.id
@@ -137,20 +218,66 @@ class BPLC
     case val.children.length
       when 0
         value = $smc.popS()
+
         if is_integer?(value.id)
           $smc.popC()
           var = $smc.popS().str
-          $smc.writeE(var)
-          $smc.writeM(var,value.id)
+          bindable = Bindable.new("loc", nil)
+          $smc.writeE(var, bindable)
+          $smc.writeM(var, value.id)
           $smc.escreveAuxiliar(var)
+
         else
           $smc.pushC(value)
         end
+
       else
         $smc.pushS(val.children[0])
         val.children.shift()
     end
   end
+
+  def const_seq(val)
+    # Se for o último filho já pode tirar o var_seq da pilha de controle
+    if val.children.length == 1
+      $smc.popC()
+    end
+
+    # Vê se o filho é ini_seq ou ini
+    child = val.children.shift()
+    case child.id
+      when "ini_seq"
+        child = Tree.new((Parslet::Slice.new(0, "const_seq")), child.children)
+      when "ini"
+        child = Tree.new((Parslet::Slice.new(0, "const")), child.children)
+    end
+
+    # Reempilha filho na pilha de controle
+    $smc.pushC(child)
+  end
+
+  def const(val)
+    case val.children.length
+      when 0
+        value = $smc.popS()
+        if is_integer?(value.id)
+          $smc.popC()
+          var = $smc.popS().str
+          bindable = Bindable.new("value", value) # ?
+          $smc.writeE(var, bindable) # !!
+          # $smc.writeM(var,value.id)
+          $smc.escreveAuxiliar(var)
+        
+        else
+          $smc.pushC(value)
+        end
+      
+      else
+        $smc.pushS(val.children[0])
+        val.children.shift()
+    end
+  end
+
 
   # Mark 0
   def pprint(val)
@@ -448,6 +575,7 @@ def sub(val)
 
   def acessa(val)
     $smc.popC
+    
     $smc.pushS(Tree.new($smc.readM(val.id.str),))
   end
 
