@@ -55,6 +55,8 @@ class BPLC
           self.var_seq(val)
         when "var"
           self.var(val)
+        when "blockend"
+          self.blockend(val)
         else
           if is_integer?(val.id)
             self.num(val)
@@ -68,7 +70,6 @@ class BPLC
       $smc.print_smc()
     end
   end
-
 
   # Mark 1
   def decl_seq(val)
@@ -141,6 +142,7 @@ class BPLC
           var = $smc.popS().str
           $smc.writeE(var)
           $smc.writeM(var,value.id)
+          $smc.escreveAuxiliar(var)
         else
           $smc.pushC(value)
         end
@@ -405,6 +407,7 @@ def sub(val)
 
   def pproc(val)
     $smc.popC()
+    $smc.pushC(Tree.new("blockend",[]))
     $smc.pushC(val.children[0])
   end
 
@@ -438,6 +441,11 @@ def sub(val)
   def acessa(val)
     $smc.popC
     $smc.pushS(Tree.new($smc.readM(val.id.str),))
+  end
+
+  def blockend(val)
+    $smc.popC
+    $smc.desempilhaAmbiente()
   end
 
 end

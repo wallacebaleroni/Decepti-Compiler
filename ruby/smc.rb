@@ -6,7 +6,7 @@ class SMC
     @S = []
     @M = {}
     @C = []
-    @A = [[]]
+    @A = []
     @reservado = ["add","sub","div","mul","eq","le","lt","ge","gt","neg","assign","if","while","print","and","or","seq","proc","var"]
   end
 
@@ -75,6 +75,13 @@ class SMC
     for i in 1..listaVar.length
       @E.shift
     end
+  end
+
+  def escreveAuxiliar(variavel)
+    if(@A.length == 0)
+      @A = [[]]
+    end
+    @A[0].unshift(variavel)
   end
 
 end
