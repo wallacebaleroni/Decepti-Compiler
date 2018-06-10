@@ -59,7 +59,8 @@ Bumblebee.new.apply(OptimusParser.new.rollOut("
 proc fact(x) {
   var x = 5;
   var y = 1;
-  while (x > 0) do {
+  if (x > 0) {
+      var z = 15;
       y := y * x;
       x := x - 1
   };

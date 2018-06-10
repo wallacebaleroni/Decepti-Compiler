@@ -174,9 +174,13 @@ class BPLC
         bif = $smc.popS()
         belse = $smc.popS()
         if bool == "true"
+          $smc.novaListaAux
+          $smc.pushC(Tree.new("blockend",[]))
           $smc.pushC(bif)
         else
           if not belse.nil?
+            $smc.novaListaAux
+            $smc.pushC(Tree.new("blockend",[]))
             $smc.pushC(belse)
           end
         end
@@ -198,8 +202,8 @@ class BPLC
         $smc.popC()
         left = $smc.popS()
         right = $smc.popS()
-        left = left.id.str.to_i()
-        right = right.id.str.to_i()
+        left = left.id.to_i()
+        right = right.id.to_i()
         res = (right + left).to_s()
         res = Tree.new((Parslet::Slice.new(0,res)))
         $smc.pushS(res)
@@ -251,8 +255,8 @@ def sub(val)
         $smc.popC()
         left = $smc.popS()
         right = $smc.popS()
-        left = left.id.str.to_i()
-        right = right.id.str.to_i()
+        left = left.id.to_i()
+        right = right.id.to_i()
         res = (right / left).to_s()
         res = Tree.new((Parslet::Slice.new(0, res)))
         $smc.pushS(res)
@@ -344,7 +348,7 @@ def sub(val)
         $smc.popC()
         right = $smc.popS()
         left = $smc.popS()
-        if right.id.str.to_i() >= left.id.str.to_i()
+        if right.id.to_i() >= left.id.to_i()
           $smc.pushS("true")
         else
           $smc.pushS("false")
@@ -383,13 +387,16 @@ def sub(val)
         if bool == "true"
           cond = $smc.popS()
           block = $smc.popS()
+          $smc.novaListaAux
+          $smc.pushC(Tree.new("blockend",[]))
           novo_while = Tree.new("while", [cond.deepcopy(), block.deepcopy()])
           $smc.pushC(novo_while)
-          #$smc.pushC(Tree.new("blockend",[]))
           $smc.pushC(block.deepcopy())
+
         else
           $smc.popS()
           $smc.popS()
+
         end
       else
         cond = val.children.shift()
@@ -407,6 +414,7 @@ def sub(val)
 
   def pproc(val)
     $smc.popC()
+    $smc.novaListaAux
     $smc.pushC(Tree.new("blockend",[]))
     $smc.pushC(val.children[0])
   end

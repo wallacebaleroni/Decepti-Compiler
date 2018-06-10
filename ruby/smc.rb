@@ -78,10 +78,11 @@ class SMC
   end
 
   def escreveAuxiliar(variavel)
-    if(@A.length == 0)
-      @A = [[]]
-    end
     @A[0].unshift(variavel)
+  end
+
+  def novaListaAux
+    @A.unshift([])
   end
 
 end
