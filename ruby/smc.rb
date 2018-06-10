@@ -49,6 +49,8 @@ class SMC
   end
 
   def writeM(variavel, dado)
+    print(variavel)
+    print(dado)
     endVar = @E[0][variavel]
     @M[endVar] = dado
   end

@@ -54,15 +54,15 @@ bplc.vamosRodar()
 
 $smc = SMC.new
 bplc = BPLC.new
+
 Bumblebee.new.apply(OptimusParser.new.rollOut("
 proc fact(x) {
-  x := 5;
-  y := 1;
+  var x = 5;
+  var y = 1;
   while (x > 0) do {
       y := y * x;
-  x := x - 1
+      x := x - 1
   };
   print(y)
-  }
-"))
+}"))
 bplc.vamosRodar()

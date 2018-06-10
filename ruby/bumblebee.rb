@@ -106,7 +106,7 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:decl_seq1 => subtree(:d1), :decl_seq2 => subtree(:d2)) {
-    $smc.pushC(Tree.new("decl_seq", [d1, d2]))
+    Tree.new("decl_seq", [d1, d2])
   }
 
 end

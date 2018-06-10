@@ -421,7 +421,6 @@ def sub(val)
         if is_integer?(value.id)
           $smc.popC()
           var = $smc.popS().id.str
-          print(var)
           $smc.writeM(var, value.id.str)
         else
           $smc.pushC(value)
