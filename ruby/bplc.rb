@@ -556,10 +556,18 @@ def sub(val)
     case val.children.length
       when 0
         value = $smc.popS()
+
         if is_integer?(value.id)
           $smc.popC()
           var = $smc.popS().id.str
+
+          if $smc.const?(var)
+            raise "Tentativa de assign em constante."
+            exit
+          end
+
           $smc.writeM(var, value.id.str)
+
         else
           $smc.pushC(value)
         end

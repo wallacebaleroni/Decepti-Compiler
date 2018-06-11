@@ -99,4 +99,14 @@ class SMC
     @A.unshift([])
   end
 
+  def const?(identifier)
+    if @E[0].has_key?(identifier)
+      bindable = @E[0][identifier]
+      bindable.id == "value"
+    
+    else
+      false
+    end
+  end
+
 end
