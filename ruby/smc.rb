@@ -47,15 +47,16 @@ class SMC
   end
 
   def readM(variavel)
-    endVar = @E[0][variavel]
-    if endVar.id.eql? "value"
-      return endVar.content
+    bindable = @E[0][variavel]
+    if bindable.id.eql? "value"
+      return bindable.content
     end
-    @M[endVar]
+
+    @M[bindable.content]
   end
 
   def writeM(variavel, dado)
-    endVar = @E[0][variavel]
+    endVar = @E[0][variavel].content()
     @M[endVar] = dado
   end
 
