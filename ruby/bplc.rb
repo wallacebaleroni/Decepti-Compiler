@@ -263,7 +263,7 @@ class BPLC
         if is_integer?(value.id)
           $smc.popC()
           var = $smc.popS().str
-          bindable = Bindable.new("value", value) # ?
+          bindable = Bindable.new("value", value.id) # ?
           $smc.writeE(var, bindable) # !!
           # $smc.writeM(var,value.id)
           $smc.escreveAuxiliar(var)

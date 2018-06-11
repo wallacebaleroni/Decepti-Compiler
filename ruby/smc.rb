@@ -48,6 +48,9 @@ class SMC
 
   def readM(variavel)
     endVar = @E[0][variavel]
+    if endVar.id.eql? "value"
+      return endVar.content
+    end
     @M[endVar]
   end
 

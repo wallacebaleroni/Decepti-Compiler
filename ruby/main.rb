@@ -60,7 +60,7 @@ Bumblebee.new.apply(OptimusParser.new.rollOut("
 proc fact(x) {
   var x = 5;
   var y = 1;
-  if (x > 0) {
+  while (x > 0) do {
       var z = 15;
       y := y * x;
       x := x - 1
@@ -69,7 +69,6 @@ proc fact(x) {
 }"))
 bplc.vamosRodar()
 =end
-
 Bumblebee.new.apply(OptimusParser.new.rollOut("
   proc fact(x) {
     const x = 5;
@@ -78,3 +77,4 @@ Bumblebee.new.apply(OptimusParser.new.rollOut("
     print(y)
   }"))
   bplc.vamosRodar()
+
