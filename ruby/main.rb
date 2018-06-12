@@ -10,13 +10,12 @@ bplc = BPLC.new
 code = "proc fact(x) {
   var x = 5;
   var y = 1;
-  const w = 40;
+  const w = 1;
   while (x > 0) do {
-      var z = 15;
       y := y * x;
-      x := x - 1
+      x := x - w
   };
-  print(w)
+  print(y)
   }"
 
 puts code

@@ -399,7 +399,7 @@ def sub(val)
         $smc.popC()
         left = $smc.popS()
         right = $smc.popS()
-        if left.id.str.to_i() == right.id.str.to_i()
+        if left.id.to_i() == right.id.to_i()
           $smc.pushS("true")
         else
           $smc.pushS("false")
