@@ -10,7 +10,8 @@ bplc = BPLC.new
 code = "proc fact(x) {
   var x = 5;
   var y = 1;
-  const w = 1;
+  const w = 1
+
   while (x > 0) do {
       y := y * x;
       x := x - w

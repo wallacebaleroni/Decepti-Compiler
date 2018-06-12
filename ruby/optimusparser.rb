@@ -71,12 +71,12 @@ class OptimusParser < Parslet::Parser
   rule(:clauses)    { decl_seq >> ex_proc }
 
   rule(:decl_seq)   { decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) | decl }
-  rule(:decl)       { decl_op >> ini_seq.as(:ini) }
+  rule(:decl)       { decl_op >> ini_seq }
   rule(:ini_seq)    { ini.as(:ini_seq1) >> com_op >> ini_seq.as(:ini_seq2) | ini }
   rule(:ini)        { ident >> ini_op >> exp.as(:val) }
 
   rule(:ex_proc)    { proc_op >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
-  rule(:block)      { lcb >> decl_seq.as(:decl_seq).maybe >> cmd.maybe >> rcb }
+  rule(:block)      { lcb >> decl_seq.as(:decl_seq).maybe >> cmd.as(:cmd).maybe >> rcb }
   rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt) }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op >> exp.as(:val) }
   rule(:ex_if)      { if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block.as(:blockelse)).maybe |
