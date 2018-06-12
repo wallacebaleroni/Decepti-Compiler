@@ -8,11 +8,16 @@ $smc = SMC.new
 bplc = BPLC.new
 
 code = "proc fact(x) {
-  const x = 5;
+  var x = 5;
   var y = 1;
-  y := y + x;
-  print(y)
-}"
+  const w = 40;
+  while (x > 0) do {
+      var z = 15;
+      y := y * x;
+      x := x - 1
+  };
+  print(w)
+  }"
 
 puts code
 puts

@@ -4,8 +4,8 @@ require_relative '../ruby/bplc.rb'
 require_relative '../ruby/smc.rb'
 
 code = "proc not(x) {
-    x := 0;
-    y := 2;
+    var x = 0;
+    const y = 2;
 
     while (~ x == 2 * y) do {
         x := x + 1
@@ -17,4 +17,4 @@ code = "proc not(x) {
 $smc = SMC.new
 bplc = BPLC.new
 Bumblebee.new.apply(OptimusParser.new.rollOut(code))
-bplc.vamosRodar($smc)
+bplc.vamosRodar()
