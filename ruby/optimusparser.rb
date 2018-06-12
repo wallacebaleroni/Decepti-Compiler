@@ -71,7 +71,7 @@ class OptimusParser < Parslet::Parser
   rule(:clauses)    { decl_seq >> ex_proc }
 
   rule(:decl_seq)   { decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) | decl }
-  rule(:decl)       { decl_op >> ini_seq }
+  rule(:decl)       { decl_op >> ini_seq.as(:ini_seq) }
   rule(:ini_seq)    { ini.as(:ini_seq1) >> com_op >> ini_seq.as(:ini_seq2) | ini }
   rule(:ini)        { ident >> ini_op >> exp.as(:val) }
 

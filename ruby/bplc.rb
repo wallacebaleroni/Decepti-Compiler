@@ -123,7 +123,10 @@ class BPLC
         when "blockend"
           self.blockend(val)
 
-        else
+        when "cmd"
+          self.cmd(val)
+
+      else
           if is_integer?(val.id)
             self.num(val)
           
@@ -150,6 +153,13 @@ class BPLC
     cmd = val.children.shift()
     $smc.pushC(cmd)
     $smc.pushC(decl_seq)
+  end
+
+  def cmd(val)
+    $smc.popC() # tira o cmd da pilha de controle
+    command = val.children.shift() # seq, while, if etc.
+    $smc.pushC(command)
+
   end
 
   def decl_seq(val)

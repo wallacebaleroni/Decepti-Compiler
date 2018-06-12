@@ -10,7 +10,8 @@ bplc = BPLC.new
 code = "
 proc add(x) {
         const x = 1;
-        var y = 5;
+        var y = 5
+
         print(x+y+y)
 }"
 

@@ -6,7 +6,7 @@ require_relative '../ruby/smc.rb'
 code = "
 proc wh(x) {
     var x = 2;
-    var y = 1;
+    var y = 1
 
     while (~ y == 3) do {
         x := 2 * x;

@@ -9,7 +9,8 @@ bplc = BPLC.new
 code = "
 proc div(x) {
     const x = 100;
-    var y = 5;
+    var y = 5
+
     print(x / y)
 }"
 

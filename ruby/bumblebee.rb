@@ -106,8 +106,8 @@ class Bumblebee < Parslet::Transform
     Tree.new("ini_seq", [i1, i2])
   }
 
-  rule(:decl_op => subtree(:op), :ini => subtree(:ini)) {
-    Tree.new("decl", [op, ini])
+  rule(:decl_op => subtree(:op), :ini_seq => subtree(:ini_seq)) {
+    Tree.new("decl", [op, ini_seq])
   }
 
   rule(:decl_seq1 => subtree(:d1), :decl_seq2 => subtree(:d2)) {

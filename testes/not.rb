@@ -5,7 +5,7 @@ require_relative '../ruby/smc.rb'
 
 code = "proc not(x) {
     var x = 0;
-    const y = 2;
+    const y = 2
 
     while (~ x == 2 * y) do {
         x := x + 1

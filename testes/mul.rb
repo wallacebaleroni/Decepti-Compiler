@@ -6,7 +6,8 @@ require_relative '../ruby/smc.rb'
 code = "
 proc mul(x) {
     var x = 1;
-    const y = 5;
+    const y = 5
+
     x := 2 * x;
     print(x * y * y)
 }"

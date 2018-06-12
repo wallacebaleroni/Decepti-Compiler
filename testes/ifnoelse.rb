@@ -6,7 +6,7 @@ require_relative '../ruby/smc.rb'
 code = "
 proc min(x,y) {
     const x = 5;
-    var y = 10;
+    var y = 10
 
     if (x < y) {
         print(x)

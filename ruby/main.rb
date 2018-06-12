@@ -16,6 +16,7 @@ code = "proc fact(x) {
       y := y * x;
       x := x - w
   };
+
   print(y)
   }"
 
