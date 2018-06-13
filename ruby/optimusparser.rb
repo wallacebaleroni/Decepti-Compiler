@@ -51,8 +51,6 @@ class OptimusParser < Parslet::Parser
   rule(:module_op)  { blank? >> str("module") >> blank? }
   rule(:end_op)     { str("end") >> blank? }
 
-  # rule(:init_op)    { str("init").as(:init) >> blank? }
-
   rule(:var_op)     { str("var").as(:decl_op) >> blank? }
   rule(:const_op)   { str("const").as(:decl_op) >> blank? }
   rule(:decl_op)    { var_op | const_op }
