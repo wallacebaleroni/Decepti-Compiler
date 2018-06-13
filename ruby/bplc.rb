@@ -572,12 +572,12 @@ def sub(val)
           var = $smc.popS().id.str
 
           if $smc.const?(var)
-            raise "Tentativa de assign em constante."
-            exit
+            raise "Exception: Cannot assign constant " + var.to_s + "."
           end
-
+          if not $smc.instantiated?(var)
+            raise "Exception: Variable " + var.to_s +  " referenced before assignment"
+          end
           $smc.writeM(var, value.id.str)
-
         else
           $smc.pushC(value)
         end

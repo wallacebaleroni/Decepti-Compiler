@@ -61,8 +61,8 @@ class SMC
   end
 
   def writeE(variavel, bindable)
-    if (@reservado.include?(variavel))
-      raise "Palavra reservada usada como identificador"
+    if (@reserved.include?(variavel))
+      raise "Exception: Reserved word used as identifier."
     end
 
     new_env = Hash.new
@@ -98,6 +98,10 @@ class SMC
 
   def pushA
     @A.unshift([])
+  end
+
+  def instantiated?(identifier)
+    return @E[0].has_key?(identifier)
   end
 
   def const?(identifier)
