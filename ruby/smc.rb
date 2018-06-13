@@ -10,7 +10,7 @@ class SMC
     @C = []
 
     @A = []
-    @reservado = ["add","sub","div","mul","eq","le","lt","ge","gt","neg","assign","if","while","print","and","or","seq","proc","var","const"]
+    @reserved = ["add", "sub", "div", "mul", "eq", "le", "lt", "ge", "gt", "neg", "assign", "if", "while", "print", "and", "or", "seq", "proc", "var", "const"]
   end
 
   def lengthC()
@@ -85,18 +85,18 @@ class SMC
     @C[0]
   end
 
-  def desempilhaAmbiente()
+  def popA()
     listaVar = @A.shift()
     for i in 1..listaVar.length
       @E.shift
     end
   end
 
-  def escreveAuxiliar(variavel)
+  def writeA(variavel)
     @A[0].unshift(variavel)
   end
 
-  def novaListaAux
+  def pushA
     @A.unshift([])
   end
 
@@ -104,7 +104,6 @@ class SMC
     if @E[0].has_key?(identifier)
       bindable = @E[0][identifier]
       bindable.id == "value"
-    
     else
       false
     end

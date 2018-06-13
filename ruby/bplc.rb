@@ -235,7 +235,7 @@ class BPLC
           bindable = Bindable.new("loc", nil)
           $smc.writeE(var, bindable)
           $smc.writeM(var, value.id)
-          $smc.escreveAuxiliar(var)
+          $smc.writeA(var)
 
         else
           $smc.pushC(value)
@@ -276,7 +276,7 @@ class BPLC
           bindable = Bindable.new("value", value.id) # ?
           $smc.writeE(var, bindable) # !!
           # $smc.writeM(var,value.id)
-          $smc.escreveAuxiliar(var)
+          $smc.writeA(var)
         
         else
           $smc.pushC(value)
@@ -311,12 +311,12 @@ class BPLC
         bif = $smc.popS()
         belse = $smc.popS()
         if bool == "true"
-          $smc.novaListaAux
+          $smc.pushA
           $smc.pushC(Tree.new("blockend",[]))
           $smc.pushC(bif)
         else
           if not belse.nil?
-            $smc.novaListaAux
+            $smc.pushA
             $smc.pushC(Tree.new("blockend",[]))
             $smc.pushC(belse)
           end
@@ -524,7 +524,7 @@ def sub(val)
         if bool == "true"
           cond = $smc.popS()
           block = $smc.popS()
-          $smc.novaListaAux
+          $smc.pushA
           $smc.pushC(Tree.new("blockend",[]))
           novo_while = Tree.new("while", [cond.deepcopy(), block.deepcopy()])
           $smc.pushC(novo_while)
@@ -551,7 +551,7 @@ def sub(val)
 
   def pproc(val)
     $smc.popC()
-    $smc.novaListaAux
+    $smc.pushA
     $smc.pushC(Tree.new("blockend",[]))
     $smc.pushC(val.children[0])
   end
@@ -599,7 +599,7 @@ def sub(val)
 
   def blockend(val)
     $smc.popC
-    $smc.desempilhaAmbiente()
+    $smc.popA()
   end
 
 end
