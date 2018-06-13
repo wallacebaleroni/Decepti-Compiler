@@ -132,7 +132,7 @@ class BPLC
           
           else
             # TODO: olhar isso, ele esperava um identificador aqui, talvez tenha que criar uma regra nova pra esse caso
-            self.acessa(val)
+            self.access(val)
           end
 
       end
@@ -296,6 +296,7 @@ class BPLC
         $smc.popC()
         val = $smc.popS()
         puts(val.id)
+        puts()
       else
         exp = val.children.shift()
         $smc.pushC(exp)
@@ -591,7 +592,7 @@ def sub(val)
     val.to_i.to_s == val
   end
 
-  def acessa(val)
+  def access(val)
     $smc.popC
     
     $smc.pushS(Tree.new($smc.readM(val.id.str),))
