@@ -5,8 +5,8 @@ require_relative '../ruby/smc.rb'
 
 code = "
 proc wh(x) {
-    x := 2;
-    y := 1;
+    var x = 2;
+    var y = 1
 
     while (~ y == 3) do {
         x := 2 * x;
@@ -19,4 +19,4 @@ proc wh(x) {
 $smc = SMC.new
 bplc = BPLC.new
 Bumblebee.new.apply(OptimusParser.new.rollOut(code))
-bplc.vamosRodar($smc)
+bplc.vamosRodar()

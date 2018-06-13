@@ -28,7 +28,7 @@ class OptimusParser < Parslet::Parser
   rule(:lcb)        { match('[{]') >> blank? }
   rule(:rcb)        { match('[}]') >> blank? }
 
-  rule(:ident)      { (lowcase | upcase).repeat(1).as(:id) >> ((lowcase | upcase | integer).repeat(1)).maybe >> blank? }
+  rule(:ident)      { (lowcase | upcase).repeat(1).as(:ident) >> ((lowcase | upcase | integer).repeat(1)).maybe >> blank? }
 
   rule(:sum_op)     { str("+").as(:op) >> blank? }
   rule(:mul_op)     { str("*").as(:op) >> blank? }
@@ -45,14 +45,19 @@ class OptimusParser < Parslet::Parser
 
   rule(:seq_op)     { str(";") >> blank? }
   rule(:com_op)     { str(",") >> blank? }
-  rule(:ini_op)     { str('=') >> blank? }
+  rule(:ini_op)     { str('=').as(:ini_op) >> blank? }
   rule(:ass_op)     { str(":=").as(:ass_op) >> blank? }
 
   rule(:module_op)  { blank? >> str("module") >> blank? }
   rule(:end_op)     { str("end") >> blank? }
-  rule(:var_op)     { str("var") >> blank? }
-  rule(:const_op)   { str("const") >> blank? }
-  rule(:init_op)    { str("init") >> blank? }
+
+  # rule(:init_op)    { str("init").as(:init) >> blank? }
+
+  rule(:var_op)     { str("var").as(:decl_op) >> blank? }
+  rule(:const_op)   { str("const").as(:decl_op) >> blank? }
+  rule(:decl_op)    { var_op | const_op }
+  rule(:ini_op)     { str("=") >> blank? }
+
   rule(:proc_op)    { blank? >> str("proc") >> blank? }
   rule(:if_op)      { str("if").as(:if) >> blank? }
   rule(:else_op)    { str("else").as(:else) >> blank? }
@@ -62,20 +67,22 @@ class OptimusParser < Parslet::Parser
   rule(:exit_op)    { str("exit") >> blank? }
 
   # IMP Syntax
-  rule(:program)    { module_op >> ident >> clauses >> end_op }
-  rule(:clauses)    { ((var | const | init).repeat(1)).maybe >> ex_proc >> (( com_op >> ex_proc ).repeat(1)).maybe }
-  rule(:var)        { var_op >> ident >> (com_op >> ident).repeat(0) }
-  rule(:const)      { const_op >> ident >> (com_op >> ident).repeat(1) }
-  rule(:init)       { init_op >> ini >> (( com_op >> ini ).repeat(1)).maybe }
-  rule(:ini)        { ident >> ini_op >> exp }
+  rule(:program)    { module_op >> ident.as(:module) >> clauses.as(:clauses) >> end_op }
+  rule(:clauses)    { decl_seq >> ex_proc }
+
+  rule(:decl_seq)   { decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) | decl }
+  rule(:decl)       { decl_op >> ini_seq.as(:ini_seq) }
+  rule(:ini_seq)    { ini.as(:ini_seq1) >> com_op >> ini_seq.as(:ini_seq2) | ini }
+  rule(:ini)        { ident >> ini_op >> exp.as(:val) }
+
   rule(:ex_proc)    { proc_op >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
-  rule(:block)      { lcb >> cmd >> rcb }
+  rule(:block)      { lcb >> decl_seq.as(:decl_seq).maybe >> cmd.as(:cmd).maybe >> rcb }
   rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt) }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | call | ident.as(:ident) >> ass_op >> exp.as(:val) }
   rule(:ex_if)      { if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block.as(:blockelse)).maybe |
-                      if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> block.as(:blockelse)).maybe |
-                      if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> cmd.as(:blockelse)).maybe |
-                      if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> cmd.as(:blockelse)).maybe }
+                            if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> block.as(:blockelse)).maybe |
+                            if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> cmd.as(:blockelse)).maybe |
+                            if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> cmd.as(:blockelse)).maybe }
   rule(:ex_while)   { while_op >> lp >> boolexp.as(:cond) >> rp >> do_op >> block.as(:block)}
   rule(:ex_print)   { print_op >> lp >> exp.as(:arg) >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }

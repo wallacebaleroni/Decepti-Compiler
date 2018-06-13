@@ -5,8 +5,8 @@ require_relative '../ruby/smc.rb'
 
 code = "
 proc min(x,y) {
-    x := 10;
-    y := 5;
+    const x = 10;
+    var y = 5
 
     if (x < y) {
         print(x)
@@ -20,4 +20,4 @@ puts code
 $smc = SMC.new
 bplc = BPLC.new
 Bumblebee.new.apply(OptimusParser.new.rollOut(code))
-bplc.vamosRodar($smc)
+bplc.vamosRodar()

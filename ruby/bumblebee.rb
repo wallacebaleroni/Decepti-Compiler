@@ -5,12 +5,12 @@ require_relative 'tree'
 
 
 class Bumblebee < Parslet::Transform
-
+  # Mark 0
   rule(:int => simple(:n)) {
     Tree.new(n)
   }
 
-  rule(:id => simple(:c)) {
+  rule(:ident => simple(:c)) {
     Tree.new(c)
   }
 
@@ -30,11 +30,11 @@ class Bumblebee < Parslet::Transform
     Tree.new("div", [l, r])
   }
 
-  rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':=') {
+  rule(:ident => subtree(:i), :val => subtree(:v), :ass_op=> ':=') {
     Tree.new("assign", [i, v])
   }
 
-  rule(:ident => simple(:i), :val => subtree(:v), :ass_op=> ':=', :cmd => subtree(:c)) {
+  rule(:ident => subtree(:i), :val => subtree(:v), :ass_op=> ':=', :cmd => subtree(:c)) {
     Tree.new("assign", [i, v])
   }
 
@@ -72,8 +72,8 @@ class Bumblebee < Parslet::Transform
     Tree.new("if", [cd, bl, nil])
   }
 
-  rule(:if => "if", :cond => subtree(:cd), :block => subtree(:blif),:else => "else", :blockelse => subtree(:blelse)) {
-    Tree.new("if", [cd, blif, blelse])
+  rule(:if => "if", :cond => subtree(:cd), :block => subtree(:block_if), :else => "else", :blockelse => subtree(:block_else)) {
+    Tree.new("if", [cd, block_if, block_else])
   }
 
   rule(:print => "print", :arg => subtree(:ag)) {
@@ -88,7 +88,30 @@ class Bumblebee < Parslet::Transform
     Tree.new("cmd", [cmd])
   }
 
-  rule(:proc => simple(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
-    $smc.empilhaControle(Tree.new("proc", [bl]))
+  rule(:proc => subtree(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
+    $smc.pushC(Tree.new("proc", [bl]))
   }
+
+  # Mark 1
+
+  rule(:decl_seq => subtree(:decl_seq), :cmd => subtree(:cmd)) {
+    Tree.new("block", [decl_seq, cmd])
+  }
+
+  rule(:ident => subtree(:id), :val => subtree(:v)) {
+    Tree.new("ini", [id, v])
+  }
+
+  rule(:ini_seq1 => subtree(:i1), :ini_seq2 => subtree(:i2)) {
+    Tree.new("ini_seq", [i1, i2])
+  }
+
+  rule(:decl_op => subtree(:op), :ini_seq => subtree(:ini_seq)) {
+    Tree.new("decl", [op, ini_seq])
+  }
+
+  rule(:decl_seq1 => subtree(:d1), :decl_seq2 => subtree(:d2)) {
+    Tree.new("decl_seq", [d1, d2])
+  }
+
 end
