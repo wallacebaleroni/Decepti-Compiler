@@ -56,7 +56,7 @@ class OptimusParser < Parslet::Parser
   rule(:decl_op)    { var_op | const_op }
   rule(:ini_op)     { str("=") >> blank? }
 
-  rule(:proc_op)    { blank? >> str("proc") >> blank? }
+  rule(:proc_op)    { str("proc") >> blank? }
   rule(:if_op)      { str("if").as(:if) >> blank? }
   rule(:else_op)    { str("else").as(:else) >> blank? }
   rule(:while_op)   { str("while").as(:while) >> blank? }
@@ -66,7 +66,7 @@ class OptimusParser < Parslet::Parser
 
   # IMP Syntax
   rule(:program)    { module_op >> ident.as(:module) >> clauses.as(:clauses) >> end_op }
-  rule(:clauses)    { decl_seq >> ex_proc }
+  rule(:clauses)    { decl_seq.maybe >> ex_proc }
 
   rule(:decl_seq)   { decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) | decl }
   rule(:decl)       { decl_op >> ini_seq.as(:ini_seq) }
@@ -93,7 +93,7 @@ class OptimusParser < Parslet::Parser
   rule(:nboolexp)   { neg_op >> yboolexp.as(:bool) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
-  root(:ex_proc)
+  root(:program)
 
   def rollOut(str)
     pp OptimusParser.new.parse(str)
