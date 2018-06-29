@@ -8,7 +8,7 @@ $smc = SMC.new
 bplc = BPLC.new
 
 code = "
-module top
+module modtop
   proc fact(x) {
     var x = 5;
     var y = 1;

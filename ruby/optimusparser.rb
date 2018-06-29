@@ -65,7 +65,7 @@ class OptimusParser < Parslet::Parser
   rule(:exit_op)    { str("exit") >> blank? }
 
   # IMP Syntax
-  rule(:program)    { module_op >> ident.as(:module) >> clauses.as(:clauses) >> end_op }
+  rule(:program)    { module_op >> ident >> clauses >> end_op }
   rule(:clauses)    { decl_seq.maybe >> ex_proc.repeat(0) }
 
   rule(:decl_seq)   { decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) | decl }
