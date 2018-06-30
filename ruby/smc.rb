@@ -81,6 +81,19 @@ class SMC
 
   end
 
+  def writeECallable(variavel, callable)
+    if (@reserved.include?(variavel))
+      raise "Exception: Reserved word used as identifier."
+    end
+
+    new_env = Hash.new
+    new_env = @E[0].clone
+
+    new_env[variavel] = callable
+    @E.unshift(new_env)
+
+  end
+
   def topC()
     @C[0]
   end
