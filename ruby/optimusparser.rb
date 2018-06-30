@@ -86,11 +86,11 @@ class OptimusParser < Parslet::Parser
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
   rule(:ex_ass)     { ident.as(:ident) >> ass_op >> exp.as(:val) }
   rule(:call)       { ident.as(:idproc) >> lp >> exp.maybe >> rp }
-  rule(:exp)        { mathexp | call | boolexp | integer | ident }
+  rule(:exp)        { mathexp | boolexp | call | integer | ident }
   rule(:mathexp)    { (call | ident | integer).as(:left) >> arithop >> (call | mathexp | ident | integer).as(:right) }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
   rule(:boolexp)    { yboolexp | nboolexp }
-  rule(:yboolexp)   { ((ident | integer).as(:leftb) >> boolop >> exp.as(:rightb)) }
+  rule(:yboolexp)   { (call | ident | integer).as(:leftb) >> boolop >> exp.as(:rightb) }
   rule(:nboolexp)   { neg_op >> yboolexp.as(:bool) }
   rule(:boolop)     { eq_op | lteq_op | lt_op | gteq_op | gt_op }
 
