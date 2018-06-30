@@ -32,7 +32,7 @@ module modtop
 
     while (x > 0) do {
       y := y * x;
-      x := x - top(x)
+      x := top(x) - top(x)
     };
 
     print(y)
