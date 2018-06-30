@@ -89,7 +89,7 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:proc => subtree(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
-    $smc.pushC(Tree.new("proc", [bl]))
+    $smc.pushC(Tree.new("proc", [n,p,bl]))
   }
 
   # Mark 1

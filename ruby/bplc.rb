@@ -2,8 +2,8 @@ require_relative 'smc'
 require_relative 'tree'
 
 class Bindable
-  @id = nil # "loc" (var decl) / "value" (const decl) 
-  @content = nil # memory address (var decl) / constant variable (const decl)
+  @id = nil # "loc" (var decl) / "value" (const decl) / "proc" (procedure decl)
+  @content = nil # memory address (var decl) / constant variable (const decl) / procedure decls & cmds
 
   def initialize(id, content)
     @id = id
@@ -36,6 +36,43 @@ class Bindable
 
 end
 
+class Callables
+  @id = nil #"proc" (procedure decl)
+  @formals = nil #parametros
+  @content = nil #procedure decls & cmds
+
+  def initialize(id, formals, content)
+    @id = id
+    @formals = formals
+    @content = content
+  end
+
+
+  def formals()
+    @formals
+  end
+
+  def content()
+    @content
+  end
+
+  def setContent(content)
+    @content = content
+  end
+
+  def id()
+    @id
+  end
+
+  def inspect()
+    "(#{@id},#{@formals}, #{@content})"
+  end
+
+  def to_s()
+    inspect()
+  end
+
+end
 
 class BPLC
   def vamosRodar()
@@ -552,9 +589,11 @@ def sub(val)
 
   def pproc(val)
     $smc.popC()
-    $smc.pushA
-    $smc.pushC(Tree.new("blockend",[]))
-    $smc.pushC(val.children[0])
+    #var = $smc.popS().str
+    callable = Callables.new("proc", val.children[1],val.children[2])
+    $smc.writeECallable(val.children[0].id.str, callable)
+    #$smc.writeM(var, value.id)
+    #$smc.writeA(var)
   end
 
   def seq(val)
