@@ -29,6 +29,9 @@ module modtop
         print(x)
     }
   }
+
+  fact(x)
+  top(x)
 end"
 
 puts code
