@@ -7,7 +7,7 @@ require_relative 'smc'
 $smc = SMC.new
 bplc = BPLC.new
 
-code = "
+fact_code = "
 module modtop
   proc fact(x) {
     var x = 5;
@@ -15,8 +15,8 @@ module modtop
     const w = 1
 
     while (x > 0) do {
-        y := y * x;
-        x := x - w
+      y := y * x;
+      x := x - 1
     };
 
     print(y)
@@ -26,13 +26,48 @@ module modtop
     var x = 5
 
     if (x > 0) {
-        print(x)
+      print(x)
+    }
+  }
+end"
+
+fact_test_code = "
+module modtop
+  proc fact(x) {
+    var x = 5;
+    var y = 1;
+    const w = fact(x)
+
+    while (x > 0) do {
+      y := y * x;
+      x := x - top(x)
+    };
+
+    print(y)
+  }
+
+  proc top(x) {
+    var x = 5
+
+    if (x > 0) {
+      print(x)
     }
   }
 
-  fact(x)
+  fact(2)
   top(x)
 end"
+
+test_code = "
+module toptop
+  proc fact(x) {
+    if (x > 0) {
+      x := fact(2)
+    }
+  }
+end"
+
+code = fact_test_code
 
 puts code
 puts

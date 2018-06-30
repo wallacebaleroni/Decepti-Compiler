@@ -75,8 +75,8 @@ class OptimusParser < Parslet::Parser
 
   rule(:ex_proc)    { proc_op >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
   rule(:block)      { lcb >> decl_seq.as(:decl_seq).maybe >> cmd.as(:cmd).maybe >> rcb }
-  rule(:cmd)        { (cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt) }
-  rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | ident.as(:ident) >> ass_op >> exp.as(:val) }
+  rule(:cmd)        { cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt }
+  rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | ex_ass }
   rule(:ex_if)      { if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block.as(:blockelse)).maybe |
                             if_op >> lp >> boolexp.as(:cond) >> rp >> cmd.as(:block)   >> (else_op >> block.as(:blockelse)).maybe |
                             if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> cmd.as(:blockelse)).maybe |
@@ -84,9 +84,10 @@ class OptimusParser < Parslet::Parser
   rule(:ex_while)   { while_op >> lp >> boolexp.as(:cond) >> rp >> do_op >> block.as(:block)}
   rule(:ex_print)   { print_op >> lp >> exp.as(:arg) >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
-  rule(:call)       { ident >> lp >> exp.maybe >> rp }
-  rule(:exp)        { mathexp | boolexp | integer | ident }
-  rule(:mathexp)    { (ident | integer).as(:left) >> arithop >> (mathexp | ident | integer).as(:right) }
+  rule(:ex_ass)     { ident.as(:ident) >> ass_op >> exp.as(:val) }
+  rule(:call)       { ident.as(:idproc) >> lp >> exp.maybe >> rp }
+  rule(:exp)        { call | mathexp | boolexp | integer | ident }
+  rule(:mathexp)    { (ident | integer).as(:left) >> arithop >> (call | mathexp | ident | integer).as(:right) }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
   rule(:boolexp)    { yboolexp | nboolexp }
   rule(:yboolexp)   { ((ident | integer).as(:leftb) >> boolop >> exp.as(:rightb)) }
