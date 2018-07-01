@@ -114,4 +114,10 @@ class Bumblebee < Parslet::Transform
     Tree.new("decl_seq", [d1, d2])
   }
 
+  rule(:idproc => subtree(:idp), :actuals => subtree(:act)) {
+    print(idp)
+    print(act)
+    $smc.pushC(Tree.new("call", [idp,act]))
+  }
+
 end

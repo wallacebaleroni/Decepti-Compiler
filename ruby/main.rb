@@ -21,6 +21,7 @@ module modtop
 
     print(y)
   }
+  fact(5)
 end"
 
 fact_test_code = "
@@ -59,7 +60,7 @@ module toptop
   }
 end"
 
-code = fact_test_code
+code = fact_code
 
 puts code
 puts
