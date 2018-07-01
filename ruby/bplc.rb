@@ -87,7 +87,7 @@ class BPLC
 
       case val.id
         # Mark 0
-        when "proc"
+        when "prc"
           self.pproc(val)
 
         when "seq"
@@ -163,7 +163,7 @@ class BPLC
         when "cmd"
           self.cmd(val)
 
-        when "call"
+        when "cal"
           self.call(val)
 
         when "module"
@@ -224,26 +224,35 @@ class BPLC
     child = val.children.shift()
 
     # Vê se o tipo é var ou const
-    case tipo.str
-      when "var"
-        # Vê se o filho é ini_seq ou ini
-        case child.id
-          when "ini_seq"
-            child = Tree.new((Parslet::Slice.new(0, "var_seq")), child.children)
-          when "ini"
-            child = Tree.new((Parslet::Slice.new(0, "var")), child.children)
-        end
-      
-      when "const"
-        # Vê se é ini_seq ou ini
-        case child.id
-          when "ini_seq"
-            child = Tree.new((Parslet::Slice.new(0, "const_seq")), child.children)
-          when "ini"
-            child = Tree.new((Parslet::Slice.new(0, "const")), child.children)
-        end
-    end
+    print(tipo)
+    begin
+      case tipo.str
+        when "var"
+          # Vê se o filho é ini_seq ou ini
+          case child.id
+            when "ini_seq"
+              child = Tree.new((Parslet::Slice.new(0, "var_seq")), child.children)
+            when "ini"
+              child = Tree.new((Parslet::Slice.new(0, "var")), child.children)
+          end
 
+        when "const"
+          # Vê se é ini_seq ou ini
+          case child.id
+            when "ini_seq"
+              child = Tree.new((Parslet::Slice.new(0, "const_seq")), child.children)
+            when "ini"
+              child = Tree.new((Parslet::Slice.new(0, "const")), child.children)
+          end
+      end
+    rescue NoMethodError
+      case child.id
+        when "ini_seq"
+          child = Tree.new((Parslet::Slice.new(0, "var_seq")), child.children)
+        when "ini"
+          child = Tree.new((Parslet::Slice.new(0, "var")), child.children)
+      end
+    end
     # Reempilha filho na pilha de controle
     $smc.pushC(child)
   end
@@ -271,7 +280,6 @@ class BPLC
     case val.children.length
       when 0
         value = $smc.popS()
-
         if is_integer?(value.id)
           $smc.popC()
           var = $smc.popS().str
@@ -639,8 +647,11 @@ def sub(val)
 
   def access(val)
     $smc.popC
-    
-    $smc.pushS(Tree.new($smc.readM(val.id.str),))
+    begin
+      $smc.pushS(Tree.new($smc.readM(val.id.str),))
+    rescue NoMethodError
+      $smc.pushS(Tree.new($smc.readM(val.id),))
+    end
   end
 
   def blockend(val)
@@ -651,6 +662,7 @@ def sub(val)
   def call(val)
     $smc.popC
     $smc.pushC($smc.readM(val.children[0].id.str))
+    $smc.pushC(Tree.new("decl",["var",Tree.new("ini",["x",Tree.new(5,[])])]))
   end
 
   def module(val)

@@ -89,7 +89,7 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:proc => subtree(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
-    Tree.new("proc", [n,p,bl])
+    Tree.new("prc", [n,p,bl])
   }
 
   # Mark 1
@@ -115,9 +115,7 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:idproc => subtree(:idp), :actuals => subtree(:act)) {
-    print(idp)
-    print(act)
-    Tree.new("call", [idp,act])
+    Tree.new("cal", [idp,act])
   }
 
   rule(:ident => simple(:id), :module_decl => subtree(:decls),:module_calls => subtree(:calls)) {

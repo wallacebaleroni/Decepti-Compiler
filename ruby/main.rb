@@ -10,7 +10,6 @@ bplc = BPLC.new
 fact_code = "
 module modtop
   proc fact(x) {
-    var x = 5;
     var y = 1;
     const w = 1
 
