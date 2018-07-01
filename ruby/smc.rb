@@ -48,7 +48,7 @@ class SMC
 
   def readM(variavel)
     bindable = @E[0][variavel]
-    if bindable.id.eql? "value"
+    if bindable.id.eql? "value" or bindable.id.eql? "proc"
       return bindable.content
     end
 

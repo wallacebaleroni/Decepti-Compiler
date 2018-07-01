@@ -66,7 +66,7 @@ class OptimusParser < Parslet::Parser
 
   # IMP Syntax
   rule(:program)    { module_op >> ident >> clauses >> end_op }
-  rule(:clauses)    { decl_seq.maybe >> ex_proc.repeat(0) >> call.repeat(0) }
+  rule(:clauses)    { (decl_seq.maybe >> ex_proc.repeat(0)).as(:module_decl) >> call.repeat(0).as(:module_calls) }
 
   rule(:decl_seq)   { decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) | decl }
   rule(:decl)       { decl_op >> ini_seq.as(:ini_seq) }

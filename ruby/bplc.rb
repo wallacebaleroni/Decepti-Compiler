@@ -163,6 +163,12 @@ class BPLC
         when "cmd"
           self.cmd(val)
 
+        when "call"
+          self.call(val)
+
+        when "module"
+          self.module(val)
+
       else
           if is_integer?(val.id)
             self.num(val)
@@ -593,7 +599,7 @@ def sub(val)
     callable = Callables.new("proc", val.children[1],val.children[2])
     $smc.writeECallable(val.children[0].id.str, callable)
     #$smc.writeM(var, value.id)
-    #$smc.writeA(var)
+    $smc.writeA(val.children[0].id.str)
   end
 
   def seq(val)
@@ -640,6 +646,27 @@ def sub(val)
   def blockend(val)
     $smc.popC
     $smc.popA()
+  end
+
+  def call(val)
+    $smc.popC
+    $smc.pushC($smc.readM(val.children[0].id.str))
+  end
+
+  def module(val)
+    $smc.popC
+    $smc.pushC(Tree.new("blockend",[]))
+
+    for item in val.children[2]
+      $smc.pushC(item)
+    end
+
+    for item in val.children[1]
+      $smc.pushC(item)
+    end
+
+
+    $smc.pushA
   end
 
 end
