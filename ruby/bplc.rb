@@ -647,13 +647,21 @@ def sub(val)
 
   def call(val)
     $smc.popC
-    puts(val.children[1])
-
+    $smc.pushA
+    callable_actuals = val.children[1]
     callable_bl,callable_formals = $smc.readM(val.children[0].id.str)
-    var = Bindable.new("loc",nil)
-    $smc.writeE(callable_formals.id.str,var)
-    $smc.writeM(callable_formals.id.str,val.children[1].id)
-    $smc.pushC(callable_bl)
+    puts(callable_actuals)
+    puts(callable_formals)
+    i = 0
+    for item in callable_actuals
+      var = Bindable.new("loc",nil)
+      $smc.writeE(callable_formals[i].id.str,var)
+      $smc.writeM(callable_formals[i].id.str,item.id)
+      $smc.writeA(callable_formals[i].id.str)
+      i += 1
+    end
+    $smc.pushC(Tree.new("blockend",[]))
+    $smc.pushC(callable_bl.deepcopy())
   end
 
   def module(val)
