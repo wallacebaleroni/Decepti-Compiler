@@ -224,8 +224,6 @@ class BPLC
     child = val.children.shift()
 
     # Vê se o tipo é var ou const
-    print(tipo)
-    begin
       case tipo.str
         when "var"
           # Vê se o filho é ini_seq ou ini
@@ -244,14 +242,6 @@ class BPLC
             when "ini"
               child = Tree.new((Parslet::Slice.new(0, "const")), child.children)
           end
-      end
-    rescue NoMethodError
-      case child.id
-        when "ini_seq"
-          child = Tree.new((Parslet::Slice.new(0, "var_seq")), child.children)
-        when "ini"
-          child = Tree.new((Parslet::Slice.new(0, "var")), child.children)
-      end
     end
     # Reempilha filho na pilha de controle
     $smc.pushC(child)
@@ -647,11 +637,7 @@ def sub(val)
 
   def access(val)
     $smc.popC
-    begin
-      $smc.pushS(Tree.new($smc.readM(val.id.str),))
-    rescue NoMethodError
-      $smc.pushS(Tree.new($smc.readM(val.id),))
-    end
+    $smc.pushS(Tree.new($smc.readM(val.id.str),))
   end
 
   def blockend(val)
@@ -661,8 +647,13 @@ def sub(val)
 
   def call(val)
     $smc.popC
-    $smc.pushC($smc.readM(val.children[0].id.str))
-    $smc.pushC(Tree.new("decl",["var",Tree.new("ini",["x",Tree.new(5,[])])]))
+    puts(val.children[1])
+
+    callable_bl,callable_formals = $smc.readM(val.children[0].id.str)
+    var = Bindable.new("loc",nil)
+    $smc.writeE(callable_formals.id.str,var)
+    $smc.writeM(callable_formals.id.str,val.children[1].id)
+    $smc.pushC(callable_bl)
   end
 
   def module(val)

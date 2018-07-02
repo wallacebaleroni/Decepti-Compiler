@@ -119,9 +119,6 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:ident => simple(:id), :module_decl => subtree(:decls),:module_calls => subtree(:calls)) {
-    print(id)
-    print(decls)
-    print(calls)
     $smc.pushC(Tree.new("module", [id,decls,calls]))
   }
 

@@ -9,8 +9,7 @@ bplc = BPLC.new
 
 fact_code = "
 module modtop
-  proc fact(x) {
-    var y = 1;
+  proc fact(x,y) {
     const w = 1
 
     while (x > 0) do {
@@ -20,7 +19,7 @@ module modtop
 
     print(y)
   }
-  fact(5)
+  fact(5,1)
 end"
 
 fact_test_code = "
