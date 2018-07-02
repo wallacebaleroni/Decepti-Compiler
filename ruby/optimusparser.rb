@@ -85,7 +85,7 @@ class OptimusParser < Parslet::Parser
   rule(:ex_print)   { print_op >> lp >> exp.as(:arg) >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
   rule(:ex_ass)     { ident.as(:ident) >> ass_op >> exp.as(:val) }
-  rule(:call)       { ident.as(:idproc) >> lp >> exp.maybe.as(:actuals) >> rp }
+  rule(:call)       { ident.as(:idproc) >> lp >> ((integer | ident) >> (com_op >> (integer | ident)).repeat(0)).maybe.as(:actuals) >> rp }
   rule(:exp)        { mathexp | boolexp | call | integer | ident }
   rule(:mathexp)    { (call | ident | integer).as(:left) >> arithop >> (call | mathexp | ident | integer).as(:right) }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
