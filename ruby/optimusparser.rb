@@ -63,6 +63,7 @@ class OptimusParser < Parslet::Parser
   rule(:do_op)      { str("do") >> blank? }
   rule(:print_op)   { str("print").as(:print) >> blank? }
   rule(:exit_op)    { str("exit") >> blank? }
+  rule(:ret_op)     { str("return") >> blank? }
 
   # IMP Syntax
   rule(:program)    { module_op >> ident >> clauses >> end_op }
@@ -73,8 +74,9 @@ class OptimusParser < Parslet::Parser
   rule(:ini_seq)    { ini.as(:ini_seq1) >> com_op >> ini_seq.as(:ini_seq2) | ini }
   rule(:ini)        { ident >> ini_op >> exp.as(:val) }
 
-  rule(:ex_proc)    { proc_op >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
+  rule(:ex_proc)    { proc_op >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> proc_blk.as(:block) }
   rule(:block)      { lcb >> decl_seq.as(:decl_seq).maybe >> cmd.as(:cmd).maybe >> rcb }
+  rule(:proc_blk)   { lcb >> decl_seq.as(:decl_seq).maybe >> cmd.as(:cmd).maybe >> ret.maybe >> rcb }
   rule(:cmd)        { cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | ex_ass }
   rule(:ex_if)      { if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block.as(:blockelse)).maybe |
@@ -86,6 +88,7 @@ class OptimusParser < Parslet::Parser
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
   rule(:ex_ass)     { ident.as(:ident) >> ass_op >> exp.as(:val) }
   rule(:call)       { ident.as(:idproc) >> lp >> ((integer | ident) >> (com_op >> (integer | ident)).repeat(0)).maybe.as(:actuals) >> rp }
+  rule(:ret)        { ret_op >> exp }
   rule(:exp)        { mathexp | boolexp | call | integer | ident }
   rule(:mathexp)    { (call | ident | integer).as(:left) >> arithop >> (call | mathexp | ident | integer).as(:right) }
   rule(:arithop)    { sum_op | sub_op | mul_op | cho_op | div_op }
