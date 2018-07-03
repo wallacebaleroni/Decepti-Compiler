@@ -57,6 +57,7 @@ class OptimusParser < Parslet::Parser
   rule(:ini_op)     { str("=") >> blank? }
 
   rule(:proc_op)    { str("proc") >> blank? }
+  rule(:func_op)    { str("func") >> blank? }
   rule(:if_op)      { str("if").as(:if) >> blank? }
   rule(:else_op)    { str("else").as(:else) >> blank? }
   rule(:while_op)   { str("while").as(:while) >> blank? }
@@ -67,16 +68,17 @@ class OptimusParser < Parslet::Parser
 
   # IMP Syntax
   rule(:program)    { module_op >> ident >> clauses >> end_op }
-  rule(:clauses)    { (decl_seq.maybe >> ex_proc.repeat(0)).as(:module_decl) >> call.repeat(0).as(:module_calls) }
+  rule(:clauses)    { decl_seq.maybe >> (ex_proc.as(:proc_decl) | ex_func.as(:func_decl)).repeat(0) >> call.repeat(0).as(:module_calls) }
 
   rule(:decl_seq)   { decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) | decl }
   rule(:decl)       { decl_op >> ini_seq.as(:ini_seq) }
   rule(:ini_seq)    { ini.as(:ini_seq1) >> com_op >> ini_seq.as(:ini_seq2) | ini }
   rule(:ini)        { ident >> ini_op >> exp.as(:val) }
 
-  rule(:ex_proc)    { proc_op >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> proc_blk.as(:block) }
+  rule(:ex_func)    { func_op >> ident.as(:func) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> ret_blk.as(:block) }
+  rule(:ex_proc)    { proc_op >> ident.as(:proc) >> lp >> (ident >> (com_op >> ident).repeat(0)).maybe.as(:parametros) >> rp >> block.as(:block) }
   rule(:block)      { lcb >> decl_seq.as(:decl_seq).maybe >> cmd.as(:cmd).maybe >> rcb }
-  rule(:proc_blk)   { lcb >> decl_seq.as(:decl_seq).maybe >> cmd.as(:cmd).maybe >> ret.maybe >> rcb }
+  rule(:ret_blk)    { lcb >> decl_seq.as(:decl_seq).maybe >> cmd.as(:cmd).maybe >> ret.maybe >> rcb }
   rule(:cmd)        { cmd_unt >> cho_op >> cmd | cmd_unt.as(:seq1) >> seq_op >> cmd.as(:seq2) | cmd_unt }
   rule(:cmd_unt)    { ex_if | ex_while | ex_print | ex_exit | ex_ass }
   rule(:ex_if)      { if_op >> lp >> boolexp.as(:cond) >> rp >> block.as(:block) >> (else_op >> block.as(:blockelse)).maybe |
