@@ -58,7 +58,30 @@ module toptop
   }
 end"
 
-code = fact_code
+recursive = "
+module recursao
+  func fact(x) {
+    var ret = 1, y = 1
+
+    if (x == 1) {
+      ret := 1
+    } else {
+      y := x - 1;
+      ret := x * fact(y)
+    }
+
+    return ret
+  }
+
+  proc printFact() {
+    print(fact(5))
+  }
+
+  printFact()
+
+end"
+
+code = recursive
 
 puts code
 puts
