@@ -681,14 +681,22 @@ def sub(val)
     puts(callable_formals)
     puts(callable_actuals)
 
-    #hm
-    i = 0
-    for item in callable_actuals
-      var = Bindable.new("loc",nil)
-      $smc.writeE(callable_formals[i].id.str,var)
-      $smc.writeM(callable_formals[i].id.str,item.id)
-      $smc.writeA(callable_formals[i].id.str)
-      i += 1
+    if(callable_formals != nil)
+      if(callable_actuals.is_a? Enumerable)
+        i = 0
+        for item in callable_actuals
+          var = Bindable.new("loc",nil)
+          $smc.writeE(callable_formals[i].id.str,var)
+          $smc.writeM(callable_formals[i].id.str,item.id)
+          $smc.writeA(callable_formals[i].id.str)
+          i += 1
+        end
+      else
+        var = Bindable.new("loc",nil)
+        $smc.writeE(callable_formals.id.str,var)
+        $smc.writeM(callable_formals.id.str,callable_actuals.id)
+        $smc.writeA(callable_formals.id.str)
+      end
     end
     $smc.pushC(Tree.new("blockend",[]))
     $smc.pushC(callable_bl.deepcopy())

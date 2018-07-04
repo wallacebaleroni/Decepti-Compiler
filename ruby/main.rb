@@ -9,17 +9,18 @@ bplc = BPLC.new
 
 fact_code = "
 module modtop
-  func fact(x,y) {
+  proc fact(x,y) {
+
     const w = 1
 
     while (x > 0) do {
       y := y * x;
       x := x - 1
-    }
+    };
 
-    return y
+    print(y)
   }
-  fact(6,1)
+  fact(5,1)
 end"
 
 fact_test_code = "
@@ -58,6 +59,28 @@ module toptop
   }
 end"
 
+rec_code="
+module recursao
+  func fact(x) {
+    var ret = 1, y = 1
+
+    if (x == 1) {
+      ret := 1
+    } else {
+      y := x - 1;
+      ret := x * fact(y)
+    }
+
+    return ret
+  }
+
+  proc printFact() {
+    print(fact(5))
+  }
+
+  printFact()
+
+end"
 code = fact_code
 
 puts code
