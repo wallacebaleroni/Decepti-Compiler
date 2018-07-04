@@ -680,6 +680,7 @@ def sub(val)
     callable_bl,callable_formals = $smc.readM(val.children[0].id.str)
     puts(callable_actuals)
     #puts(callable_formals)
+    #hm
     i = 0
     for item in callable_actuals
       var = Bindable.new("loc",nil)
