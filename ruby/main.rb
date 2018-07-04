@@ -7,6 +7,29 @@ require_relative 'smc'
 $smc = SMC.new
 bplc = BPLC.new
 
+rec_code="
+module rmod
+  func fact(x) {
+    var ret = 1, y = 1
+
+    if (x == 1) {
+      ret := 1
+    } else {
+      y := x - 1;
+      ret := x * fact(y)
+    }
+
+    return ret
+  }
+
+  proc printFact() {
+    print(fact(5))
+  }
+
+  printFact()
+
+end"
+
 fact_code = "
 module modtop
   func fact(x,y) {
@@ -57,28 +80,6 @@ module toptop
   }
 end"
 
-rec_code="
-module recursao
-  func fact(x) {
-    var ret = 1, y = 1
-
-    if (x == 1) {
-      ret := 1
-    } else {
-      y := x - 1;
-      ret := x * fact(y)
-    }
-
-    return ret
-  }
-
-  proc printFact() {
-    print(fact(5))
-  }
-
-  printFact()
-
-end"
 code = fact_code
 
 puts code
