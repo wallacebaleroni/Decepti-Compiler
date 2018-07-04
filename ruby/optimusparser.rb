@@ -68,7 +68,7 @@ class OptimusParser < Parslet::Parser
 
   # IMP Syntax
   rule(:program)    { module_op >> ident >> clauses >> end_op }
-  rule(:clauses)    { decl_seq.maybe >> (ex_proc | ex_func).repeat(0).as(:module_decl) >> call.repeat(0).as(:module_calls) }
+  rule(:clauses)    { decl_seq.as(:decl_seq).maybe >> (ex_proc | ex_func).repeat(0).as(:module_decl) >> call.repeat(0).as(:module_calls) }
 
   rule(:decl_seq)   { decl.as(:decl_seq1) >> seq_op >> decl_seq.as(:decl_seq2) | decl }
   rule(:decl)       { decl_op >> ini_seq.as(:ini_seq) }
@@ -89,7 +89,7 @@ class OptimusParser < Parslet::Parser
   rule(:ex_print)   { print_op >> lp >> exp.as(:arg) >> rp }
   rule(:ex_exit)    { exit_op >> lp >> exp >> rp }
   rule(:ex_ass)     { ident.as(:ident) >> ass_op >> exp.as(:val) }
-  rule(:call)       { ident.as(:idproc) >> lp >> ((integer | ident) >> (com_op >> (integer | ident)).repeat(0)).maybe.as(:actuals) >> rp }
+  rule(:call)       { ident.as(:idproc) >> lp >> ((exp) >> (com_op >> (exp)).repeat(0)).maybe.as(:actuals) >> rp }
   rule(:ret)        { ret_op >> exp }
   rule(:exp)        { mathexp | boolexp | call | integer | ident }
   rule(:mathexp)    { (call | ident | integer).as(:left) >> arithop >> (call | mathexp | ident | integer).as(:right) }
