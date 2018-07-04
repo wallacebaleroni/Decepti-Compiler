@@ -705,17 +705,28 @@ def sub(val)
   def module(val)
     $smc.popC
     $smc.pushC(Tree.new("blockend",[]))
+    if val.children.length == 3
+      for item in val.children[2]
+        $smc.pushC(item)
+      end
 
-    for item in val.children[2]
-      $smc.pushC(item)
+      for item in val.children[1]
+        $smc.pushC(item)
+      end
+    elsif val.children.length == 4
+      for item in val.children[3]
+        $smc.pushC(item)
+      end
+      for item in val.children[2]
+        $smc.pushC(item)
+      end
+      puts(val.children[1].children)
+      for item in val.children[1].children
+        $smc.pushC(item)
+      end
     end
-
-    for item in val.children[1]
-      $smc.pushC(item)
-    end
-
-
     $smc.pushA
+
   end
 
 end

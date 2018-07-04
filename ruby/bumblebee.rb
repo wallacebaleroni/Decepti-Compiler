@@ -129,5 +129,12 @@ class Bumblebee < Parslet::Transform
     $smc.pushC(Tree.new("module", [id,decls,calls]))
   }
 
+  rule(:ident => simple(:id), :module_decl => subtree(:mdecls),:module_calls => subtree(:calls)) {
+    $smc.pushC(Tree.new("module", [id,mdecls,calls]))
+  }
+
+  rule(:ident => simple(:id), :decl_seq=>subtree(:decls),:module_decl => subtree(:mdecls),:module_calls => subtree(:calls)) {
+    $smc.pushC(Tree.new("module", [id,decls,mdecls,calls]))
+  }
 
 end

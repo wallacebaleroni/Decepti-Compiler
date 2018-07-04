@@ -9,10 +9,9 @@ bplc = BPLC.new
 
 fact_code = "
 module modtop
+  const w = 1;
+  var eita = 7
   proc fact(x,y) {
-
-    const w = 1
-
     while (x > 0) do {
       y := y * x;
       x := x - 1
