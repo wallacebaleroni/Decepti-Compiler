@@ -9,15 +9,14 @@ bplc = BPLC.new
 
 fact_code = "
 module modtop
-  const w = 1;
-  var eita = 7
-  proc fact(x,y) {
+  func fact(x,y) {
+    const w = 1
     while (x > 0) do {
       y := y * x;
-      x := x - 1
-    };
+      x := x - w
+    }
 
-    print(y)
+    return y
   }
   fact(5,1)
 end"
