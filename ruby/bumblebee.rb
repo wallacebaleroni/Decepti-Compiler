@@ -92,6 +92,10 @@ class Bumblebee < Parslet::Transform
     Tree.new("prc", [n,p,bl])
   }
 
+  rule(:func => subtree(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
+    Tree.new("fun", [n,p,bl])
+  }
+
   # Mark 1
 
   rule(:decl_seq => subtree(:decl_seq), :cmd => subtree(:cmd)) {
@@ -117,9 +121,13 @@ class Bumblebee < Parslet::Transform
   rule(:idproc => subtree(:idp), :actuals => subtree(:act)) {
     Tree.new("cal", [idp,act])
   }
+  rule(:decl_seq => subtree(:decl_seq), :cmd => subtree(:cmd),:return=>subtree(:ret)) {
+    Tree.new("block_ret", [decl_seq, cmd, ret])
+  }
 
   rule(:ident => simple(:id), :module_decl => subtree(:decls),:module_calls => subtree(:calls)) {
     $smc.pushC(Tree.new("module", [id,decls,calls]))
   }
+
 
 end

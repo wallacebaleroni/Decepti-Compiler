@@ -157,6 +157,9 @@ class BPLC
         when "block"
           self.block(val)
 
+        when "block_ret"
+          self.block_ret(val)
+
         when "blockend"
           self.blockend(val)
 
@@ -165,6 +168,9 @@ class BPLC
 
         when "cal"
           self.call(val)
+
+        when "fun"
+          self.fun(val)
 
         when "module"
           self.module(val)
@@ -196,6 +202,20 @@ class BPLC
     cmd = val.children.shift()
     $smc.pushC(cmd)
     $smc.pushC(decl_seq)
+  end
+
+  def block(val)
+    # Tira o block da pilha de controle
+    $smc.popC()
+
+    # Coloca o decl_seq e o cmd na pilha de controle
+    ret = val.children.shift()
+    decl_seq = val.children.shift()
+    cmd = val.children.shift()
+    $smc.pushC(cmd)
+    $smc.pushC(decl_seq)
+    $smc.pushC(ret)
+
   end
 
   def cmd(val)
@@ -600,6 +620,15 @@ def sub(val)
     $smc.writeA(val.children[0].id.str)
   end
 
+  def fun(val)
+    $smc.popC()
+    #var = $smc.popS().str
+    callable = Callables.new("func", val.children[1],val.children[2])
+    $smc.writeECallable(val.children[0].id.str, callable)
+    #$smc.writeM(var, value.id)
+    $smc.writeA(val.children[0].id.str)
+  end
+
   def seq(val)
     $smc.popC()
     $smc.pushC(val.children[1])
@@ -651,7 +680,7 @@ def sub(val)
     callable_actuals = val.children[1]
     callable_bl,callable_formals = $smc.readM(val.children[0].id.str)
     puts(callable_actuals)
-    puts(callable_formals)
+    #puts(callable_formals)
     i = 0
     for item in callable_actuals
       var = Bindable.new("loc",nil)
