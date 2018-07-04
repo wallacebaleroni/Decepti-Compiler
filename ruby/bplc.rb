@@ -203,7 +203,7 @@ class BPLC
     $smc.pushC(decl_seq)
   end
 
-  def block(val)
+  def block_ret(val)
     # Tira o block da pilha de controle
     $smc.popC()
 
@@ -678,8 +678,9 @@ def sub(val)
     $smc.pushA
     callable_actuals = val.children[1]
     callable_bl,callable_formals = $smc.readM(val.children[0].id.str)
+    puts(callable_formals)
     puts(callable_actuals)
-    #puts(callable_formals)
+
     #hm
     i = 0
     for item in callable_actuals

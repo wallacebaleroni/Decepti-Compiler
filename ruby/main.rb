@@ -19,7 +19,7 @@ module modtop
 
     return y
   }
-  fact(2,1)
+  fact(6,1)
 end"
 
 fact_test_code = "

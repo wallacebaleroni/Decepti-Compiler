@@ -55,6 +55,9 @@ class SMC
     if bindable.id.eql? "proc"
       return bindable.content,bindable.formals
     end
+    if bindable.id.eql? "func"
+      return bindable.content,bindable.formals
+    end
     @M[bindable.content]
   end
 
