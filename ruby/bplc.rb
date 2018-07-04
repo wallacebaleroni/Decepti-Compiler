@@ -174,7 +174,6 @@ class BPLC
             self.num(val)
           
           else
-            # TODO: olhar isso, ele esperava um identificador aqui, talvez tenha que criar uma regra nova pra esse caso
             self.access(val)
           end
 
