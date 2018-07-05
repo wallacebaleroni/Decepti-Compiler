@@ -73,14 +73,20 @@ end"
 
 test_code = "
 module toptop
-  proc fact(x) {
-    if (x > 0) {
-      x := fact(2)
+  proc test(x) {
+    var y = 2
+
+    if (y == 2) {
+      var y = 3
+
+      print(y)
     }
   }
+
+  test(1)
 end"
 
-code = fact_code
+code = test_code
 
 puts code
 puts

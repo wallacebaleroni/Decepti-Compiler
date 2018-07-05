@@ -106,7 +106,14 @@ class SMC
 
   def popA()
     listaVar = @A.shift()
-    for i in 1..listaVar.length
+    for i in 0..(listaVar.length - 1)
+      id = listaVar[i]
+      cont = @E[0][id]
+      if cont.kind_of?(Bindable)
+        if cont.is_loc?
+          @M.delete(cont.content)
+        end
+      end
       @E.shift
     end
   end
