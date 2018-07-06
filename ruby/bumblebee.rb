@@ -98,6 +98,10 @@ class Bumblebee < Parslet::Transform
 
   # Mark 1
 
+  rule(:decl_seq => subtree(:decl_seq)) {
+    Tree.new("block", [decl_seq])
+  }
+
   rule(:decl_seq => subtree(:decl_seq), :cmd => subtree(:cmd)) {
     Tree.new("block", [decl_seq, cmd])
   }

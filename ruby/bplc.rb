@@ -199,8 +199,12 @@ class BPLC
     # Coloca o decl_seq e o cmd na pilha de controle
     decl_seq = val.children.shift()
     cmd = val.children.shift()
-    $smc.pushC(cmd)
-    $smc.pushC(decl_seq)
+    if not cmd.nil?
+      $smc.pushC(cmd)
+    end
+    if not decl_seq.nil?
+      $smc.pushC(decl_seq)
+    end
   end
 
   def block_ret(val)
