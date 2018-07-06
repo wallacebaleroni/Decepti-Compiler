@@ -74,16 +74,14 @@ end"
 test_code = "
 module toptop
   proc test(x) {
-    var y = 2
+    var y = 1
 
-    if (y == 2) {
-      var y = 3
-
-      print(y)
+    if (y == 1) {
+      var y = 2
     }
   }
 
-  test(1)
+  test(0)
 end"
 
 code = test_code
