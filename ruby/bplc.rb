@@ -406,7 +406,7 @@ class BPLC
         left = left.id.to_i()
         right = right.id.to_i()
         res = (right + left).to_s()
-        res = Tree.new((Parslet::Slice.new(0,res)))
+        res = Tree.new(res)
         $smc.pushS(res)
       else
         $smc.pushC(val.children[0])
@@ -424,7 +424,7 @@ def sub(val)
         left = left.id.to_i()
         right = right.id.to_i()
         res = (right - left).to_s()
-        res = Tree.new((Parslet::Slice.new(0,res)))
+        res = Tree.new(res)
         $smc.pushS(res)
       else
         $smc.pushC(val.children[0])
@@ -442,7 +442,7 @@ def sub(val)
         left = left.id.to_i()
         right = right.id.to_i()
         res = (left * right).to_s()
-        res = Tree.new((Parslet::Slice.new(0, res)))
+        res = Tree.new(res)
         $smc.pushS(res)
       else
         $smc.pushC(val.children[0])
@@ -459,7 +459,7 @@ def sub(val)
         left = left.id.to_i()
         right = right.id.to_i()
         res = (right / left).to_s()
-        res = Tree.new((Parslet::Slice.new(0, res)))
+        res = Tree.new(res)
         $smc.pushS(res)
       else
         $smc.pushC(val.children[0])
@@ -648,7 +648,7 @@ def sub(val)
           if not $smc.instantiated?(var)
             raise "Exception: Variable " + var.to_s +  " referenced before assignment"
           end
-          $smc.writeM(var, value.id.str)
+          $smc.writeM(var, value.id)
         else
           $smc.pushC(value)
         end
@@ -673,40 +673,61 @@ def sub(val)
   end
 
   def call(val)
-    $smc.popC
-    $smc.pushA
-    callable_actuals = val.children[1]
-    callable_bl,callable_formals = $smc.readM(val.children[0].id.str)
-    puts(callable_formals)
-    puts(callable_actuals)
+    if val.children.length == 2  # Primeira iteracao
 
-    if(callable_formals != nil)
-      if(callable_actuals.is_a? Enumerable)
-        i = 0
-        for item in callable_actuals
-          var = Bindable.new("loc",nil)
-          $smc.writeE(callable_formals[i].id.str,var)
-          $smc.writeM(callable_formals[i].id.str,item.id)
-          $smc.writeA(callable_formals[i].id.str)
-          i += 1
+      actuals = val.children.pop() # Remove actuals
+      if actuals.is_a? Array  # Se for array itera
+        for item in actuals
+          $smc.pushC(item)
         end
-      else
-        var = Bindable.new("loc",nil)
-        $smc.writeE(callable_formals.id.str,var)
-        $smc.writeM(callable_formals.id.str,callable_actuals.id)
-        $smc.writeA(callable_formals.id.str)
+      else  # Se não for é só jogar lá
+        if not actuals.nil?
+          $smc.pushC(actuals)
+        end
       end
+
+    else  # Segunda iteração
+
+      $smc.popC  # Tira chamada do controle
+      $smc.pushA  # Empilha novo ambiente auxiliar
+
+      callable_bl, callable_formals = $smc.readM(val.children[0].id.str)  # Pega o bloco da função e os formals
+
+      if not callable_formals.nil?
+        if callable_formals.is_a? Array  # Se a função tiver mais de um argumento
+          i = 0
+          for item in callable_formals  # Pra cada um dos argumentos
+            actual = $smc.popS()  # Pega o argumento da pilha de valores
+
+            var = Bindable.new("loc",nil)  # Cria um novo bindable pra ele
+            $smc.writeE(callable_formals[i].id.str,var)  # Escreve ele no ambiente
+            $smc.writeM(callable_formals[i].id.str,actual.id)  # Escreve na memória
+            $smc.writeA(callable_formals[i].id.str)  # Escreve na pilha auxiliar
+
+            i += 1
+          end
+        else  # Se tiver um só argumento
+          actual = $smc.popS()  # Pega o argumento da pilha de valores
+
+          var = Bindable.new("loc",nil)  # Cria um novo bindable pra ele
+          $smc.writeE(callable_formals.id.str,var)  # Escreve ele no ambiente
+          $smc.writeM(callable_formals.id.str,actual.id)  # Escreve na memória
+          $smc.writeA(callable_formals.id.str)  # Escreve na pilha auxiliar
+        end
+      end
+
+      $smc.pushC(Tree.new("blockend",[]))
+      $smc.pushC(callable_bl.deepcopy())
     end
-    $smc.pushC(Tree.new("blockend",[]))
-    $smc.pushC(callable_bl.deepcopy())
   end
 
   def module(val)
     $smc.popC
     $smc.pushC(Tree.new("blockend",[]))
     if val.children.length == 3
-      for item in val.children[2]
-        $smc.pushC(item)
+      calls = val.children[2].length
+      for i in 1..(calls)
+        $smc.pushC(val.children[2][calls - i])
       end
 
       for item in val.children[1]

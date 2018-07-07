@@ -7,7 +7,7 @@ require_relative 'tree'
 class Bumblebee < Parslet::Transform
   # Mark 0
   rule(:int => simple(:n)) {
-    Tree.new(n)
+    Tree.new(n.str)
   }
 
   rule(:ident => simple(:c)) {
