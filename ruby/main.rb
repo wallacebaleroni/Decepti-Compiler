@@ -77,27 +77,24 @@ end
 "
 
 rec_code="
-module rmod
-  var w = 1
-
+module factRecursivo
   func fact(x) {
-    var ret = 1, y = 1
+    var ret = 1
 
     if (x == 1) {
       ret := 1
     } else {
-      y := x - 1;
-      ret := x * fact(y)
+      ret := x * fact(x - 1)
     }
 
     return ret
   }
 
-  proc printFact() {
-    print(fact(5))
+  proc printFact(x) {
+    print(fact(x))
   }
 
-  printFact()
+  printFact(5)
 
 end"
 
