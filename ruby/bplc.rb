@@ -79,7 +79,9 @@ class BPLC
     puts("\nAutobots, let's roll!")
 
     # Imprime o SMC
-    $smc.print_smc()
+    if $debug
+      $smc.print_smc()
+    end
 
     while($smc.lengthC > 0)
       # Olha o topo do Controle e vê qual regra se aplica
@@ -186,7 +188,9 @@ class BPLC
       end
 
       # Imprime o SMC
-      $smc.print_smc()
+      if $debug
+        $smc.print_smc()
+      end
     end
   end
 

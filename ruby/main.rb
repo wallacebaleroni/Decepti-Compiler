@@ -3,32 +3,10 @@ require_relative 'bumblebee'
 require_relative 'bplc'
 require_relative 'smc'
 
+$debug = true
 
 $smc = SMC.new
 bplc = BPLC.new
-
-rec_code="
-module rmod
-  func fact(x) {
-    var ret = 1, y = 1
-
-    if (x == 1) {
-      ret := 1
-    } else {
-      y := x - 1;
-      ret := x * fact(y)
-    }
-
-    return ret
-  }
-
-  proc printFact() {
-    print(fact(5))
-  }
-
-  printFact()
-
-end"
 
 fact_code = "
 module modtop
@@ -86,10 +64,49 @@ module toptop
   test(0)
 end"
 
-code = test_code
+infinite_loop = "
+module toptop
+  func funcTeste() {
+    var y = 1
 
-puts code
-puts
+    y := funcTeste()
+  }
+
+  funcTeste()
+end
+"
+
+rec_code="
+module rmod
+  var w = 1
+
+  func fact(x) {
+    var ret = 1, y = 1
+
+    if (x == 1) {
+      ret := 1
+    } else {
+      y := x - 1;
+      ret := x * fact(y)
+    }
+
+    return ret
+  }
+
+  proc printFact() {
+    print(fact(5))
+  }
+
+  printFact()
+
+end"
+
+code = rec_code
+
+if $debug
+  puts code
+  puts
+end
 
 $smc = SMC.new
 bplc = BPLC.new
