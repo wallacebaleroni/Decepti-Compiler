@@ -744,9 +744,12 @@ def sub(val)
       for item in val.children[2]
         $smc.pushC(item)
       end
-      puts(val.children[1].children)
-      for item in val.children[1].children
-        $smc.pushC(item)
+      if val.children[1].is_a? Array
+        for item in val.children[1]
+          $smc.pushC(item)
+        end
+      else
+        $smc.pushC(val.children[1])
       end
     end
     $smc.pushA
