@@ -28,7 +28,7 @@ class OptimusParser < Parslet::Parser
   rule(:lcb)        { match('[{]') >> blank? }
   rule(:rcb)        { match('[}]') >> blank? }
 
-  rule(:ident)      { (lowcase | upcase).repeat(1).as(:ident) >> ((lowcase | upcase | integer).repeat(1)).maybe >> blank? }
+  rule(:ident)      { (lowcase | upcase).repeat(1).as(:ident) >> blank? }
 
   rule(:sum_op)     { str("+").as(:op) >> blank? }
   rule(:mul_op)     { str("*").as(:op) >> blank? }

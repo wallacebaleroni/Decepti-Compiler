@@ -337,9 +337,8 @@ class BPLC
         if is_integer?(value.id)
           $smc.popC()
           var = $smc.popS().str
-          bindable = Bindable.new("value", value.id) # ?
-          $smc.writeE(var, bindable) # !!
-          # $smc.writeM(var,value.id)
+          bindable = Bindable.new("value", value.id)
+          $smc.writeE(var, bindable)
           $smc.writeA(var)
         
         else
@@ -616,19 +615,15 @@ def sub(val)
 
   def pproc(val)
     $smc.popC()
-    #var = $smc.popS().str
     callable = Callables.new("proc", val.children[1],val.children[2])
     $smc.writeECallable(val.children[0].id.str, callable)
-    #$smc.writeM(var, value.id)
     $smc.writeA(val.children[0].id.str)
   end
 
   def fun(val)
     $smc.popC()
-    #var = $smc.popS().str
     callable = Callables.new("func", val.children[1],val.children[2])
     $smc.writeECallable(val.children[0].id.str, callable)
-    #$smc.writeM(var, value.id)
     $smc.writeA(val.children[0].id.str)
   end
 

@@ -49,7 +49,7 @@ module modtop
   proc fact(x) {
     var x = 5;
     var y = 1;
-    const w = fact(x)
+    const w = 1122
 
     while (x > 0) do {
       y := y * x;
@@ -59,16 +59,18 @@ module modtop
     print(y)
   }
 
-  proc top(x) {
+  func top(x) {
     var x = 5
 
     if (x > 0) {
       print(x)
     }
+
+    return 1
   }
 
   fact(2)
-  top(x)
+  top(1)
 end"
 
 test_code = "
