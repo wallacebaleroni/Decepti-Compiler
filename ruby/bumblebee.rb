@@ -7,7 +7,7 @@ require_relative 'tree'
 class Bumblebee < Parslet::Transform
   # Mark 0
   rule(:int => simple(:n)) {
-    Tree.new(n)
+    Tree.new(n.str)
   }
 
   rule(:ident => simple(:c)) {
@@ -89,10 +89,18 @@ class Bumblebee < Parslet::Transform
   }
 
   rule(:proc => subtree(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
-    $smc.pushC(Tree.new("proc", [bl]))
+    Tree.new("prc", [n,p,bl])
+  }
+
+  rule(:func => subtree(:n), :parametros => subtree(:p), :block => subtree(:bl)) {
+    Tree.new("fun", [n,p,bl])
   }
 
   # Mark 1
+
+  rule(:decl_seq => subtree(:decl_seq)) {
+    Tree.new("block", [decl_seq])
+  }
 
   rule(:decl_seq => subtree(:decl_seq), :cmd => subtree(:cmd)) {
     Tree.new("block", [decl_seq, cmd])
@@ -112,6 +120,25 @@ class Bumblebee < Parslet::Transform
 
   rule(:decl_seq1 => subtree(:d1), :decl_seq2 => subtree(:d2)) {
     Tree.new("decl_seq", [d1, d2])
+  }
+
+  rule(:idproc => subtree(:idp), :actuals => subtree(:act)) {
+    Tree.new("cal", [idp,act])
+  }
+  rule(:decl_seq => subtree(:decl_seq), :cmd => subtree(:cmd),:return=>subtree(:ret)) {
+    Tree.new("block_ret", [decl_seq, cmd, ret])
+  }
+
+  rule(:ident => simple(:id), :module_decl => subtree(:decls),:module_calls => subtree(:calls)) {
+    $smc.pushC(Tree.new("module", [id,decls,calls]))
+  }
+
+  rule(:ident => simple(:id), :module_decl => subtree(:mdecls),:module_calls => subtree(:calls)) {
+    $smc.pushC(Tree.new("module", [id,mdecls,calls]))
+  }
+
+  rule(:ident => simple(:id), :decl_seq=>subtree(:decls),:module_decl => subtree(:mdecls),:module_calls => subtree(:calls)) {
+    $smc.pushC(Tree.new("module", [id,decls,mdecls,calls]))
   }
 
 end

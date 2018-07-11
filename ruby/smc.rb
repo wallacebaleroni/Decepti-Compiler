@@ -48,10 +48,16 @@ class SMC
 
   def readM(variavel)
     bindable = @E[0][variavel]
+
     if bindable.id.eql? "value"
       return bindable.content
     end
-
+    if bindable.id.eql? "proc"
+      return bindable.content,bindable.formals
+    end
+    if bindable.id.eql? "func"
+      return bindable.content,bindable.formals
+    end
     @M[bindable.content]
   end
 
@@ -81,13 +87,33 @@ class SMC
 
   end
 
+  def writeECallable(variavel, callable)
+    if (@reserved.include?(variavel))
+      raise "Exception: Reserved word used as identifier."
+    end
+
+    new_env = Hash.new
+    new_env = @E[0].clone
+
+    new_env[variavel] = callable
+    @E.unshift(new_env)
+
+  end
+
   def topC()
     @C[0]
   end
 
   def popA()
     listaVar = @A.shift()
-    for i in 1..listaVar.length
+    for i in 0..(listaVar.length - 1)
+      id = listaVar[i]
+      cont = @E[0][id]
+      if cont.kind_of?(Bindable)
+        if cont.is_loc?
+          @M.delete(cont.content)
+        end
+      end
       @E.shift
     end
   end
